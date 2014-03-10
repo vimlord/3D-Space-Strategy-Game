@@ -3,6 +3,12 @@
 Written by:
 Christopher Hittner
 
+Description
+===========
+This game is designed to provide an accurate simulation of space combat. The
+game consists of opposing factions that fight in space with the sole purpose of
+defeating the other(s).
+
 Changes List
 ============
 0.1.0.1 [10:03 PM 3/7/2014] - Created main.CycleRunner.java for executing in-game physics calculation cycles
