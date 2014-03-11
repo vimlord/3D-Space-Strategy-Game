@@ -80,3 +80,5 @@ Changes List
                                   Allows for easier usage of various Entity objects
                                   Modified methods for compatibility
 
+0.1.0.21 [11:27 AM 3/11/2014] - Modified rotate() method in entities.ships.Ship.java
+                                    Fixes bug with rotation targets
