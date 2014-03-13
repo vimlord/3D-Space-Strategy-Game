@@ -19,7 +19,9 @@ public class Ship extends Entity{
     protected double XZ_RotSpeed = 0, Y_RotSpeed = 0;
     protected double XZ_ROT_Target = 0, Y_ROT_Target = 0;
     protected double XZ_ROT_MidPt, Y_ROT_MidPt;
+    
     protected boolean rotationTarget = false;
+    protected boolean readyToRotate = true;
      
     protected double throttle = 0;
      
@@ -97,34 +99,47 @@ public class Ship extends Entity{
     public void setRotationTarget(double XZ, double Y){
         XZ_ROT_Target = XZ;
         Y_ROT_Target = Y;
-        XZ_ROT_MidPt = (XZ_ROT_Target + XZ_ROT)/2.0;
-        Y_ROT_MidPt = (Y_ROT_Target + Y_ROT)/2.0;
+        readyToRotate = false;
     }
      
     public void autopilot(){
+        //This section of the autopilot will rotate the craft so that it will execute rotation commands
         double XZ_dist = Math.abs(XZ_ROT - XZ_ROT_Target);
         double Y_dist = Math.abs(Y_ROT - Y_ROT_Target);
         double dist =  Math.sqrt(Math.pow(XZ_dist, 2) + Math.pow(Y_dist, 2));
-         
-        if(rotationTarget){
-            if(!(XZ_dist < 0.5)){
-                if(XZ_ROT > XZ_ROT_MidPt){ 
-                    addRotation(-1,0,50);
-                } else if(XZ_ROT < XZ_ROT_MidPt){
-                    addRotation(1,0,50);
-                }
-            }
- 
-            if(!(Y_dist < 0.5)){
-                if(Y_ROT > XZ_ROT_MidPt){ 
-                    addRotation(0,-1,50);
-                } else if(XZ_ROT < Y_ROT_MidPt){
-                    addRotation(0,1,50);
-                }
-            }
+        
+        //Stops the rotation if a new target is selected
+        if(!readyToRotate && Math.abs(Math.sqrt(Math.pow(XY_RotSpeed,2) + Math.pow(XY_RotSpeed,2))) < 0.5){
+                XZ_ROT_MidPt = (XZ_ROT_Target + XZ_ROT)/2.0;
+                Y_ROT_MidPt = (Y_ROT_Target + Y_ROT)/2.0;
+                readyToRotate = true;
         }
-        if(dist < 0.5){
-            rotationTarget = false;
+        
+        //Will be true if the craft is ready to rotate
+        if(readyToRotate){ 
+            if(rotationTarget){
+                if(!(XZ_dist < 0.5)){
+                    if(XZ_ROT > XZ_ROT_MidPt){ 
+                        addRotation(-1,0,50);
+                    } else if(XZ_ROT < XZ_ROT_MidPt){
+                        addRotation(1,0,50);
+                    }
+                }
+     
+                if(!(Y_dist < 0.5)){
+                    if(Y_ROT > XZ_ROT_MidPt){ 
+                        addRotation(0,-1,50);
+                    } else if(XZ_ROT < Y_ROT_MidPt){
+                        addRotation(0,1,50);
+                    }
+                }
+            }
+            if(dist < 0.5){
+                rotationTarget = false;
+            }
+        } else {
+            //Enacts necessary rotation acceleration to stop the rotation
+            addRotation(-XZ_RotSpeed, -Y_RotSpeed, Math.sqrt(0.5));
         }
     }
  
