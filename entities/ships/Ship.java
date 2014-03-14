@@ -71,28 +71,28 @@ public class Ship extends Entity{
         if(Y_ROT > Math.toRadians(90.0)){
             Y_ROT -= Math.toRadians(180.0);
             Y_ROT_MidPt -= Math.toRadians(180.0);
-            Y_RotTarget -= Math.toRadians(180.0);
+            Y_ROT_Target -= Math.toRadians(180.0);
             Y_RotSpeed *= -1.0;
-            XZ_ROT += Math.toRadians(180.0);X
+            XZ_ROT += Math.toRadians(180.0);
             XZ_ROT_MidPt += Math.toRadians(180.0);
-            XZ_RotTarget += Math.toRadians(180.0);
+            XZ_ROT_Target += Math.toRadians(180.0);
         } else if(Y_ROT < Math.toRadians(-90.0)){
             Y_ROT += Math.toRadians(180.0);
             Y_ROT_MidPt += Math.toRadians(180.0);
-            Y_RotTarget += Math.toRadians(180.0);
+            Y_ROT_Target += Math.toRadians(180.0);
             Y_RotSpeed *= -1.0;
             XZ_ROT += Math.toRadians(180);
             XZ_ROT_MidPt += Math.toRadians(180.0);
-            XZ_RotTarget += Math.toRadians(180.0);
+            XZ_ROT_Target += Math.toRadians(180.0);
         }
         if(XZ_ROT >= Math.toRadians(360.0)){
             XZ_ROT -= Math.toRadians(360.0);
             XZ_ROT_MidPt -= Math.toRadians(360.0);
-            XZ_RotTarget -= Math.toRadians(360.0);
+            XZ_ROT_Target -= Math.toRadians(360.0);
         } else if(XZ_ROT < 0.0){
             XZ_ROT += Math.toRadians(360.0);
             XZ_ROT_MidPt += Math.toRadians(360.0);
-            XZ_RotTarget += Math.toRadians(360.0);
+            XZ_ROT_Target += Math.toRadians(360.0);
         }
     }
      
@@ -109,7 +109,7 @@ public class Ship extends Entity{
         double dist =  Math.sqrt(Math.pow(XZ_dist, 2) + Math.pow(Y_dist, 2));
         
         //Stops the rotation if a new target is selected
-        if(!readyToRotate && Math.abs(Math.sqrt(Math.pow(XY_RotSpeed,2) + Math.pow(XY_RotSpeed,2))) < 0.5){
+        if(!readyToRotate && Math.abs(Math.sqrt(Math.pow(XZ_RotSpeed,2) + Math.pow(Y_RotSpeed,2))) < 0.5){
                 XZ_ROT_MidPt = (XZ_ROT_Target + XZ_ROT)/2.0;
                 Y_ROT_MidPt = (Y_ROT_Target + Y_ROT)/2.0;
                 readyToRotate = true;
