@@ -15,13 +15,13 @@ import main.CycleRunner;
  * @author Christopher Hittner
  */
 public class Ship extends Entity{
+    protected double health;
+    
     protected double XZ_ROT = 0, Y_ROT = 0;
     protected double XZ_RotSpeed = 0, Y_RotSpeed = 0;
     protected double XZ_ROT_Target = 0, Y_ROT_Target = 0;
-    protected double XZ_ROT_MidPt, Y_ROT_MidPt;
     
     protected boolean rotationTarget = false;
-    protected boolean readyToRotate = true;
      
     protected double throttle = 0;
      
@@ -50,16 +50,17 @@ public class Ship extends Entity{
      * @param Y The ratio amount of Y to rotate by
      * @param magnitude The percent of the ship's overall rotation ability to rotate by
      */
-    public void addRotation(double XZ, double Y, double magnitude){
-        if(magnitude > 100 || magnitude < 0){
-            return;
-        }
+    public void setRotation(double XZ, double Y, double magnitude){
         double originalMagnitude = Math.sqrt(Math.pow(XZ, 2) + Math.pow(Y, 2));
         double horiz = (XZ/originalMagnitude) * (magnitude/100);
         double vert = (Y/originalMagnitude) * (magnitude/100);
-         
-        XZ_RotSpeed += 5.0 * Math.toRadians((10000000.0/mass) * horiz)/CycleRunner.cyclesPerSecond;
-        Y_RotSpeed += 5.0 * Math.toRadians((10000000.0/mass) * vert)/CycleRunner.cyclesPerSecond;
+        if(XZ == 0 && Y == 0){
+            XZ_RotSpeed = 0;
+            Y_RotSpeed = 0;
+        } else {
+            XZ_RotSpeed = 5.0 * Math.toRadians((10000000.0/mass) * horiz)/CycleRunner.cyclesPerSecond;
+            Y_RotSpeed = 5.0 * Math.toRadians((10000000.0/mass) * vert)/CycleRunner.cyclesPerSecond;
+        }
     }
      
     /**
@@ -70,28 +71,22 @@ public class Ship extends Entity{
         Y_ROT += Y_RotSpeed/CycleRunner.cyclesPerSecond;
         if(Y_ROT > Math.toRadians(90.0)){
             Y_ROT -= Math.toRadians(180.0);
-            Y_ROT_MidPt -= Math.toRadians(180.0);
             Y_ROT_Target -= Math.toRadians(180.0);
             Y_RotSpeed *= -1.0;
             XZ_ROT += Math.toRadians(180.0);
-            XZ_ROT_MidPt += Math.toRadians(180.0);
             XZ_ROT_Target += Math.toRadians(180.0);
         } else if(Y_ROT < Math.toRadians(-90.0)){
             Y_ROT += Math.toRadians(180.0);
-            Y_ROT_MidPt += Math.toRadians(180.0);
             Y_ROT_Target += Math.toRadians(180.0);
             Y_RotSpeed *= -1.0;
             XZ_ROT += Math.toRadians(180);
-            XZ_ROT_MidPt += Math.toRadians(180.0);
             XZ_ROT_Target += Math.toRadians(180.0);
         }
         if(XZ_ROT >= Math.toRadians(360.0)){
             XZ_ROT -= Math.toRadians(360.0);
-            XZ_ROT_MidPt -= Math.toRadians(360.0);
             XZ_ROT_Target -= Math.toRadians(360.0);
         } else if(XZ_ROT < 0.0){
             XZ_ROT += Math.toRadians(360.0);
-            XZ_ROT_MidPt += Math.toRadians(360.0);
             XZ_ROT_Target += Math.toRadians(360.0);
         }
     }
@@ -99,47 +94,36 @@ public class Ship extends Entity{
     public void setRotationTarget(double XZ, double Y){
         XZ_ROT_Target = XZ;
         Y_ROT_Target = Y;
-        readyToRotate = false;
+        rotationTarget = true;
     }
      
     public void autopilot(){
-        //This section of the autopilot will rotate the craft so that it will execute rotation commands
-        double XZ_dist = Math.abs(XZ_ROT - XZ_ROT_Target);
-        double Y_dist = Math.abs(Y_ROT - Y_ROT_Target);
-        double dist =  Math.sqrt(Math.pow(XZ_dist, 2) + Math.pow(Y_dist, 2));
-        
-        //Stops the rotation if a new target is selected
-        if(!readyToRotate && Math.abs(Math.sqrt(Math.pow(XZ_RotSpeed,2) + Math.pow(Y_RotSpeed,2))) < 0.5){
-                XZ_ROT_MidPt = (XZ_ROT_Target + XZ_ROT)/2.0;
-                Y_ROT_MidPt = (Y_ROT_Target + Y_ROT)/2.0;
-                readyToRotate = true;
-        }
-        
-        //Will be true if the craft is ready to rotate
-        if(readyToRotate){ 
-            if(rotationTarget){
-                if(!(XZ_dist < 0.5)){
-                    if(XZ_ROT > XZ_ROT_MidPt){ 
-                        addRotation(-1,0,50);
-                    } else if(XZ_ROT < XZ_ROT_MidPt){
-                        addRotation(1,0,50);
-                    }
-                }
-     
-                if(!(Y_dist < 0.5)){
-                    if(Y_ROT > XZ_ROT_MidPt){ 
-                        addRotation(0,-1,50);
-                    } else if(XZ_ROT < Y_ROT_MidPt){
-                        addRotation(0,1,50);
-                    }
-                }
+        if(rotationTarget){
+            int xz = 0;
+            int y = 0;
+            
+            if(Math.abs(XZ_ROT - XZ_ROT_Target) < Math.toRadians(0.5)){
+                xz = 0;
+            } else if(XZ_ROT < XZ_ROT_Target){
+                xz = 1;
+            } else if(XZ_ROT > XZ_ROT_Target){
+                xz = -1;
             }
-            if(dist < 0.5){
+            
+            if(Math.abs(Y_ROT - Y_ROT_Target) < Math.toRadians(0.5)){
+                y = 0;
+            } else if(Y_ROT < Y_ROT_Target){
+                y = 1;
+            } else if(Y_ROT > Y_ROT_Target){
+                y = -1;
+            }
+            
+            setRotation(xz, y, 100);
+            
+            if(xz == 0 && y == 0){
                 rotationTarget = false;
             }
-        } else {
-            //Enacts necessary rotation acceleration to stop the rotation
-            addRotation(-XZ_RotSpeed, -Y_RotSpeed, Math.sqrt(0.5));
+            
         }
     }
  
@@ -160,5 +144,34 @@ public class Ship extends Entity{
         velZ += 0.4 * throttle * Math.sin(XZ_ROT) * Math.cos(Y_ROT) * (10000000.0/mass)/CycleRunner.cyclesPerSecond;
         velY += 0.4 * throttle * Math.sin(Y_ROT) * (10000000.0/mass)/CycleRunner.cyclesPerSecond;
     }
+    
+    
+    
+    
+    /**
+     * Returns the ship's health
+     * @return The Ship's health
+     */
+    public double getHealth(){
+        return health;
+    }
+    
+    public double getXZ_ROT(){
+        return XZ_ROT;
+    }
+    
+    public double getY_ROT(){
+        return Y_ROT;
+    }
+    
+    public double getXZ_RotSpeed(){
+        return XZ_RotSpeed;
+    }
+    
+    public double getY_RotSpeed(){
+        return Y_RotSpeed;
+    }
+    
+    
 }
 
