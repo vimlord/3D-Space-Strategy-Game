@@ -7,14 +7,15 @@
  
 package entities.ships;
  
-import entities.Entity;
+import entities.*;
 import main.CycleRunner;
  
 /**
  *
  * @author Christopher Hittner
  */
-public class Ship extends Entity{
+public class Ship extends Entity implements ControlSystem{
+    protected final double maxHealth;
     protected double health;
     
     protected double XZ_ROT = 0, Y_ROT = 0;
@@ -32,8 +33,11 @@ public class Ship extends Entity{
      * @param M The mass
      * @param R The radius/size of the ship's hit box
      */
-    public Ship(double X, double Y, double Z, double M, double R){
+    public Ship(double X, double Y, double Z, double M, double R, double maximumHealth){
         super(X, Y, Z, M, R);
+        //Sets the maximum and current health
+        maxHealth = maximumHealth;
+        health = maxHealth;
     }
      
     public void move(){
@@ -69,6 +73,8 @@ public class Ship extends Entity{
     public void rotate(){
         XZ_ROT += XZ_RotSpeed/CycleRunner.cyclesPerSecond;
         Y_ROT += Y_RotSpeed/CycleRunner.cyclesPerSecond;
+        
+        //Corrections in case the ship rotates beyond a certain degree value
         if(Y_ROT > Math.toRadians(90.0)){
             Y_ROT -= Math.toRadians(180.0);
             Y_ROT_Target -= Math.toRadians(180.0);
@@ -156,18 +162,33 @@ public class Ship extends Entity{
         return health;
     }
     
+    /**
+     * Returns the rotation on the XZ plane
+     * @return The XZ Rotation
+     */
     public double getXZ_ROT(){
         return XZ_ROT;
     }
     
+    /**
+     * Returns the rotation on the Y axis
+     * @return The Y Rotation
+     */
     public double getY_ROT(){
         return Y_ROT;
     }
-    
+    /**
+     * Returns the rotation speed on the XZ plane
+     * @return The XZ Rotation speed
+     */
     public double getXZ_RotSpeed(){
         return XZ_RotSpeed;
     }
     
+    /**
+     * Returns the rotation speed on the Y axis
+     * @return The Y Rotation speed
+     */
     public double getY_RotSpeed(){
         return Y_RotSpeed;
     }
