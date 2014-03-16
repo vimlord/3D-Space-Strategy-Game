@@ -10,7 +10,7 @@ import main.*;
  *
  * @author Christopher Hittner
  */
-public class Entity {
+public abstract class Entity {
     public final double G = 6.67384 * Math.pow(10,-11);
     protected double x, y, z;
     protected double velX = 0, velY = 0, velZ = 0;
