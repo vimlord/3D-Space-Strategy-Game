@@ -51,6 +51,37 @@ public class EntityList {
             c.move();
         }
     }
+	
+	public static void executeCollisions(){
+		//Planetary collisions
+		for(int i = 0; i < bodies.size() - 1; i++){
+			for(int j = i + 1; j < bodies.size(); j++){
+				if((bodies.get(i)).testCollision(bodies.get(j))){
+					(bodies.get(i)).collide(bodies.get(j));
+				}
+			}
+		}
+		
+		//Vessel collisions
+		for(int i = 0; i < ships.size() - 1; i++){
+			for(int j = i + 1; j < ships.size(); j++){
+				if((ships.get(i)).testCollision(ships.get(j))){
+					(ships.get(i)).collide(ships.get(j));
+				}
+			}
+		}
+		
+		//Planet-Ship Collisions
+		for(CelestialBody c : bodies){
+			for(Ship s : ships){
+				if(c.testCollision(s)){
+					c.collide(s);
+				}
+			}
+		}
+		
+	}
+	
      
     public static CelestialBody getCelestialBody(int index){
         return bodies.get(index);

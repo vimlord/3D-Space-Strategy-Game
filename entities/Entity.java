@@ -5,13 +5,14 @@ package entities;
  */
  
 import main.*;
+import physics.*;
  
 /**
  *
  * @author Christopher Hittner
  */
-public abstract class Entity {
-    public final double G = 6.67384 * Math.pow(10,-11);
+public abstract class Entity implements PhysicsConstants{
+
     protected double x, y, z;
     protected double velX = 0, velY = 0, velZ = 0;
     protected double mass;
@@ -84,7 +85,22 @@ public abstract class Entity {
          
     }
      
-     
+    public void collide(Entity other){
+
+        //The code below creates a system for perfectly inelastic collisions
+
+        double avgMomentumX = ((this.mass * this.velX) + (other.mass * other.velX))/2.0;
+        double newVelX = avgMomentumX/(this.mass + other.mass);
+
+        double avgMomentumY = ((this.mass * this.velY) + (other.mass * other.velY))/2.0;
+        double newVelY = avgMomentumY/(this.mass + other.mass);
+
+        double avgMomentumZ = ((this.mass * this.velZ) + (other.mass * other.velZ))/2.0;
+        double newVelZ = avgMomentumZ/(this.mass + other.mass);
+
+    }
+	
+	
      
     public double getX(){
         return x;

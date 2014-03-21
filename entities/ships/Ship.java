@@ -25,7 +25,7 @@ public class Ship extends Entity implements ControlSystem{
     protected boolean rotationTarget = false;
      
     protected double throttle = 0;
-     
+    
     /**
      * @param X The x-coordinate
      * @param Y The x-coordinate
@@ -33,10 +33,10 @@ public class Ship extends Entity implements ControlSystem{
      * @param M The mass
      * @param R The radius/size of the ship's hit box
      */
-    public Ship(double X, double Y, double Z, double M, double R, double maximumHealth){
+    public Ship(double X, double Y, double Z, double M, double R){
         super(X, Y, Z, M, R);
         //Sets the maximum and current health
-        maxHealth = maximumHealth;
+        maxHealth = Math.sqrt(mass/1000);
         health = maxHealth;
     }
      
