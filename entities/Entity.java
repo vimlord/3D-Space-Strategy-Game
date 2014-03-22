@@ -91,12 +91,18 @@ public abstract class Entity implements PhysicsConstants{
 
         double avgMomentumX = ((this.mass * this.velX) + (other.mass * other.velX))/2.0;
         double newVelX = avgMomentumX/(this.mass + other.mass);
+        this.velX = newVelX;
+        other.velX = newVelX;
 
         double avgMomentumY = ((this.mass * this.velY) + (other.mass * other.velY))/2.0;
         double newVelY = avgMomentumY/(this.mass + other.mass);
+        this.velY = newVelY;
+        other.velY = newVelY;
 
         double avgMomentumZ = ((this.mass * this.velZ) + (other.mass * other.velZ))/2.0;
         double newVelZ = avgMomentumZ/(this.mass + other.mass);
+        this.velZ = newVelZ;
+        other.velZ = newVelZ;
 
     }
 	
