@@ -26,6 +26,10 @@ public class Ship extends Entity implements ControlSystem{
      
     protected double throttle = 0;
     
+    protected double warpCharge = 0, warpCapacity = 60000, warpMinimum = 10000;
+    protected boolean warpCharging = false, warping = false;
+    protected int warpMode = 0;
+    
     /**
      * @param X The x-coordinate
      * @param Y The x-coordinate
@@ -45,8 +49,14 @@ public class Ship extends Entity implements ControlSystem{
         autopilot();
         rotate();
         accelerate();
+        chargeWarpDrive();
+        warp();
     }
      
+    
+    //--------------------------------------------------------------------------
+    //Rotation
+    //--------------------------------------------------------------------------
      
     /**
      *
@@ -102,7 +112,13 @@ public class Ship extends Entity implements ControlSystem{
         Y_ROT_Target = Y;
         rotationTarget = true;
     }
-     
+    
+    
+    //--------------------------------------------------------------------------
+    //Autopilot
+    //--------------------------------------------------------------------------
+    
+    
     public void autopilot(){
         if(rotationTarget){
             int xz = 0;
@@ -133,6 +149,11 @@ public class Ship extends Entity implements ControlSystem{
         }
     }
  
+    
+    //--------------------------------------------------------------------------
+    //Acceleration
+    //--------------------------------------------------------------------------
+    
     /**
      * Sets the value of the throttle to determine how quickly the ship will accelerate
      * @param thrustPercent The throttle level, in percent
@@ -151,6 +172,80 @@ public class Ship extends Entity implements ControlSystem{
         velY += 0.4 * throttle * Math.sin(Y_ROT) * (10000000.0/mass)/CycleRunner.cyclesPerSecond;
     }
     
+    
+    //--------------------------------------------------------------------------
+    //Warp Drive
+    //--------------------------------------------------------------------------
+    
+    
+    /**
+     * Sets the warp mode of the Ship (in multiples of the speed of light)
+     * @param level
+     */
+    public void setWarp(int level){
+        if(level > 0){
+            warpMode = level;
+        }
+    }
+    
+    /**
+     * Determines whether the Ship object is prepping for a warp jump
+     * @param b
+     */
+    public void setWarpPrep(boolean b){
+        warpCharging = b;
+    }
+    
+    /**
+     * Powers the warp drive up if it can be done
+     */
+    public void chargeWarpDrive(){
+        if(((warpMode == 0 && warpCharging) || warpCharge < warpMinimum)){
+            
+            warpCharge += (10000000/mass) * 200;
+            
+            if(warpCharge > warpCapacity){
+                warpCharge = warpCapacity;
+            }
+            
+        } else if(warpMode > 0){
+            
+            warpCharging = false;
+            warpCharge -= Math.pow(warpMode,2) * (mass/10000000);
+            
+            if(warpCharge < 0){
+                warpCharge = 0;
+            }
+            
+        }
+    }
+    
+    
+    /**
+     * Performs a frame of the warp jump in the physics of the game
+     */
+    public void warp(){
+        if(!warping){
+            if(warpCharge >= warpMinimum && warpMode > 0){
+                warping = true;
+            }
+        } else {
+            if(warpMode == 0){
+                warping = false;
+            }
+        }
+        
+        //Error check that keeps people from using an infinitely large warp power
+        if(Math.pow(warpMode,2) > warpCharge){
+            warpMode = (int)(Math.sqrt(warpCharge));
+        }
+        
+        if(warping){
+            x += (c * warpMode) * Math.cos(XZ_ROT) * Math.cos(Y_ROT);
+            y += (c * warpMode) * Math.sin(Y_ROT);
+            z += (c * warpMode) * Math.sin(XZ_ROT) * Math.cos(Y_ROT);
+        }
+    }
     
     
     
