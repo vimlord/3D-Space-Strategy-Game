@@ -89,6 +89,40 @@ public abstract class Entity implements PhysicsConstants{
     }
      
     public void collide(Entity other){
+        //The coe below is a duplicate of the gravitate() method, with a few changes.
+        //This is done to simulate the Normal Force.
+        
+        //Calculates distances
+        double distanceX = other.x - this.x;
+        double distanceY = other.y - this.y;
+        double distanceZ = other.z - this.z;
+        double distanceXZ = Math.sqrt(Math.pow(distanceX,2) + Math.pow(distanceZ,2));
+        double distance = Math.sqrt(Math.pow(distanceXZ,2) + Math.pow(distanceY,2));
+        double collisionRange = this.radius + other.radius;
+        double fractionalChange = (collisionRange/distance);
+        
+        this.x -= (fractionalChange * distanceX - distanceX);
+        other.x += (fractionalChange * distanceX - distanceX);
+        
+        this.y -= (fractionalChange * distanceY - distanceY);
+        other.y += (fractionalChange * distanceY - distanceY);
+        
+        this.z -= (fractionalChange * distanceZ - distanceZ);
+        other.z += (fractionalChange * distanceZ - distanceZ);
+        
+        
+        //Calculates force or gravity
+        double force = (double)(G*other.mass)/Math.pow(distance,2);
+         
+         
+        //Modifies force value based on cycles per second
+        force *= (1/(double)(CycleRunner.cyclesPerSecond));
+         
+        velX -= (distanceX/distanceXZ) *(distanceXZ/distance) * (force);
+        velY -= (distanceY/distance) * (force);
+        velZ -= (distanceZ/distanceXZ) * (distanceXZ/distance) * (force);
+        
+        
         //The code below creates a system for perfectly inelastic collisions
 
         double avgMomentumX = ((this.mass * this.velX) + (other.mass * other.velX))/2.0;
@@ -105,7 +139,7 @@ public abstract class Entity implements PhysicsConstants{
         double newVelZ = avgMomentumZ/(this.mass + other.mass);
         this.velZ = newVelZ;
         other.velZ = newVelZ;
-
+        
     }
 	
 	

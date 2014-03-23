@@ -37,6 +37,10 @@ public class Tester extends Applet {
     private static double XZ_ROT = Math.toRadians(30), Y_ROT = Math.toRadians(30);
     private static double x = 0, y = 0, z = 0;
     
+    //For value n, one pixel will represent n meters
+    private static double pixelMeterRatio = 0.5;
+    
+    
     public Tester(){
         
     }
@@ -59,8 +63,8 @@ public class Tester extends Applet {
         //clicked on
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        EntityList.addCelestialBody(new CelestialBody(100, 0, 0, 1, 6));
-        EntityList.addCelestialBody(new CelestialBody(-100, 0, 0, 1, 6));
+        EntityList.addCelestialBody(new CelestialBody(100, 0, 0, 10000000000000000.0, 6));
+        EntityList.addCelestialBody(new CelestialBody(-100, 0, 0, 10000000000000000.0, 6));
         
         //An infinite loop that only stops running when the Applet is closed
         while(true){
@@ -127,19 +131,19 @@ public class Tester extends Applet {
     }
     
     public void drawSphere(Graphics2D g, double X, double Y, double Z, int R){
-        double magnitudeXZ = Math.sqrt(Math.pow(X,2) + Math.pow(Z,2));
-        double angleXZ = Math.atan(Z/X);
-        if(X < 0){
+        double magnitudeXZ = Math.sqrt(Math.pow((X-x),2) + Math.pow((Z-z),2));
+        double angleXZ = Math.atan((Z-z)/(X-x));
+        if((X-x) < 0){
             angleXZ += Math.toRadians(180);
         }
         
-        double magnitude = Math.sqrt(Math.pow(magnitudeXZ,2) + Math.pow(Y,2));
-        double angleY = Math.atan(Y/magnitudeXZ);
+        double magnitude = Math.sqrt(Math.pow(magnitudeXZ,2) + Math.pow((Y-y),2));
+        double angleY = Math.atan((Y-y)/magnitudeXZ);
         
         
-        double ptX = frame.getWidth()/2 - R + (Math.cos(angleXZ + XZ_ROT) * magnitudeXZ);
-        double ptY = (frame.getHeight()/2 - 18) - R - (Math.sin(angleXZ + XZ_ROT) * magnitudeXZ * Math.sin(Y_ROT)) - Y * Math.cos(Y_ROT);
-        g.drawOval((int)(ptX), (int)(ptY), 2 * R, 2 * R);
+        double ptX = frame.getWidth()/2 - R / pixelMeterRatio + (Math.cos(angleXZ + XZ_ROT) * magnitudeXZ / pixelMeterRatio);
+        double ptY = (frame.getHeight()/2 - 18) - R / pixelMeterRatio - (Math.sin(angleXZ + XZ_ROT) * magnitudeXZ * Math.sin(Y_ROT)) / pixelMeterRatio - Y * Math.cos(Y_ROT) / pixelMeterRatio;
+        g.drawOval((int)(ptX), (int)(ptY), (int)(2 * R / pixelMeterRatio), (int)(2 * R / pixelMeterRatio));
     }
     
     /**
