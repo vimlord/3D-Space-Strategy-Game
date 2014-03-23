@@ -38,6 +38,14 @@ public class EntityList {
                 }
             }
         }
+        for(Entity e : bodies){
+            for(Entity f : bodies){
+                if(!e.equals(f)){
+                    e.gravitate(f);
+                }
+            }
+        }
+        
     }
      
     /**
@@ -89,6 +97,18 @@ public class EntityList {
      
     public static Ship getShip(int index){
         return ships.get(index);
+    }
+    
+    public static ArrayList<Entity> getEntityList(){
+        ArrayList<Entity> list = new ArrayList<>();
+        for(Ship s : ships){
+            list.add(s);
+        }
+        for(CelestialBody c : bodies){
+            list.add(c);
+        }
+        
+        return list;
     }
      
      
