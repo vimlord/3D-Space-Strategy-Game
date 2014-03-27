@@ -248,6 +248,30 @@ public class Ship extends Entity implements ControlSystem{
     }
     
     
+    //---------------------------------------------------------------------------
+    //Collision stuff
+    //---------------------------------------------------------------------------
+    
+    public void collide(Entity other){
+        relVelX = this.velX - other.velX;
+        relVelY = this.velY - other.velY;
+        relVelZ = this.velZ - other.velZ;
+        relVel = Math.sqrt(Math.pow(relVelX,2) + Math.pow(relVelY,2) + Math.pow(relVelY,2));
+        
+        this.health -= Math.sqrt(other.mass/this.mass) * Math.pow(relVel,4) / this.mass;
+        
+        if(e instanceOf Ship){
+            other.health -= Math.sqrt(this.mass/other.mass) * Math.pow(relVel,4) / other.mass;
+        }
+        
+        super.collide(other);
+    }
+    
+    
+    //---------------------------
+    //Data return methods
+    //---------------------------
+    
     
     /**
      * Returns the ship's health
