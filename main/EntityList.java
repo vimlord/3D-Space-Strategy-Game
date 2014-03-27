@@ -17,11 +17,20 @@ import java.util.ArrayList;
 public class EntityList {
     private static ArrayList<CelestialBody> bodies = new ArrayList<>();
     private static ArrayList<Ship> ships = new ArrayList<>();
-     
+    
+    
+    /*
+     * Adds a CelestialBody
+     * @param c The CelestialBody
+     */
     public static void addCelestialBody(CelestialBody c){
         bodies.add(c);
     }
      
+    /*
+     * Adds a Ship
+     * @param s The Ship
+     */
     public static void addShip(Ship s){
         ships.add(s);
     }
