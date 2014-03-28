@@ -241,9 +241,9 @@ public class Ship extends Entity implements ControlSystem{
         }
         
         if(warping){
-            x += (c * warpMode) * Math.cos(XZ_ROT) * Math.cos(Y_ROT);
-            y += (c * warpMode) * Math.sin(Y_ROT);
-            z += (c * warpMode) * Math.sin(XZ_ROT) * Math.cos(Y_ROT);
+            x += (c * warpMode) * Math.cos(XZ_ROT) * Math.cos(Y_ROT) / CycleRunner.cyclesPerSecond;
+            y += (c * warpMode) * Math.sin(Y_ROT) / CycleRunner.cyclesPerSecond;
+            z += (c * warpMode) * Math.sin(XZ_ROT) * Math.cos(Y_ROT) / CycleRunner.cyclesPerSecond;
         }
     }
     
