@@ -15,10 +15,10 @@ Planned Features
 +- Partially Implemented
 -- Not yet implemented
 
-Ships ++
-Various types of ships +-
-Gravity ++
+Ships +-
+    Various types of ships +-
 Physics system +-
+    Gravity ++
     Will always be partially implemented; could always be improved
 Ship controls +-
     The code exists, but it is merely a framework
@@ -37,3 +37,4 @@ v. 0.1.0
             Projectiles
     Created tester class
         Allows for features to be tested
+        Shows a 3D environment
