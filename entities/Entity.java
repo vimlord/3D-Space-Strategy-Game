@@ -165,6 +165,9 @@ public abstract class Entity implements PhysicsConstants{
     public double getRadius(){
         return radius;
     }
+    public double getMass(){
+        return mass;
+    }
      
 }
 
