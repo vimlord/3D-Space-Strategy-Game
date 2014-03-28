@@ -6,6 +6,8 @@
 package entities.planetaryBodies;
  
 import entities.Entity;
+import entities.ships.*;
+import main.CycleRunner;
  
 /**
  *
@@ -84,6 +86,61 @@ public class CelestialBody extends Entity{
             return 0;
         } else
             return (atmPressure * (1-(double)(distance/atmosphereHeight)));
+    }
+    
+    public boolean testCollision(Entity other){
+        double distanceX = other.getX() - this.x;
+        double distanceY = other.getY() - this.y;
+        double distanceZ = other.getZ() - this.z;
+        double distance = Math.sqrt(Math.pow(distanceX,2) + Math.pow(distanceY,2) + Math.pow(distanceZ,2));
+        
+        if((this.radius + atmosphereHeight) + other.getRadius() >= distance){
+            return true;
+        }
+        return false;
+    }
+    
+    /**
+     * Performs collision physics with an Entity object
+     * @param other The Entity being collided with
+     */
+    public void collide(Entity other){
+        //If the objects are colliding physically, it will deal with the objects as such
+        if(super.testCollision(other)){
+            super.collide(other);
+        }
+        double relVelX = other.getSpeedX() - this.velX;
+        double relVelY = other.getSpeedY() - this.velY;
+        double relVelZ = other.getSpeedZ() - this.velZ;
+        double relVel = Math.sqrt(Math.pow(relVelX,2) + Math.pow(relVelY,2) + Math.pow(relVelZ,2));
+        
+        double dragForce = getPressure(other) * 0.47 * Math.pow(relVel,2);
+        other.setSpeedX(other.getSpeedX() - ((relVelX/relVel) * dragForce/other.getMass()));
+        other.setSpeedY(other.getSpeedY() - ((relVelY/relVel) * dragForce/other.getMass()));
+        other.setSpeedZ(other.getSpeedZ() - ((relVelZ/relVel) * dragForce/other.getMass()));
+        
+    }
+    
+    /**
+     * Performs collision physics with a Ship object
+     * @param other The ship
+     */
+    public void collide(Ship other){
+        //If the objects are colliding physically, it will deal with the objects as such
+        if(super.testCollision(other)){
+            other.collide(this);
+        }
+        double relVelX = other.getSpeedX() - this.velX;
+        double relVelY = other.getSpeedY() - this.velY;
+        double relVelZ = other.getSpeedZ() - this.velZ;
+        double relVel = Math.sqrt(Math.pow(relVelX,2) + Math.pow(relVelY,2) + Math.pow(relVelZ,2));
+        
+        double dragForce = getPressure(other) * 0.47 * Math.pow(relVel,2);
+        other.setSpeedX(other.getSpeedX() - ((relVelX/relVel) * dragForce/other.getMass()));
+        other.setSpeedY(other.getSpeedY() - ((relVelY/relVel) * dragForce/other.getMass()));
+        other.setSpeedZ(other.getSpeedZ() - ((relVelZ/relVel) * dragForce/other.getMass()));
+        
+        other.damage(getPressure(other) * (relVel - 120)/CycleRunner.cyclesPerSecond);
     }
      
 }

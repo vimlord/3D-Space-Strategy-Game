@@ -153,6 +153,15 @@ public abstract class Entity implements PhysicsConstants{
     public double getZ(){
         return z;
     }
+    public void setSpeedX(double x){
+        velX = x;
+    }
+    public void setSpeedY(double y){
+        velY = y;
+    }
+    public void setSpeedZ(double z){
+        velZ = z;
+    }
     public double getSpeedX(){
         return velX;
     }
@@ -164,6 +173,9 @@ public abstract class Entity implements PhysicsConstants{
     }
     public double getRadius(){
         return radius;
+    }
+    public double getMass(){
+        return mass;
     }
      
 }
