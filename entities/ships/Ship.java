@@ -260,9 +260,9 @@ public class Ship extends Entity implements ControlSystem{
         double relVelZ = (this.velZ) - (other.velZ);
         double relVel = Math.sqrt(Math.pow(relVelX,2) + Math.pow(relVelY,2) + Math.pow(relVelY,2));
         
-        this.health -= Math.sqrt(other.mass/this.mass) * Math.pow(relVel,4) / this.mass;
+        this.damage(Math.sqrt(other.mass/this.mass) * Math.pow(relVel,4) / this.mass);
         
-        other.health -= Math.sqrt(this.mass/other.mass) * Math.pow(relVel,4) / other.mass;
+        other.damage(Math.sqrt(this.mass/other.mass) * Math.pow(relVel,4) / other.mass);
         
         super.collide(other);
     }
@@ -274,10 +274,16 @@ public class Ship extends Entity implements ControlSystem{
         double relVelZ = this.velZ - other.getSpeedZ();
         double relVel = Math.sqrt(Math.pow(relVelX,2) + Math.pow(relVelY,2) + Math.pow(relVelY,2));
         
-        this.health -= Math.sqrt(other.getMass()/this.mass) * Math.pow(relVel,4) / this.mass;
+        damage(Math.sqrt(other.getMass()/this.mass) * Math.pow(relVel,4) / this.mass);
         
         super.collide(other);
     }
+    
+    
+    public void damage(double damage){
+        health -= damage;
+    }
+    
     
     //---------------------------
     //Data return methods
