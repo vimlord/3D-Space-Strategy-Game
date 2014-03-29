@@ -145,11 +145,11 @@ public class Tester extends Applet {
         double distCamZ = Z+camZ;
         double distCam = Math.sqrt(Math.pow(distCamX, 2) + Math.pow(distCamY, 2) + Math.pow(distCamZ, 2));
         
-        if(dist > 250 * pixelMeterRatio && distCam < dist){
+        if(dist > 250 && distCam < dist){
             return;
         }
         
-        int radius = (int)(pixelMeterRatio * 250 * R/distCam);
+        int radius = (int)(250 * R/distCam);
         
         double magnitudeXZ = Math.sqrt(Math.pow((X-x),2) + Math.pow((Z-z),2));
         double angleXZ = Math.atan((Z-z)/(X-x));
