@@ -8,7 +8,8 @@
 package entities.ships;
  
 import entities.*;
-import main.CycleRunner;
+import entities.projectiles.*;
+import main.*;
  
 /**
  *
@@ -26,9 +27,13 @@ public class Ship extends Entity implements ControlSystem{
      
     protected double throttle = 0;
     
+    //Warp Drive Stuff
     protected double warpCharge = 0, warpCapacity = 60000, warpMinimum = 10000;
     protected boolean warpCharging = false, warping = false;
     protected int warpMode = 0;
+    
+    protected Railgun[] railguns;
+    
     
     /**
      * @param X The x-coordinate
@@ -36,9 +41,15 @@ public class Ship extends Entity implements ControlSystem{
      * @param Z The x-coordinate
      * @param M The mass
      * @param R The radius/size of the ship's hit box
+     * @param Railguns The number of Railguns the ship will have
      */
-    public Ship(double X, double Y, double Z, double M, double R){
+    public Ship(double X, double Y, double Z, double M, double R, int Railguns){
         super(X, Y, Z, M, R);
+        //Outfits the ship with a single railgun
+        railguns = new Railgun[Railguns];
+        for(int i = 0; i < railguns.length; i++){
+            railguns[i] = new Railgun();
+        }
         //Sets the maximum and current health
         maxHealth = Math.sqrt(mass/1000);
         health = maxHealth;
@@ -282,6 +293,18 @@ public class Ship extends Entity implements ControlSystem{
     
     public void damage(double damage){
         health -= damage;
+    }
+    
+    
+    //--------------------------------
+    //Railgun Shooter
+    //--------------------------------
+    public void fireRailgun(int index){
+        try {
+            railguns[index].fire(this);
+        } catch (Exception ex){
+            
+        }
     }
     
     

@@ -1,6 +1,6 @@
 /*
- * This class represents a railgun slug that would be launched at 2600 m/s.
- * Every Railgun slug will always have a mass of 100 kg
+ * This class represents a railgun slug that would be launched at 6500 m/s.
+ * Every Railgun slug will always have a mass of 10000 kg
  */
 
 package entities.projectiles;
