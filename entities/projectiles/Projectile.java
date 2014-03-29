@@ -8,14 +8,16 @@ import entities.ships.*;
  * This class stores data for a Projectile entity that deals damage
  */
  
-public class Projectile extends Entity{
+public abstract class Projectile extends Entity{
     protected double splashRadius;
     protected double damage;
+    public final double launchSpeed;
 	
-    public Projectile (double X, double Y, double Z, double M, double D, double R){
+    public Projectile (double X, double Y, double Z, double M, double D, double R, double S){
         super(X,Y,Z,M,1);
         damage = D;
         splashRadius = R;
+        launchSpeed = S;
     }
 
     public void collide(Ship s){
