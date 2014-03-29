@@ -72,7 +72,6 @@ public class Tester extends Applet {
             
             printScreen();
             XZ_ROT += Math.toRadians(0);
-            Thread.sleep(1);
             CycleRunner.executeCycle();
         }
         
