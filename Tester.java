@@ -38,7 +38,7 @@ public class Tester extends Applet {
     private static double x = 0, y = 0, z = 0;
     
     //For value n, one pixel will represent n meters
-    private static double pixelMeterRatio = 0.5;
+    private static double pixelMeterRatio = 1;
     
     
     public Tester(){
@@ -131,6 +131,27 @@ public class Tester extends Applet {
     }
     
     public void drawSphere(Graphics2D g, double X, double Y, double Z, int R){
+        double distX = X-x;
+        double distY = Y-y;
+        double distZ = Z-z;
+        double dist = Math.sqrt(Math.pow(distX, 2) + Math.pow(distY, 2) + Math.pow(distZ, 2));
+        
+        
+        double camX = x + 250 * pixelMeterRatio * (Math.cos(XZ_ROT) * Math.cos(Y_ROT));
+        double camY = x + 250 * pixelMeterRatio * (Math.sin(Y_ROT));
+        double camZ = x + 250 * pixelMeterRatio * (Math.sin(XZ_ROT) * Math.cos(Y_ROT));
+        
+        double distCamX = X+camX;
+        double distCamY = Y+camY;
+        double distCamZ = Z+camZ;
+        double distCam = Math.sqrt(Math.pow(distCamX, 2) + Math.pow(distCamY, 2) + Math.pow(distCamZ, 2));
+        
+        if(dist > 250 * pixelMeterRatio && distCam < dist){
+            return;
+        }
+        
+        int radius = (int)(pixelMeterRatio * 250 * R/distCam);
+        
         double magnitudeXZ = Math.sqrt(Math.pow((X-x),2) + Math.pow((Z-z),2));
         double angleXZ = Math.atan((Z-z)/(X-x));
         if((X-x) < 0){
@@ -141,9 +162,9 @@ public class Tester extends Applet {
         double angleY = Math.atan((Y-y)/magnitudeXZ);
         
         
-        double ptX = frame.getWidth()/2 - R / pixelMeterRatio + (Math.cos(angleXZ + XZ_ROT) * magnitudeXZ / pixelMeterRatio);
-        double ptY = (frame.getHeight()/2 - 18) - R / pixelMeterRatio - (Math.sin(angleXZ + XZ_ROT) * magnitudeXZ * Math.sin(Y_ROT)) / pixelMeterRatio - Y * Math.cos(Y_ROT) / pixelMeterRatio;
-        g.drawOval((int)(ptX), (int)(ptY), (int)(2 * R / pixelMeterRatio), (int)(2 * R / pixelMeterRatio));
+        double ptX = frame.getWidth()/2 - radius / pixelMeterRatio + (Math.cos(angleXZ + XZ_ROT) * magnitudeXZ / pixelMeterRatio);
+        double ptY = (frame.getHeight()/2 - 18) - radius / pixelMeterRatio - (Math.sin(angleXZ + XZ_ROT) * magnitudeXZ * Math.sin(Y_ROT)) / pixelMeterRatio - Y * Math.cos(Y_ROT) / pixelMeterRatio;
+        g.drawOval((int)(ptX), (int)(ptY), (int)(2 * radius / pixelMeterRatio), (int)(2 * radius / pixelMeterRatio));
     }
     
     /**
