@@ -43,16 +43,23 @@ public class EntityList {
         //Simulates gravitation between ships and planets
         for(Entity e : ships){
             for(Entity f : bodies){
-                if(!e.equals(f)){
-                    e.gravitate(f);
-                }
+                e.gravitate(f);
             }
         }
+        
+        
         for(Entity e : bodies){
             for(Entity f : bodies){
                 if(!e.equals(f)){
                     e.gravitate(f);
                 }
+            }
+        }
+        
+        
+        for(Entity p : projectiles){
+            for(Entity e : bodies){
+                p.gravitate(e);
             }
         }
         
