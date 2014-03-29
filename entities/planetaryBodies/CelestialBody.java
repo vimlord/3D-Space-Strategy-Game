@@ -42,9 +42,14 @@ public class CelestialBody extends Entity{
      */
     public CelestialBody(double X, double Y, double Z, double M, double R, double pressure, double height){
         super(X, Y, Z, M, R);
-        hasAtmosphere = true;
         atmPressure = pressure;
-        atmosphereHeight = height;
+        if(height <= 0){
+            atmosphereHeight = 0;
+            hasAtmosphere = false;
+        } else {
+            atmosphereHeight = height;
+            hasAtmosphere = true;
+        }
     }
      
     /**
@@ -109,15 +114,17 @@ public class CelestialBody extends Entity{
         if(super.testCollision(other)){
             super.collide(other);
         }
-        double relVelX = other.getSpeedX() - this.velX;
-        double relVelY = other.getSpeedY() - this.velY;
-        double relVelZ = other.getSpeedZ() - this.velZ;
-        double relVel = Math.sqrt(Math.pow(relVelX,2) + Math.pow(relVelY,2) + Math.pow(relVelZ,2));
-        
-        double dragForce = getPressure(other) * 0.47 * Math.pow(relVel,2);
-        other.setSpeedX(other.getSpeedX() - ((relVelX/relVel) * dragForce/other.getMass()));
-        other.setSpeedY(other.getSpeedY() - ((relVelY/relVel) * dragForce/other.getMass()));
-        other.setSpeedZ(other.getSpeedZ() - ((relVelZ/relVel) * dragForce/other.getMass()));
+        if(hasAtmosphere){
+            double relVelX = other.getSpeedX() - this.velX;
+            double relVelY = other.getSpeedY() - this.velY;
+            double relVelZ = other.getSpeedZ() - this.velZ;
+            double relVel = Math.sqrt(Math.pow(relVelX,2) + Math.pow(relVelY,2) + Math.pow(relVelZ,2));
+
+            double dragForce = getPressure(other) * 0.47 * Math.pow(relVel,2);
+            other.setSpeedX(other.getSpeedX() - ((relVelX/relVel) * dragForce/other.getMass()));
+            other.setSpeedY(other.getSpeedY() - ((relVelY/relVel) * dragForce/other.getMass()));
+            other.setSpeedZ(other.getSpeedZ() - ((relVelZ/relVel) * dragForce/other.getMass()));
+        }
         
     }
     
@@ -130,17 +137,19 @@ public class CelestialBody extends Entity{
         if(super.testCollision(other)){
             other.collide(this);
         }
-        double relVelX = other.getSpeedX() - this.velX;
-        double relVelY = other.getSpeedY() - this.velY;
-        double relVelZ = other.getSpeedZ() - this.velZ;
-        double relVel = Math.sqrt(Math.pow(relVelX,2) + Math.pow(relVelY,2) + Math.pow(relVelZ,2));
-        
-        double dragForce = getPressure(other) * 0.47 * Math.pow(relVel,2);
-        other.setSpeedX(other.getSpeedX() - ((relVelX/relVel) * dragForce/other.getMass()));
-        other.setSpeedY(other.getSpeedY() - ((relVelY/relVel) * dragForce/other.getMass()));
-        other.setSpeedZ(other.getSpeedZ() - ((relVelZ/relVel) * dragForce/other.getMass()));
-        
-        other.damage(getPressure(other) * (relVel - 120)/CycleRunner.cyclesPerSecond);
+        if(hasAtmosphere){
+            double relVelX = other.getSpeedX() - this.velX;
+            double relVelY = other.getSpeedY() - this.velY;
+            double relVelZ = other.getSpeedZ() - this.velZ;
+            double relVel = Math.sqrt(Math.pow(relVelX,2) + Math.pow(relVelY,2) + Math.pow(relVelZ,2));
+
+            double dragForce = getPressure(other) * 0.47 * Math.pow(relVel,2);
+            other.setSpeedX(other.getSpeedX() - ((relVelX/relVel) * dragForce/other.getMass()));
+            other.setSpeedY(other.getSpeedY() - ((relVelY/relVel) * dragForce/other.getMass()));
+            other.setSpeedZ(other.getSpeedZ() - ((relVelZ/relVel) * dragForce/other.getMass()));
+
+            other.damage(getPressure(other) * (relVel - 120)/CycleRunner.cyclesPerSecond);
+        }
     }
      
 }
