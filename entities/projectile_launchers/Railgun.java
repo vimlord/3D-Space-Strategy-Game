@@ -3,9 +3,10 @@
  * and open the template in the editor.
  */
 
-package entities.projectiles;
+package entities.projectile_launchers;
 
 import entities.*;
+import entities.projectiles.*;
 import entities.ships.*;
 import main.CycleRunner;
 import main.EntityList;

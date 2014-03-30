@@ -9,6 +9,7 @@ package entities.ships;
  
 import entities.*;
 import entities.projectiles.*;
+import entities.projectile_launchers.*;
 import main.*;
  
 /**
@@ -33,6 +34,7 @@ public class Ship extends Entity implements ControlSystem{
     protected int warpMode = 0;
     
     protected Railgun[] railguns;
+    protected LaserGun[] lasers;
     
     
     /**
@@ -43,13 +45,20 @@ public class Ship extends Entity implements ControlSystem{
      * @param R The radius/size of the ship's hit box
      * @param Railguns The number of Railguns the ship will have
      */
-    public Ship(double X, double Y, double Z, double M, double R, int Railguns){
+    public Ship(double X, double Y, double Z, double M, double R, int Railguns, int Lasers){
         super(X, Y, Z, M, R);
-        //Outfits the ship with a single railgun
+        //Outfits the ship with a railguns
         railguns = new Railgun[Railguns];
         for(int i = 0; i < railguns.length; i++){
             railguns[i] = new Railgun();
         }
+        
+        //Outfits the ship with laser guns
+        lasers = new LaserGun[Lasers];
+        for(int i = 0; i < lasers.length; i++){
+            lasers[i] = new LaserGun();
+        }
+        
         //Sets the maximum and current health
         maxHealth = Math.sqrt(mass/1000);
         health = maxHealth;
@@ -302,6 +311,17 @@ public class Ship extends Entity implements ControlSystem{
     public void fireRailgun(int index){
         try {
             railguns[index].fire(this);
+        } catch (Exception ex){
+            
+        }
+    }
+    
+    //--------------------------------
+    //Laser Shooter
+    //--------------------------------
+    public void fireLasers(int index){
+        try {
+            lasers[index].fire(this);
         } catch (Exception ex){
             
         }
