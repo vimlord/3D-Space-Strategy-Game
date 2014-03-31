@@ -17,9 +17,11 @@ Planned Features
 
 Ships +-
     Various types of ships +-
+    Weapons +-
 Physics system +-
     Gravity ++
-    Will always be partially implemented; could always be improved
+    Collisions +-
+    This will always be partially implemented; could always be improved
 Ship controls +-
     The code exists, but it is merely a framework
 Health system +-
