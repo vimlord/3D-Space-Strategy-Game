@@ -1,0 +1,10 @@
+
+package entities.projectiles;
+
+public class Missile extends Projectile {
+    public Missile(double X, double Y, double Z){
+        super(X,Y,Z,500,10,0.5,0);
+    }
+}
+
+
