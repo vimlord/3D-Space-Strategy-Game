@@ -13,8 +13,9 @@ public class CycleRunner {
      
     public static void executeCycle(){
         EntityList.executeGravity();
-        EntityList.executeMovement();
         EntityList.executeCollisions();
+        EntityList.executeMovement();
+        
         
     }
 }
