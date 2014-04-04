@@ -65,10 +65,10 @@ public class Ship extends Entity implements ControlSystem{
     }
      
     public void move(){
-        super.move();
         autopilot();
         rotate();
         accelerate();
+        super.move();
         chargeWarpDrive();
         warp();
     }
