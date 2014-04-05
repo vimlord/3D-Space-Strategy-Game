@@ -29,7 +29,8 @@ public class Ship extends Entity implements ControlSystem{
     protected double throttle = 0;
     
     //Warp Drive Stuff
-    protected double warpCharge = 0, warpCapacity = 60000, warpMinimum = 10000;
+    protected double warpCharge = 0;
+    protected final double warpCapacity = 600 * CycleRunner.cyclesPerSecond, warpMinimum = 100 * CycleRunner.cyclesPerSecond;
     protected boolean warpCharging = false, warping = false;
     protected int warpMode = 0;
     
