@@ -21,12 +21,20 @@ public class EntityList {
     private static ArrayList<Projectile> projectiles = new ArrayList<>();
     private static long valueToAssign = 0;
      
+    /**
+     * Adds a CelestialBody object to the game
+     * @param c The CelestialBody object
+     */
     public static void addCelestialBody(CelestialBody c){
         c.setID(valueToAssign);
         valueToAssign++;
         bodies.add(c);
     }
-     
+    
+    /**
+     * Adds a Ship object to the game
+     * @param s The Ship object
+     */
     public static void addShip(Ship s){
         s.setID(valueToAssign);
         valueToAssign++;
