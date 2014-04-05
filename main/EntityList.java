@@ -19,12 +19,17 @@ public class EntityList {
     private static ArrayList<CelestialBody> bodies = new ArrayList<>();
     private static ArrayList<Ship> ships = new ArrayList<>();
     private static ArrayList<Projectile> projectiles = new ArrayList<>();
+    private static long valueToAssign = 0;
      
     public static void addCelestialBody(CelestialBody c){
+        c.setID(valueToAssign);
+        valueToAssign++;
         bodies.add(c);
     }
      
     public static void addShip(Ship s){
+        s.setID(valueToAssign);
+        valueToAssign++;
         ships.add(s);
     }
     
@@ -33,6 +38,8 @@ public class EntityList {
      * @param p The Projectile object
      */
     public static void addProjectile(Projectile p){
+        p.setID(valueToAssign);
+        valueToAssign++;
         projectiles.add(p);
     }
      
@@ -140,6 +147,23 @@ public class EntityList {
         return projectiles.get(index);
     }
     
+    public static Entity getEntity(long ID){
+        for(Entity e : bodies){
+            if(e.getID() == ID)
+                return e;
+        }
+        for(Entity e : ships){
+            if(e.getID() == ID)
+                return e;
+        }
+        for(Entity e : projectiles){
+            if(e.getID() == ID)
+                return e;
+        }
+        return null;
+    }
+
+        
     public static ArrayList<Entity> getEntityList(){
         ArrayList<Entity> list = new ArrayList<>();
         for(Ship s : ships){

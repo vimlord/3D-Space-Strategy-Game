@@ -17,6 +17,7 @@ public abstract class Entity implements PhysicsConstants{
     protected double velX = 0, velY = 0, velZ = 0;
     protected double mass;
     protected double radius;
+    private long IDCode;
      
     /**
      * Creates an Entity object
@@ -32,6 +33,14 @@ public abstract class Entity implements PhysicsConstants{
         z = Z;
         mass = M;
         radius = R;
+    }
+    
+    /**
+     * Establishes an ID code for an Entity
+     * @param l The ID Code to be used
+     */
+    public void setID(long l){
+        IDCode = l;
     }
     
      /**
@@ -180,6 +189,9 @@ public abstract class Entity implements PhysicsConstants{
     }
     public double getMass(){
         return mass;
+    }
+    public long getID(){
+        return IDCode;
     }
      
 }

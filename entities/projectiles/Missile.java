@@ -3,12 +3,15 @@ package entities.projectiles;
 import entities.*;
 import entities.ships.*;
 import main.CycleRunner;
+import main.EntityList;
 
 public class Missile extends Projectile implements ControlSystem{
     
     private double fuel = 60 * CycleRunner.cyclesPerSecond;
     private double XZ_ROT = 0, Y_ROT = 0;
     private double targX, targY, targZ;
+    private boolean hasEntityTarget;
+    private long targetID;
     
     public Missile(double X, double Y, double Z){
         super(X,Y,Z,500,10,0.5,0);
@@ -34,6 +37,9 @@ public class Missile extends Projectile implements ControlSystem{
         targY = target.getY();
         targZ = target.getZ();
         
+        hasEntityTarget = true;
+        targetID = target.getID();
+        
     }
     
     public Missile(Ship shooter, double X, double Y, double Z){
@@ -50,6 +56,8 @@ public class Missile extends Projectile implements ControlSystem{
         targX = X;
         targY = Y;
         targZ = Z;
+        
+        hasEntityTarget = false;
         
     }
     
@@ -74,6 +82,17 @@ public class Missile extends Projectile implements ControlSystem{
 
     @Override
     public void autopilot() {
+        //Attempts to grab the Entity object with the ID that the Missile was given
+        Entity e = EntityList.getEntity(targetID);
+        
+        //If the Entity object exists, it will set the target coordinates to those
+        //of the targeted Entity object
+        if(e != null){
+            targX = e.getX();
+            targY = e.getY();
+            targZ = e.getZ();
+        }
+        
         double relX = targX - x;
         double relY = targY - y;
         double relZ = targZ - z;
