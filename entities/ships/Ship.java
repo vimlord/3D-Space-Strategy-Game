@@ -35,6 +35,7 @@ public class Ship extends Entity implements ControlSystem{
     
     protected Railgun[] railguns;
     protected LaserGun[] lasers;
+    protected MissileBattery[] missiles;
     
     
     /**
@@ -45,7 +46,7 @@ public class Ship extends Entity implements ControlSystem{
      * @param R The radius/size of the ship's hit box
      * @param Railguns The number of Railguns the ship will have
      */
-    public Ship(double X, double Y, double Z, double M, double R, int Railguns, int Lasers){
+    public Ship(double X, double Y, double Z, double M, double R, int Railguns, int Lasers, int Missiles){
         super(X, Y, Z, M, R);
         //Outfits the ship with a railguns
         railguns = new Railgun[Railguns];
@@ -57,6 +58,12 @@ public class Ship extends Entity implements ControlSystem{
         lasers = new LaserGun[Lasers];
         for(int i = 0; i < lasers.length; i++){
             lasers[i] = new LaserGun();
+        }
+        
+        //Outfits the ship with missile launchers
+        missiles = new MissileBattery[Missiles];
+        for(int i = 0; i < missiles.length; i++){
+            missiles[i] = new MissileBattery();
         }
         
         //Sets the maximum and current health
@@ -322,6 +329,17 @@ public class Ship extends Entity implements ControlSystem{
     public void fireLasers(int index){
         try {
             lasers[index].fire(this);
+        } catch (Exception ex){
+            
+        }
+    }
+    
+    //--------------------------------
+    //Missile Shooter
+    //--------------------------------
+    public void fireMissiles(int index){
+        try {
+            missiles[index].fire(this);
         } catch (Exception ex){
             
         }

@@ -6,6 +6,7 @@ import main.CycleRunner;
 
 public class Missile extends Projectile implements ControlSystem{
     
+    private double fuel = 60 * CycleRunner.cyclesPerSecond;
     private double XZ_ROT = 0, Y_ROT = 0;
     private double targX, targY, targZ;
     
@@ -61,6 +62,11 @@ public class Missile extends Projectile implements ControlSystem{
     
     @Override
     public void accelerate() {
+        if(fuel <= 0){
+            return;
+        }
+        
+        fuel--;
         velX += 75/CycleRunner.cyclesPerSecond * Math.cos(XZ_ROT) * Math.cos(Y_ROT);
         velY += 75/CycleRunner.cyclesPerSecond * Math.sin(Y_ROT);
         velZ += 75/CycleRunner.cyclesPerSecond * Math.sin(XZ_ROT) * Math.cos(Y_ROT);
