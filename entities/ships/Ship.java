@@ -8,7 +8,9 @@
 package entities.ships;
  
 import entities.*;
-import main.CycleRunner;
+import entities.projectiles.*;
+import entities.projectile_launchers.*;
+import main.*;
  
 /**
  *
@@ -26,9 +28,15 @@ public class Ship extends Entity implements ControlSystem{
      
     protected double throttle = 0;
     
+    //Warp Drive Stuff
     protected double warpCharge = 0, warpCapacity = 60000, warpMinimum = 10000;
     protected boolean warpCharging = false, warping = false;
     protected int warpMode = 0;
+    
+    protected Railgun[] railguns;
+    protected LaserGun[] lasers;
+    protected MissileBattery[] missiles;
+    
     
     /**
      * @param X The x-coordinate
@@ -36,19 +44,38 @@ public class Ship extends Entity implements ControlSystem{
      * @param Z The x-coordinate
      * @param M The mass
      * @param R The radius/size of the ship's hit box
+     * @param Railguns The number of Railguns the ship will have
      */
-    public Ship(double X, double Y, double Z, double M, double R){
+    public Ship(double X, double Y, double Z, double M, double R, int Railguns, int Lasers, int Missiles){
         super(X, Y, Z, M, R);
+        //Outfits the ship with a railguns
+        railguns = new Railgun[Railguns];
+        for(int i = 0; i < railguns.length; i++){
+            railguns[i] = new Railgun();
+        }
+        
+        //Outfits the ship with laser guns
+        lasers = new LaserGun[Lasers];
+        for(int i = 0; i < lasers.length; i++){
+            lasers[i] = new LaserGun();
+        }
+        
+        //Outfits the ship with missile launchers
+        missiles = new MissileBattery[Missiles];
+        for(int i = 0; i < missiles.length; i++){
+            missiles[i] = new MissileBattery();
+        }
+        
         //Sets the maximum and current health
         maxHealth = Math.sqrt(mass/1000);
         health = maxHealth;
     }
      
     public void move(){
-        super.move();
         autopilot();
         rotate();
         accelerate();
+        super.move();
         chargeWarpDrive();
         warp();
     }
@@ -247,6 +274,81 @@ public class Ship extends Entity implements ControlSystem{
         }
     }
     
+    
+    //---------------------------------------------------------------------------
+    //Collision stuff
+    //---------------------------------------------------------------------------
+    
+    public void collide(Ship other){
+        setWarp(0);
+        other.setWarp(0);
+        double relVelX = (this.velX) - (other.velX);
+        double relVelY = (this.velY) - (other.velY);
+        double relVelZ = (this.velZ) - (other.velZ);
+        double relVel = Math.sqrt(Math.pow(relVelX,2) + Math.pow(relVelY,2) + Math.pow(relVelY,2));
+        
+        this.damage(Math.sqrt(other.mass/this.mass) * Math.pow(relVel,4) / this.mass);
+        
+        other.damage(Math.sqrt(this.mass/other.mass) * Math.pow(relVel,4) / other.mass);
+        
+        super.collide(other);
+    }
+    
+    public void collide(Entity other){
+        setWarp(0);
+        double relVelX = this.velX - other.getSpeedX();
+        double relVelY = this.velY - other.getSpeedY();
+        double relVelZ = this.velZ - other.getSpeedZ();
+        double relVel = Math.sqrt(Math.pow(relVelX,2) + Math.pow(relVelY,2) + Math.pow(relVelY,2));
+        
+        damage(Math.sqrt(other.getMass()/this.mass) * Math.pow(relVel,4) / this.mass);
+        
+        super.collide(other);
+    }
+    
+    
+    public void damage(double damage){
+        health -= damage;
+    }
+    
+    
+    //--------------------------------
+    //Railgun Shooter
+    //--------------------------------
+    public void fireRailgun(int index){
+        try {
+            railguns[index].fire(this);
+        } catch (Exception ex){
+            
+        }
+    }
+    
+    //--------------------------------
+    //Laser Shooter
+    //--------------------------------
+    public void fireLasers(int index){
+        try {
+            lasers[index].fire(this);
+        } catch (Exception ex){
+            
+        }
+    }
+    
+    //--------------------------------
+    //Missile Shooter
+    //--------------------------------
+    public void fireMissiles(int index){
+        try {
+            missiles[index].fire(this);
+        } catch (Exception ex){
+            
+        }
+    }
+    
+    
+    //---------------------------
+    //Data return methods
+    //---------------------------
     
     
     /**

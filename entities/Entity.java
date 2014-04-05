@@ -17,6 +17,7 @@ public abstract class Entity implements PhysicsConstants{
     protected double velX = 0, velY = 0, velZ = 0;
     protected double mass;
     protected double radius;
+    private long IDCode;
      
     /**
      * Creates an Entity object
@@ -32,6 +33,14 @@ public abstract class Entity implements PhysicsConstants{
         z = Z;
         mass = M;
         radius = R;
+    }
+    
+    /**
+     * Establishes an ID code for an Entity
+     * @param l The ID Code to be used
+     */
+    public void setID(long l){
+        IDCode = l;
     }
     
      /**
@@ -101,42 +110,46 @@ public abstract class Entity implements PhysicsConstants{
         double collisionRange = this.radius + other.radius;
         double fractionalChange = (collisionRange/distance);
         
-        this.x -= (fractionalChange * distanceX - distanceX);
-        other.x += (fractionalChange * distanceX - distanceX);
+        this.x -= (fractionalChange * (distanceX - distanceX))/2;
+        other.x += (fractionalChange * (distanceX - distanceX))/2;
         
-        this.y -= (fractionalChange * distanceY - distanceY);
-        other.y += (fractionalChange * distanceY - distanceY);
+        this.y -= (fractionalChange * (distanceY - distanceY))/2;
+        other.y += (fractionalChange * (distanceY - distanceY))/2;
         
-        this.z -= (fractionalChange * distanceZ - distanceZ);
-        other.z += (fractionalChange * distanceZ - distanceZ);
+        this.z -= (fractionalChange * (distanceZ - distanceZ))/2;
+        other.z += (fractionalChange * (distanceZ - distanceZ))/2; 
         
         
         //Calculates force or gravity
-        double force = (double)(G*other.mass)/Math.pow(distance,2);
+        double force = (double)(G * other.mass * this.mass)/Math.pow(distance,2);
          
          
         //Modifies force value based on cycles per second
         force *= (1/(double)(CycleRunner.cyclesPerSecond));
          
-        velX -= (distanceX/distanceXZ) *(distanceXZ/distance) * (force);
-        velY -= (distanceY/distance) * (force);
-        velZ -= (distanceZ/distanceXZ) * (distanceXZ/distance) * (force);
+        velX -= (distanceX/distanceXZ) *(distanceXZ/distance) * (force)/this.mass;
+        velY -= (distanceY/distance) * (force)/this.mass;
+        velZ -= (distanceZ/distanceXZ) * (distanceXZ/distance) * (force)/this.mass;
+        
+        other.velX += (distanceX/distanceXZ) *(distanceXZ/distance) * (force)/other.mass;
+        other.velY += (distanceY/distance) * (force)/other.mass;
+        other.velZ += (distanceZ/distanceXZ) * (distanceXZ/distance) * (force)/other.mass;
         
         
         //The code below creates a system for perfectly inelastic collisions
 
-        double avgMomentumX = ((this.mass * this.velX) + (other.mass * other.velX))/2.0;
-        double newVelX = avgMomentumX/(this.mass + other.mass);
+        double MomentumX = ((this.mass * this.velX) + (other.mass * other.velX));
+        double newVelX = MomentumX/(this.mass + other.mass);
         this.velX = newVelX;
         other.velX = newVelX;
 
-        double avgMomentumY = ((this.mass * this.velY) + (other.mass * other.velY))/2.0;
-        double newVelY = avgMomentumY/(this.mass + other.mass);
+        double MomentumY = ((this.mass * this.velY) + (other.mass * other.velY));
+        double newVelY = MomentumY/(this.mass + other.mass);
         this.velY = newVelY;
         other.velY = newVelY;
 
-        double avgMomentumZ = ((this.mass * this.velZ) + (other.mass * other.velZ))/2.0;
-        double newVelZ = avgMomentumZ/(this.mass + other.mass);
+        double MomentumZ = ((this.mass * this.velZ) + (other.mass * other.velZ));
+        double newVelZ = MomentumZ/(this.mass + other.mass);
         this.velZ = newVelZ;
         other.velZ = newVelZ;
         
@@ -153,6 +166,15 @@ public abstract class Entity implements PhysicsConstants{
     public double getZ(){
         return z;
     }
+    public void setSpeedX(double x){
+        velX = x;
+    }
+    public void setSpeedY(double y){
+        velY = y;
+    }
+    public void setSpeedZ(double z){
+        velZ = z;
+    }
     public double getSpeedX(){
         return velX;
     }
@@ -164,6 +186,12 @@ public abstract class Entity implements PhysicsConstants{
     }
     public double getRadius(){
         return radius;
+    }
+    public double getMass(){
+        return mass;
+    }
+    public long getID(){
+        return IDCode;
     }
      
 }

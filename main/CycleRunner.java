@@ -8,13 +8,15 @@ package main;
  * @author Christopher Hittner
  */
 public class CycleRunner {
-    public static final int cyclesPerSecond = 1000;
+    public static final int cyclesPerSecond = 60000;
      
      
     public static void executeCycle(){
         EntityList.executeGravity();
-        EntityList.executeMovement();
         EntityList.executeCollisions();
+        EntityList.executeMovement();
+        
+        
     }
 }
 
