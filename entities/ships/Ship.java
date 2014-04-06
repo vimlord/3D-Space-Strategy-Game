@@ -8,9 +8,11 @@
  
 package entities.ships;
  
+import entities.ships.shipTools.orders.*;
 import entities.*;
 import entities.projectiles.*;
 import entities.projectile_launchers.*;
+import java.util.ArrayList;
 import main.*;
  
 /**
@@ -35,9 +37,13 @@ public class Ship extends Entity implements ControlSystem{
     protected boolean warpCharging = false, warping = false;
     protected int warpMode = 0;
     
+    //The weapons on the Ship
     protected Railgun[] railguns;
     protected LaserGun[] lasers;
     protected MissileBattery[] missiles;
+    
+    //The list of orders
+    private ArrayList<Order> orders = new ArrayList<>();
     
     
     /**
@@ -158,6 +164,58 @@ public class Ship extends Entity implements ControlSystem{
     
     
     public void autopilot(){
+        //Use of Orders
+        String order;
+        order = orders.get(0).getOrder();
+        
+        //This is added as a countermeasure against any crashes that could occur
+        //due to attempting to creating substrings of blank or null integers
+        if(order.equals("") || order.equals(null)){
+            order = "(   )";
+        }
+        
+        //This will make sure that if a Ship doesn't have rotation orders or
+        //acceleration orders, it won't accelerate
+        setAcceleration(0);
+        setRotationTarget(XZ_ROT,Y_ROT);
+        
+        
+        if(order.substring(0,5).equals("(ACC)")){
+            //This is an acceleration order
+            setAcceleration(Integer.parseInt(order.substring(5)));
+            if(!orders.get(0).getStatus()){
+                orders.remove(0);
+            }
+        } else if(order.substring(0,5).equals("(ROT)")){
+            //This is an rotation order
+            int border = orders.indexOf("-");
+            double XZ = Double.parseDouble(order.substring(5, border));
+            double Y = Double.parseDouble(order.substring(border + 1));
+            setRotationTarget(XZ, Y);
+            if(Math.abs(Y_ROT - Y) < Math.toRadians(500/CycleRunner.cyclesPerSecond) && Math.abs(XZ_ROT - XZ) < Math.toRadians(500/CycleRunner.cyclesPerSecond)){
+                orders.remove(0);
+            }
+        }
+        for(Order o : orders){
+            //Tests for an Attack order. The Railgun will have to be coded
+            //separately, as the Ship must point directly AT the target
+            if(o instanceof Attack){
+                long targ = Long.parseLong(order.substring(5));
+                
+                for(int i = 0; i < missiles.length; i++){
+                    fireMissiles(i,targ);
+                }
+                
+                for(int i = 0; i < lasers.length; i++){
+                    fireLasers(i,targ);
+                }
+                
+                break;
+            }
+        }
+        
+        
+        
         if(rotationTarget){
             int xz = 0;
             int y = 0;
@@ -344,6 +402,14 @@ public class Ship extends Entity implements ControlSystem{
             
         }
     }
+    public void fireLasers(int index, long target){
+        try {
+            lasers[index].fire(this,EntityList.getEntity(target));
+        } catch (Exception ex){
+            
+        }
+    }
+    
     
     //--------------------------------
     //Missile Shooter
@@ -353,6 +419,33 @@ public class Ship extends Entity implements ControlSystem{
             missiles[index].fire(this);
         } catch (Exception ex){
             
+        }
+    }
+    public void fireMissiles(int index, long target){
+        try {
+            missiles[index].fire(this,EntityList.getEntity(target));
+        } catch (Exception ex){
+            
+        }
+    }
+    
+    
+    //--------------------------------
+    //Orders
+    //--------------------------------
+    public void giveOrders(Order o){
+        orders.add(o);
+    }
+    
+    public void cancelOrders(int index){
+        orders.remove(index);
+    }
+    
+    public void stopAttacking(){
+        for(Order o : orders){
+            if(o instanceof Attack){
+                orders.remove(o);
+            }
         }
     }
     
