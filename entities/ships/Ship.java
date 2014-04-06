@@ -1,8 +1,9 @@
 /*
  * NOTES ON SHIP MASSES:
  * Rotation speeds will be established so that the speed will be 5 degree/second
- * when the ship weighs 10 million kilograms
+ * when the ship weighs 750 million kilograms
  * For a ship of that mass, the acceleration rate for firing engines will be 40 m/s^2
+ * and it will have a health level of 100 units.
  */
  
 package entities.ships;
@@ -47,13 +48,16 @@ public class Ship extends Entity implements ControlSystem{
      * @param R The radius/size of the ship's hit box
      * @param Railguns The number of Railguns the ship will have
      */
-    public Ship(double X, double Y, double Z, double M, double R, int Railguns, int Lasers, int Missiles){
-        super(X, Y, Z, M, R);
+    public Ship(double X, double Y, double Z, double R, int Railguns, int Lasers, int Missiles){
+        super(X, Y, Z, (4/3 * Math.PI * Math.pow(R, 3) * 40), R);
         //Outfits the ship with a railguns
         railguns = new Railgun[Railguns];
         for(int i = 0; i < railguns.length; i++){
             railguns[i] = new Railgun();
         }
+        
+        mass += 5000 * Railguns; 
+        
         
         //Outfits the ship with laser guns
         lasers = new LaserGun[Lasers];
@@ -61,14 +65,20 @@ public class Ship extends Entity implements ControlSystem{
             lasers[i] = new LaserGun();
         }
         
+        mass += 50 * Lasers; 
+        
+        
         //Outfits the ship with missile launchers
         missiles = new MissileBattery[Missiles];
         for(int i = 0; i < missiles.length; i++){
             missiles[i] = new MissileBattery();
         }
         
+        mass += 500 * Missiles; 
+        
+        
         //Sets the maximum and current health
-        maxHealth = Math.sqrt(mass/1000);
+        maxHealth = Math.sqrt(mass/75000);
         health = maxHealth;
     }
      
@@ -100,8 +110,8 @@ public class Ship extends Entity implements ControlSystem{
             XZ_RotSpeed = 0;
             Y_RotSpeed = 0;
         } else {
-            XZ_RotSpeed = 5.0 * Math.toRadians((10000000.0/mass) * horiz)/CycleRunner.cyclesPerSecond;
-            Y_RotSpeed = 5.0 * Math.toRadians((10000000.0/mass) * vert)/CycleRunner.cyclesPerSecond;
+            XZ_RotSpeed = 5.0 * Math.toRadians((7500000000.0/mass) * horiz)/CycleRunner.cyclesPerSecond;
+            Y_RotSpeed = 5.0 * Math.toRadians((7500000000.0/mass) * vert)/CycleRunner.cyclesPerSecond;
         }
     }
      
@@ -195,9 +205,9 @@ public class Ship extends Entity implements ControlSystem{
      * Accelerates the ship in the direction it is pointing
      */
     public void accelerate() {
-        velX += 0.4 * throttle * Math.cos(XZ_ROT) * Math.cos(Y_ROT) * (10000000.0/mass)/CycleRunner.cyclesPerSecond;
-        velZ += 0.4 * throttle * Math.sin(XZ_ROT) * Math.cos(Y_ROT) * (10000000.0/mass)/CycleRunner.cyclesPerSecond;
-        velY += 0.4 * throttle * Math.sin(Y_ROT) * (10000000.0/mass)/CycleRunner.cyclesPerSecond;
+        velX += 30 * throttle * Math.cos(XZ_ROT) * Math.cos(Y_ROT) * (10000000.0/mass)/CycleRunner.cyclesPerSecond;
+        velZ += 30 * throttle * Math.sin(XZ_ROT) * Math.cos(Y_ROT) * (10000000.0/mass)/CycleRunner.cyclesPerSecond;
+        velY += 30 * throttle * Math.sin(Y_ROT) * (10000000.0/mass)/CycleRunner.cyclesPerSecond;
     }
     
     
