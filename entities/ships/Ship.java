@@ -162,7 +162,7 @@ public class Ship extends Entity implements ControlSystem{
             int xz = 0;
             int y = 0;
             
-            if(Math.abs(XZ_ROT - XZ_ROT_Target) < Math.toRadians(0.5)){
+            if(Math.abs(XZ_ROT - XZ_ROT_Target) < Math.toRadians(500/CycleRunner.cyclesPerSecond)){
                 xz = 0;
             } else if(XZ_ROT < XZ_ROT_Target){
                 xz = 1;
@@ -170,7 +170,7 @@ public class Ship extends Entity implements ControlSystem{
                 xz = -1;
             }
             
-            if(Math.abs(Y_ROT - Y_ROT_Target) < Math.toRadians(0.5)){
+            if(Math.abs(Y_ROT - Y_ROT_Target) < Math.toRadians(500/CycleRunner.cyclesPerSecond)){
                 y = 0;
             } else if(Y_ROT < Y_ROT_Target){
                 y = 1;
