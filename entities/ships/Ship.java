@@ -166,7 +166,11 @@ public class Ship extends Entity implements ControlSystem{
     public void autopilot(){
         //Use of Orders
         String order;
-        order = orders.get(0).getOrder();
+        try{
+            order = orders.get(0).getOrder();
+        } catch(Exception e){
+            order = "";
+        }
         
         //This is added as a countermeasure against any crashes that could occur
         //due to attempting to creating substrings of blank or null integers
