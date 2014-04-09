@@ -267,9 +267,10 @@ public class Ship extends Entity implements ControlSystem{
      * Accelerates the ship in the direction it is pointing
      */
     public void accelerate() {
-        velX += 30 * throttle * Math.cos(XZ_ROT) * Math.cos(Y_ROT) * (10000000.0/mass)/CycleRunner.cyclesPerSecond;
-        velZ += 30 * throttle * Math.sin(XZ_ROT) * Math.cos(Y_ROT) * (10000000.0/mass)/CycleRunner.cyclesPerSecond;
-        velY += 30 * throttle * Math.sin(Y_ROT) * (10000000.0/mass)/CycleRunner.cyclesPerSecond;
+        double force = 30 * 750000000.0 * throttle/100;
+        velX += Math.cos(XZ_ROT) * Math.cos(Y_ROT) * (force/mass)/CycleRunner.cyclesPerSecond;
+        velZ += Math.sin(XZ_ROT) * Math.cos(Y_ROT) * (force/mass)/CycleRunner.cyclesPerSecond;
+        velY += Math.sin(Y_ROT) * (force/mass)/CycleRunner.cyclesPerSecond;
     }
     
     
