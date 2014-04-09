@@ -152,7 +152,8 @@ public class Tester extends Applet {
         
         double magnitudeXZ = Math.sqrt(Math.pow((X-x),2) + Math.pow((Z-z),2));
         if(magnitudeXZ == 0){
-            g.drawOval((frame.getWidth()/2) - radius / pixelMeterRatio, (frame.getHeight()/2 - 18) - radius / pixelMeterRatio, (int)(2 * radius / pixelMeterRatio), (int)(2 * radius / pixelMeterRatio));
+            g.drawOval((int)((frame.getWidth()/2) - radius / pixelMeterRatio), (int)((frame.getHeight()/2 - 18) - radius / pixelMeterRatio), (int)(2 * radius / pixelMeterRatio), (int)(2 * radius / pixelMeterRatio));
+            return;
         }
         double angleXZ = Math.atan((Z-z)/(X-x));
         if((X-x) < 0){
