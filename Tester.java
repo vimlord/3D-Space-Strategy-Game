@@ -136,8 +136,8 @@ public class Tester extends Applet {
         
         
         double camX = x + 250 * pixelMeterRatio * (Math.cos(Math.toRadians(90) - XZ_ROT) * Math.cos(Math.toRadians(90) - Y_ROT));
-        double camY = x + 250 * pixelMeterRatio * (Math.sin(Math.toRadians(90) - Y_ROT));
-        double camZ = x + 250 * pixelMeterRatio * (Math.sin(Math.toRadians(90) - XZ_ROT) * Math.cos(Math.toRadians(90) - Y_ROT));
+        double camY = y + 250 * pixelMeterRatio * (-Y_ROT);
+        double camZ = z + 250 * pixelMeterRatio * (Math.sin(Math.toRadians(90) - XZ_ROT) * Math.cos(Math.toRadians(90) - Y_ROT));
         
         double distCamX = X+camX;
         double distCamY = Y+camY;
