@@ -10,7 +10,7 @@ package entities.ships.shipTools.orders;
  */
 public abstract class Order {
     protected String order;
-    protected boolean status;
+    protected boolean status = true;
     
     /*
      * ORDER TYPES:
