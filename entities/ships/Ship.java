@@ -186,7 +186,7 @@ public class Ship extends Entity implements ControlSystem{
         
         if(order.substring(0,5).equals("(ACC)")){
             //This is an acceleration order
-            setAcceleration(Integer.parseInt(order.substring(5)));
+            setAcceleration(Double.parseDouble(order.substring(5)));
             if(!orders.get(0).getStatus()){
                 orders.remove(0);
             }
