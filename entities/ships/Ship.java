@@ -62,7 +62,7 @@ public class Ship extends Entity implements ControlSystem{
             railguns[i] = new Railgun();
         }
         
-        mass += 5000 * Railguns; 
+        mass += Railgun.getMass() * Railguns; 
         
         
         //Outfits the ship with laser guns
@@ -71,7 +71,7 @@ public class Ship extends Entity implements ControlSystem{
             lasers[i] = new LaserGun();
         }
         
-        mass += 50 * Lasers; 
+        mass += LaserGun.getMass() * Lasers; 
         
         
         //Outfits the ship with missile launchers
@@ -80,7 +80,7 @@ public class Ship extends Entity implements ControlSystem{
             missiles[i] = new MissileBattery();
         }
         
-        mass += 500 * Missiles; 
+        mass += MissileBattery.getMass() * Missiles; 
         
         
         //Sets the maximum and current health

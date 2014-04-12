@@ -17,6 +17,8 @@ import main.*;
 public class MissileBattery implements ProjectileLauncher {
     private final int magazineSize, startMagazines, reloadTime;
     private int wait = 0, shotsLeft, magazinesLeft;
+    public static final double mass = 500;
+    
     
     /**
      * Creates a MissileBattery object that hold 25 shots in a magazine, carries
@@ -69,6 +71,10 @@ public class MissileBattery implements ProjectileLauncher {
                 magazinesLeft--;
             }
         }
+    }
+    
+    public static double getMass() {
+        return mass;
     }
     
 }

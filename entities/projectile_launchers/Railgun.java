@@ -19,6 +19,7 @@ public class Railgun implements ProjectileLauncher{
     public final int cooldownTime = 60 * CycleRunner.cyclesPerSecond;
     private int cooldown = 0;
     private int ammo;
+    public static final double mass = 5000;
     
     /**
      * Creates a railgun with a provided number of shots
@@ -80,5 +81,10 @@ public class Railgun implements ProjectileLauncher{
             cooldown = cooldownTime;
             ammo--;
         }
+    }
+
+    
+    public static double getMass() {
+        return mass;
     }
 }

@@ -86,18 +86,20 @@ public class Missile extends Projectile implements ControlSystem{
         //Attempts to grab the Entity object with the ID that the Missile was given
         Entity e = EntityList.getEntity(targetID);
         
-        //If the Entity object exists, it will set the target coordinates to those
-        //of the targeted Entity object
-        if(e != null){
-            targX = e.getX();
-            targY = e.getY();
-            targZ = e.getZ();
-        }
         double relX = targX - x;
         double relY = targY - y;
         double relZ = targZ - z;
         double relXZ = Math.sqrt(Math.pow(relX, 2) + Math.pow(relZ, 2));
         double rel = Math.sqrt(Math.pow(relX, 2) + Math.pow(relY, 2) + Math.pow(relZ, 2));
+        
+        //If the Entity object exists, it will set the target coordinates to those
+        //of the targeted Entity object
+        if(e != null){
+            targX = e.getX() + (e.getSpeedX() - velX);
+            targY = e.getY() + (e.getSpeedY() - velY);
+            targZ = e.getZ() + (e.getSpeedZ() - velZ);
+        }
+        
         
         XZ_ROT = Math.acos(relX/relXZ);
         if(relZ < 0){

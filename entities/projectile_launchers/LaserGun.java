@@ -18,6 +18,7 @@ public class LaserGun implements ProjectileLauncher{
     private int temperature = 0;
     public final int maxTemp = 1000, cooldownMinimum = 200;
     private boolean coolLock = true, firing = false;
+    public static final double mass = 50;
     
     public LaserGun(){
         
@@ -72,6 +73,10 @@ public class LaserGun implements ProjectileLauncher{
         if(coolLock && temperature < cooldownMinimum){
             coolLock = false;
         }
+    }
+    
+    public static double getMass() {
+        return mass;
     }
 
 }
