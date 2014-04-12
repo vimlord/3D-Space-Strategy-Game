@@ -23,11 +23,13 @@ public class Attack extends Order{
         order += "]" + targID;
     }
     
-    public Attack(boolean missile, boolean laser, Entity target){
+    public Attack(boolean missile, boolean laser, boolean railgun, Entity target){
         order = "(ATK)[";
         if(missile) order += "T";
             else order += "F";
         if(laser) order += "T";
+            else order += "F";
+        if(railgun) order += "T";
             else order += "F";
         
         order += "]" + target.getID();

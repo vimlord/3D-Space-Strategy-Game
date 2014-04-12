@@ -209,8 +209,9 @@ public class Ship extends Entity implements ControlSystem{
                 
                 boolean fireMissile = (order.substring(6, 7).equals("T"));
                 boolean fireLaser = (order.substring(7, 8).equals("T"));
+                boolean fireRailgun = (order.substring(8, 9).equals("T"));
                 
-                long targ = Long.parseLong(order.substring(9));
+                long targ = Long.parseLong(order.substring(10));
                 
                 if(fireMissile){
                     for(int i = 0; i < missiles.length; i++){
@@ -221,6 +222,11 @@ public class Ship extends Entity implements ControlSystem{
                 if(fireLaser){
                     for(int i = 0; i < lasers.length; i++){
                         fireLasers(i,targ);
+                    }
+                }
+                if(fireRailgun){
+                    for(int i = 0; i < railguns.length; i++){
+                        fireRailgun(i);
                     }
                 }
                 

@@ -16,8 +16,8 @@ import main.*;
  */
 public class LaserGun implements ProjectileLauncher{
     private int temperature = 0;
-    public final int maxTemp = 1000, cooldownMinimum = 200;
-    private boolean coolLock = true, firing = false;
+    public final int maxTemp = 10 * CycleRunner.cyclesPerSecond, cooldownMinimum = 2 * CycleRunner.cyclesPerSecond;
+    private boolean coolLock = false, firing = false;
     public static final double mass = 50;
     
     public LaserGun(){

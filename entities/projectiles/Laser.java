@@ -7,6 +7,7 @@ package entities.projectiles;
 
 import entities.Entity;
 import entities.ships.*;
+import main.CycleRunner;
 
 /**
  *
@@ -73,21 +74,22 @@ public class Laser extends Projectile{
         double relXZ = Math.sqrt(Math.pow(relX,2) + Math.pow(relZ,2));
         double rel = Math.sqrt(Math.pow(relXZ,2) + Math.pow(relY,2));
         
-        double angleXZ = Math.cosh(relX/relXZ);
+        double angleXZ = Math.acos(relX/relXZ);
         if(relZ < 0){
-            angleXZ = (2 * Math.PI) - angleXZ;
+            angleXZ *= -1;
         }
         double angleY = Math.sinh(relY/rel);
         
-        x += shooter.getRadius() * (Math.cos(angleXZ) * Math.cos(angleY));
-        y += shooter.getRadius() * (Math.sin(angleY));
-        z += shooter.getRadius() * (Math.sin(angleXZ) * Math.cos(angleY));
+        x += (shooter.getRadius() + 0.1) * (Math.cos(angleXZ) * Math.cos(angleY));
+        y += (shooter.getRadius() + 0.1) * (Math.sin(angleY));
+        z += (shooter.getRadius() + 0.1) * (Math.sin(angleXZ) * Math.cos(angleY));
         
         //Light must always go at the speed of light, as physics clearly seems
         //to state.
         velX += c * (Math.cos(angleXZ) * Math.cos(angleY));
         velY += c * (Math.sin(angleY));
         velZ += c * (Math.sin(angleXZ) * Math.cos(angleY));
+        
     }
     
     /**
@@ -122,6 +124,11 @@ public class Laser extends Projectile{
             velY *= ratio;
             velZ *= ratio;
         }
+        
+        double weakeningFactor = Math.pow(10,(Math.log10(.5)/CycleRunner.cyclesPerSecond));
+        
+        damage *= weakeningFactor;
+        
         super.move();
     }
 }

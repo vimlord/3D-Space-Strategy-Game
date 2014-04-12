@@ -196,8 +196,8 @@ public class EntityList {
         for(CelestialBody c : bodies){
             list.add(c);
         }
-        for(Projectile p : projectiles){
-            list.add(p);
+        for(int i = 0; i < projectiles.size(); i++){
+            list.add(projectiles.get(i));
         }
         
         return list;
