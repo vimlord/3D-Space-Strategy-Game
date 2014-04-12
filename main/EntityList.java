@@ -156,6 +156,11 @@ public class EntityList {
                 ships.remove(s);
             }
         }
+        for(int i = 0; i < projectiles.size(); i++){
+            if(projectiles.get(i) instanceof Laser && projectiles.get(i).getDamage() < 0.02){
+                projectiles.remove(i);
+            }
+        }
     }
     
      
