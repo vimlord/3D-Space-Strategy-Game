@@ -64,10 +64,19 @@ public class Tester extends Applet {
         //clicked on
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        EntityList.addShip(new Ship(100,0,0,10,0,0,0));
-        EntityList.addShip(new Ship(-100,0,0,10,1,1,1));
-        EntityList.getShip(0).setSpeedZ(10);
+        /*
+        EntityList.addShip(new Ship(200,0,25,10,0,0,0));
+        EntityList.addShip(new Ship(-200,0,0,10,1,1,1));
+        EntityList.getShip(0).setSpeedX(-100);
         EntityList.getShip(1).fireMissiles(0, EntityList.getShip(0).getID());
+        */
+        
+        /*
+        EntityList.addCelestialBody(new CelestialBody(100,0,0,1,10));
+        EntityList.addCelestialBody(new CelestialBody(-100,0,0,1,10));
+        EntityList.addCelestialBody(new CelestialBody(0,0,100,1,10));
+        EntityList.addCelestialBody(new CelestialBody(0,0,-100,1,10));
+        */
         
         //An infinite loop that only stops running when the Applet is closed
         while(true){
@@ -114,13 +123,18 @@ public class Tester extends Applet {
         //Debug mode that draws the origin
         if(debug){
             //X Axis
+            g2.setColor(Color.red);
             g2.drawLine(frame.getWidth()/2 - (int)(Math.cos(XZ_ROT) * 200),  (frame.getHeight()/2 - 18) + (int)(Math.sin(XZ_ROT) * 200 * Math.sin(Y_ROT)), frame.getWidth()/2 + (int)(Math.cos(XZ_ROT) * 200), (frame.getHeight()/2 - 18) - (int)(Math.sin(XZ_ROT) * 200 * Math.sin(Y_ROT)));
 
             //Y Axis
+            g2.setColor(Color.blue);
             g2.drawLine(frame.getWidth()/2 - (int)(Math.sin(XZ_ROT) * 200),  (frame.getHeight()/2 - 18) - (int)(Math.cos(XZ_ROT) * 200 * Math.sin(Y_ROT)), frame.getWidth()/2 + (int)(Math.sin(XZ_ROT) * 200), (frame.getHeight()/2 - 18) + (int)(Math.cos(XZ_ROT) * 200 * Math.sin(Y_ROT)));
 
             //Z Axis
+            g2.setColor(Color.green);
             g2.drawLine(frame.getWidth()/2, (frame.getHeight()/2 - 18) + (int)(200 * Math.cos(Y_ROT)), frame.getWidth()/2, (frame.getHeight()/2 - 18) - (int)(200 * Math.cos(Y_ROT)));
+            
+            g2.setColor(Color.black);
         }
         
         ArrayList<Entity> list = EntityList.getEntityList();
