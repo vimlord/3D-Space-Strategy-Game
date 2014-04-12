@@ -5,6 +5,8 @@
 
 package entities.ships.shipTools.orders;
 
+import entities.Entity;
+
 /**
  *
  * @author Christopher Hittner
@@ -19,6 +21,16 @@ public class Attack extends Order{
             else order += "F";
         
         order += "]" + targID;
+    }
+    
+    public Attack(boolean missile, boolean laser, Entity target){
+        order = "(ATK)[";
+        if(missile) order += "T";
+            else order += "F";
+        if(laser) order += "T";
+            else order += "F";
+        
+        order += "]" + target.getID();
     }
     
 }

@@ -90,6 +90,9 @@ public class EntityList {
         for(CelestialBody c : bodies){
             c.move();
         }
+        for(Projectile p : projectiles){
+            p.move();
+        }
     }
 	
     public static void executeCollisions(){
@@ -121,7 +124,9 @@ public class EntityList {
             }
 
             //Projectile collisions
-            for(Projectile p : projectiles){
+            
+            for(int i = 0; i < projectiles.size(); i++){
+                Projectile p = projectiles.get(i);
                 for(Ship s : ships){
                     if(p.testCollision(s)){
                         p.collide(s);
@@ -139,12 +144,14 @@ public class EntityList {
                 }
 
             }
+            
     }
     
     
     public static void executeCasualties(){
         //Kills dead ships because... they're dead... duh.
-        for(Ship s : ships){
+        for(int i = 0; i < ships.size(); i++){
+            Ship s = ships.get(i);
             if(s.getHealth() < 0){
                 ships.remove(s);
             }
@@ -188,6 +195,9 @@ public class EntityList {
         }
         for(CelestialBody c : bodies){
             list.add(c);
+        }
+        for(Projectile p : projectiles){
+            list.add(p);
         }
         
         return list;

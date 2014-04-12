@@ -1,5 +1,7 @@
 import entities.*;
 import entities.planetaryBodies.*;
+import entities.ships.Ship;
+import entities.ships.shipTools.orders.*;
 import java.applet.Applet;
 import java.awt.Color;
 import java.awt.Font;
@@ -62,8 +64,10 @@ public class Tester extends Applet {
         //clicked on
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        EntityList.addCelestialBody(new CelestialBody(100, 0, 0, 10000000000000000.0, 6));
-        EntityList.addCelestialBody(new CelestialBody(-100, 0, 0, 10000000000000000.0, 6));
+        EntityList.addShip(new Ship(100,0,0,10,0,0,0));
+        EntityList.addShip(new Ship(-100,0,0,10,1,1,1));
+        EntityList.getShip(0).setSpeedZ(10);
+        EntityList.getShip(1).fireMissiles(0, EntityList.getShip(0).getID());
         
         //An infinite loop that only stops running when the Applet is closed
         while(true){

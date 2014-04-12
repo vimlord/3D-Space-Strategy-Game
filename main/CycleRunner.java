@@ -21,7 +21,6 @@ public class CycleRunner {
         //Kills "dead" Ships and other stuff... if the other stuff is implemented
         EntityList.executeCasualties();
         
-        
     }
 }
 
