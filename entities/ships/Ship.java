@@ -95,6 +95,7 @@ public class Ship extends Entity implements ControlSystem{
         super.move();
         chargeWarpDrive();
         warp();
+        weaponCycle();
     }
      
     
@@ -204,14 +205,23 @@ public class Ship extends Entity implements ControlSystem{
             //Tests for an Attack order. The Railgun will have to be coded
             //separately, as the Ship must point directly AT the target
             if(o instanceof Attack){
-                long targ = Long.parseLong(order.substring(5));
+                order = o.getOrder();
                 
-                for(int i = 0; i < missiles.length; i++){
-                    fireMissiles(i,targ);
+                boolean fireMissile = (order.substring(6, 7).equals("T"));
+                boolean fireLaser = (order.substring(7, 8).equals("T"));
+                
+                long targ = Long.parseLong(order.substring(9));
+                
+                if(fireMissile){
+                    for(int i = 0; i < missiles.length; i++){
+                        fireMissiles(i,targ);
+                    }
                 }
                 
-                for(int i = 0; i < lasers.length; i++){
-                    fireLasers(i,targ);
+                if(fireLaser){
+                    for(int i = 0; i < lasers.length; i++){
+                        fireLasers(i,targ);
+                    }
                 }
                 
                 break;
@@ -436,6 +446,23 @@ public class Ship extends Entity implements ControlSystem{
     
     
     //--------------------------------
+    //Weapon Cycling
+    //--------------------------------
+    private void weaponCycle() {
+        for(Railgun r : railguns){
+            r.cycle();
+        }
+        for(MissileBattery m : missiles){
+            m.cycle();
+        }
+        for(LaserGun l : lasers){
+            l.cycle();
+        }
+            
+    }
+    
+    
+    //--------------------------------
     //Orders
     //--------------------------------
     public void giveOrders(Order o){
@@ -498,6 +525,8 @@ public class Ship extends Entity implements ControlSystem{
     public double getY_RotSpeed(){
         return Y_RotSpeed;
     }
+
+    
     
     
 }
