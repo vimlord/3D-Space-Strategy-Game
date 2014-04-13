@@ -20,8 +20,16 @@ import main.*;
  * @author Christopher Hittner
  */
 public class Ship extends Entity implements ControlSystem{
+    //Healths stats
     protected final double maxHealth;
     protected double health;
+    //The amount of health the Ship object is allowed to heal
+    double healthHealable;
+    
+    protected final double maxShields;
+    protected double shields;
+    protected int cyclesSinceAttacked = 0;
+    protected final int secondsToStartCharge = 10, secondsToRebootShields = 20;
     
     protected double XZ_ROT = 0, Y_ROT = 0;
     protected double XZ_RotSpeed = 0, Y_RotSpeed = 0;
@@ -46,6 +54,9 @@ public class Ship extends Entity implements ControlSystem{
     private ArrayList<Order> orders = new ArrayList<>();
     
     
+    
+    
+    
     /**
      * @param X The x-coordinate
      * @param Y The x-coordinate
@@ -53,8 +64,11 @@ public class Ship extends Entity implements ControlSystem{
      * @param M The mass
      * @param R The radius/size of the ship's hit box
      * @param Railguns The number of Railguns the ship will have
+     * @param Lasers The number of Laser Guns the ship will have
+     * @param Missiles The number of Missile Batteries the ship will have
+     * @param shieldFactor The strength of the ship's deflector shield
      */
-    public Ship(double X, double Y, double Z, double R, int Railguns, int Lasers, int Missiles){
+    public Ship(double X, double Y, double Z, double R, int Railguns, int Lasers, int Missiles, double shieldFactor){
         super(X, Y, Z, (4/3 * Math.PI * Math.pow(R, 3) * 40), R);
         //Outfits the ship with a railguns
         railguns = new Railgun[Railguns];
@@ -86,6 +100,13 @@ public class Ship extends Entity implements ControlSystem{
         //Sets the maximum and current health
         maxHealth = Math.sqrt(mass/75000);
         health = maxHealth;
+        
+        //Sets the amount of health the Ship is allowed to heal
+        healthHealable = maxHealth;
+        
+        //Sets up the stats for the shields
+        maxShields = shields * Math.sqrt(maxHealth);
+        shields = maxShields;
     }
      
     public void move(){
@@ -93,11 +114,81 @@ public class Ship extends Entity implements ControlSystem{
         rotate();
         accelerate();
         super.move();
-        chargeWarpDrive();
         warp();
+        cycle();
+        
+    }
+    
+    public void cycle(){
         weaponCycle();
+        healHealth(1);
+        healShields(1);
+        chargeWarpDrive();
     }
      
+    
+    //--------------------------------------------------------------------------
+    //Regeneration and Damage
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Heals a little bit of HP
+     * @param factor The factor at which the ship's repair speed will be multiplied
+     */
+    public void healHealth(int factor){
+        //Determines max health that will be healed this cycle
+        double healthToHeal = factor * (Math.random()/CycleRunner.cyclesPerSecond) / 30.0;
+        
+        //Determines whether the amount will heal more than what is allowed
+        if(healthToHeal > healthHealable){
+            healthToHeal = healthHealable;
+        }
+        
+        //Determines how much health has been lost
+        double healthLost = maxHealth - health;
+        
+        //Makes sure the health doesn't go over the limit
+        if(healthToHeal > healthLost){
+            healthToHeal = healthLost;
+        }
+        
+        //Heals the health
+        if(healthLost >= healthToHeal){
+            health += healthToHeal;
+            healthHealable -= healthToHeal;
+        }
+    }
+    
+    public void healShields(int factor){
+        double shieldPerSecond = 1;
+        
+        if(shields <= 0){
+            //The shields are down; extra time will be needed to reboot the shields
+            if(cyclesSinceAttacked < (CycleRunner.cyclesPerSecond * (secondsToStartCharge + secondsToRebootShields))){
+                cyclesSinceAttacked++;
+            } else {
+                shields += shieldPerSecond/CycleRunner.cyclesPerSecond;
+            }
+        } else {
+            //The shields are up and operational, but need some time to start recharging
+            if(cyclesSinceAttacked < (CycleRunner.cyclesPerSecond * secondsToStartCharge)){
+                cyclesSinceAttacked++;
+            } else {
+                shields += shieldPerSecond/CycleRunner.cyclesPerSecond;
+            }
+        }
+        
+    }
+    
+    public void damage(double damage){
+        cyclesSinceAttacked = 0;
+        shields -= damage;
+        if(shields < 0){
+            health += shields;
+            shields = 0;
+        }
+        
+    }
     
     //--------------------------------------------------------------------------
     //Rotation
@@ -397,9 +488,7 @@ public class Ship extends Entity implements ControlSystem{
     }
     
     
-    public void damage(double damage){
-        health -= damage;
-    }
+    
     
     
     //--------------------------------
