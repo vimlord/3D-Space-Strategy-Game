@@ -1,3 +1,5 @@
+package entities.ships.shipTools.orders;
+
 public class Wait extends Order{
     int cyclesLeft
     
