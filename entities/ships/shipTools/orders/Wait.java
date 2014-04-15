@@ -1,0 +1,24 @@
+
+public class Wait extends Order{
+    int cyclesLeft
+    
+    public Wait(double seconds){
+        order = "(WAIT)";
+        cyclesLeft = (int)(CycleRunner.cyclesPerSecond * seconds);
+    }
+    
+    public void getOrder(){
+        cyclesLeft--;
+        return order;
+    }
+    
+    public boolean getStatus(){
+        if(cyclesLeft > 0){
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+
+
