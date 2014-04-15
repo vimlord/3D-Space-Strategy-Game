@@ -1,4 +1,3 @@
-
 public class Wait extends Order{
     int cyclesLeft
     
@@ -7,7 +6,7 @@ public class Wait extends Order{
         cyclesLeft = (int)(CycleRunner.cyclesPerSecond * seconds);
     }
     
-    public void getOrder(){
+    public String getOrder(){
         cyclesLeft--;
         return order;
     }
