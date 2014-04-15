@@ -296,6 +296,20 @@ public class Ship extends Entity implements ControlSystem{
             if(!order(0).getStatus()){
                 orders.remove(0);
             }
+        } else if(order.substring(0,5).equals("(WRP)")){
+            if(!warping){
+                if(warpCharge >= warpMinimum){
+                    setWarp(Double.parseDouble(order.substring(5)));
+                } else {
+                    orders.remove(0);
+                    setWarp(0);
+                }
+            }
+            
+            if(!orders(0).getStatus()){
+                setWarp(0);
+                orders.remove(0);
+            }
         }
         for(Order o : orders){
             //Tests for an Attack order. The Railgun will have to be coded
