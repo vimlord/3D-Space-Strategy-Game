@@ -291,6 +291,11 @@ public class Ship extends Entity implements ControlSystem{
             if(Math.abs(Y_ROT - Y) < Math.toRadians(500/CycleRunner.cyclesPerSecond) && Math.abs(XZ_ROT - XZ) < Math.toRadians(500/CycleRunner.cyclesPerSecond)){
                 orders.remove(0);
             }
+        } else if(order.substring(0,6).equals("(WAIT)")){
+            //Does nothing; I added this just to make sure nothing happens.
+            if(!order(0).getStatus()){
+                orders.remove(0);
+            }
         }
         for(Order o : orders){
             //Tests for an Attack order. The Railgun will have to be coded
@@ -321,6 +326,8 @@ public class Ship extends Entity implements ControlSystem{
                     }
                 }
                 
+                break;
+            } else if(o instanceof Wait){
                 break;
             }
         }
