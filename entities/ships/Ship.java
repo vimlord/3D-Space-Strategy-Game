@@ -72,6 +72,51 @@ public class Ship extends Entity implements ControlSystem{
         health = maxHealth;
     }
      
+    /*
+     * Sets a modifier for this Ship object
+     * 0: No modifier
+     * 1: Offensive Boost
+     * 2: Defensive Boost
+     * 3: Agility Boost
+     * @param modifierID The modifier to be used
+     */
+    public void setModifier(int modifierID){
+        if(modifierID == 1){
+            
+            //Increases amount of weapons
+            Railgun[] r = new Railgun[(int)(1.1 * railguns.length())];
+            for(int i = 0; i < r.length; i++){
+                r[i] = new Railgun();
+            }
+            railguns = r;
+            
+            MissileBattery[] m = new MissileBattery[(int)(1.1 * missiles.length())];
+            for(int i = 0; i < m.length; i++){
+                m[i] = new MissileBattery();
+            }
+            missiles = m;
+            
+            LaserGun[] l = new LaserGun[(int)(1.1 * lasers.length())];
+            for(int i = 0; i < l.length; i++){
+                l[i] = new LaserGun();
+            }
+            lasers = l;
+            
+            //Decreases Defense
+            
+            //Decreases Agility
+            
+            
+        } else if(modifierID == 2){
+            
+        } if(modifierID == 3){
+            
+        } else {
+            return;
+        }
+    } 
+     
+     
     public void move(){
         autopilot();
         rotate();
