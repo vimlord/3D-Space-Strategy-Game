@@ -140,8 +140,13 @@ public class Ship extends Entity implements ControlSystem{
             lasers = l;
             
             //Decreases Defense
+            maxHealth /= 1.1;
+            health/= 1.1;
+            maxShields /= 1.1;
+            shields /= 1.1;
             
             //Decreases Agility
+            mass *= 1.1
             
             
         } else if(modifierID == 2){
