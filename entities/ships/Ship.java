@@ -68,7 +68,7 @@ public class Ship extends Entity implements ControlSystem{
      * @param Missiles The number of Missile Batteries the ship will have
      * @param shieldFactor The strength of the ship's deflector shield
      */
-    public Ship(double X, double Y, double Z, double R, int Railguns, int Lasers, int Missiles, double shieldFactor){
+    public Ship(double X, double Y, double Z, double R, int Railguns, int Lasers, int Missiles, double shieldFactor, int modifier){
         super(X, Y, Z, (4/3 * Math.PI * Math.pow(R, 3) * 40), R);
         //Outfits the ship with a railguns
         railguns = new Railgun[Railguns];
@@ -107,6 +107,8 @@ public class Ship extends Entity implements ControlSystem{
         //Sets up the stats for the shields
         maxShields = shields * Math.sqrt(maxHealth);
         shields = maxShields;
+        
+        setModifier(modifier);
     }
      
     /*
@@ -141,7 +143,7 @@ public class Ship extends Entity implements ControlSystem{
             
             //Decreases Defense
             maxHealth /= 1.1;
-            health/= 1.1;
+            health /= 1.1;
             maxShields /= 1.1;
             shields /= 1.1;
             
@@ -151,8 +153,62 @@ public class Ship extends Entity implements ControlSystem{
             
         } else if(modifierID == 2){
             
-        } if(modifierID == 3){
+            //Decreases amount of weapons
+            Railgun[] r = new Railgun[(int)(railguns.length()/1.1)];
+            for(int i = 0; i < r.length; i++){
+                r[i] = new Railgun();
+            }
+            railguns = r;
             
+            MissileBattery[] m = new MissileBattery[(int)(missiles.length()/1.1)];
+            for(int i = 0; i < m.length; i++){
+                m[i] = new MissileBattery();
+            }
+            missiles = m;
+            
+            LaserGun[] l = new LaserGun[(int)(lasers.length()/1.1)];
+            for(int i = 0; i < l.length; i++){
+                l[i] = new LaserGun();
+            }
+            lasers = l;
+            
+            //Increases Defense
+            maxHealth *= 1.1;
+            health *= 1.1;
+            maxShields *= 1.1;
+            shields *= 1.1;
+            
+            //Decreases Agility
+            mass *= 1.1
+            
+        } if(modifierID == 3){
+            //Decreases amount of weapons
+            Railgun[] r = new Railgun[(int)(railguns.length()/1.1)];
+            for(int i = 0; i < r.length; i++){
+                r[i] = new Railgun();
+            }
+            railguns = r;
+            
+            MissileBattery[] m = new MissileBattery[(int)(missiles.length()/1.1)];
+            for(int i = 0; i < m.length; i++){
+                m[i] = new MissileBattery();
+            }
+            missiles = m;
+            
+            LaserGun[] l = new LaserGun[(int)(lasers.length()/1.1)];
+            for(int i = 0; i < l.length; i++){
+                l[i] = new LaserGun();
+            }
+            lasers = l;
+            
+            //Decreases Defense
+            maxHealth /= 1.1;
+            health /= 1.1;
+            maxShields /= 1.1;
+            shields /= 1.1;
+            
+            //Increases Agility
+            mass /= 1.1
         } else {
             return;
         }
