@@ -65,8 +65,8 @@ public class Tester extends Applet {
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         
-        EntityList.addShip(new Ship(200,0,0,10,0,0,0,1));
-        EntityList.addShip(new Ship(-200,0,0,10,1,1,1,1));
+        EntityList.addShip(new Ship(200,0,0,10,0,0,0,1,0));
+        EntityList.addShip(new Ship(-200,0,0,10,1,1,1,1,0));
         EntityList.getShip(0).setSpeedX(-100);
         EntityList.getShip(1).fireLasers(0,EntityList.getShip(0).getID());
         

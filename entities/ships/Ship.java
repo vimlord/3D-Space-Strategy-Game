@@ -21,12 +21,12 @@ import main.*;
  */
 public class Ship extends Entity implements ControlSystem{
     //Healths stats
-    protected final double maxHealth;
+    protected double maxHealth;
     protected double health;
     //The amount of health the Ship object is allowed to heal
     double healthHealable;
     
-    protected final double maxShields;
+    protected double maxShields;
     protected double shields;
     protected int cyclesSinceAttacked = 0;
     protected final int secondsToStartCharge = 10, secondsToRebootShields = 20;
@@ -43,7 +43,7 @@ public class Ship extends Entity implements ControlSystem{
     protected double warpCharge = 0;
     protected final double warpCapacity = 600 * CycleRunner.cyclesPerSecond, warpMinimum = 100 * CycleRunner.cyclesPerSecond;
     protected boolean warpCharging = false, warping = false;
-    protected int warpMode = 0;
+    protected double warpMode = 0;
     
     //The weapons on the Ship
     protected Railgun[] railguns;
@@ -123,19 +123,19 @@ public class Ship extends Entity implements ControlSystem{
         if(modifierID == 1){
             
             //Increases amount of weapons
-            Railgun[] r = new Railgun[(int)(1.1 * railguns.length())];
+            Railgun[] r = new Railgun[(int)(1.1 * railguns.length)];
             for(int i = 0; i < r.length; i++){
                 r[i] = new Railgun();
             }
             railguns = r;
             
-            MissileBattery[] m = new MissileBattery[(int)(1.1 * missiles.length())];
+            MissileBattery[] m = new MissileBattery[(int)(1.1 * missiles.length)];
             for(int i = 0; i < m.length; i++){
                 m[i] = new MissileBattery();
             }
             missiles = m;
             
-            LaserGun[] l = new LaserGun[(int)(1.1 * lasers.length())];
+            LaserGun[] l = new LaserGun[(int)(1.1 * lasers.length)];
             for(int i = 0; i < l.length; i++){
                 l[i] = new LaserGun();
             }
@@ -148,25 +148,25 @@ public class Ship extends Entity implements ControlSystem{
             shields /= 1.1;
             
             //Decreases Agility
-            mass *= 1.1
+            mass *= 1.1;
             
             
         } else if(modifierID == 2){
             
             //Decreases amount of weapons
-            Railgun[] r = new Railgun[(int)(railguns.length()/1.1)];
+            Railgun[] r = new Railgun[(int)(railguns.length/1.1)];
             for(int i = 0; i < r.length; i++){
                 r[i] = new Railgun();
             }
             railguns = r;
             
-            MissileBattery[] m = new MissileBattery[(int)(missiles.length()/1.1)];
+            MissileBattery[] m = new MissileBattery[(int)(missiles.length/1.1)];
             for(int i = 0; i < m.length; i++){
                 m[i] = new MissileBattery();
             }
             missiles = m;
             
-            LaserGun[] l = new LaserGun[(int)(lasers.length()/1.1)];
+            LaserGun[] l = new LaserGun[(int)(lasers.length/1.1)];
             for(int i = 0; i < l.length; i++){
                 l[i] = new LaserGun();
             }
@@ -179,23 +179,23 @@ public class Ship extends Entity implements ControlSystem{
             shields *= 1.1;
             
             //Decreases Agility
-            mass *= 1.1
+            mass *= 1.1;
             
         } if(modifierID == 3){
             //Decreases amount of weapons
-            Railgun[] r = new Railgun[(int)(railguns.length()/1.1)];
+            Railgun[] r = new Railgun[(int)(railguns.length/1.1)];
             for(int i = 0; i < r.length; i++){
                 r[i] = new Railgun();
             }
             railguns = r;
             
-            MissileBattery[] m = new MissileBattery[(int)(missiles.length()/1.1)];
+            MissileBattery[] m = new MissileBattery[(int)(missiles.length/1.1)];
             for(int i = 0; i < m.length; i++){
                 m[i] = new MissileBattery();
             }
             missiles = m;
             
-            LaserGun[] l = new LaserGun[(int)(lasers.length()/1.1)];
+            LaserGun[] l = new LaserGun[(int)(lasers.length/1.1)];
             for(int i = 0; i < l.length; i++){
                 l[i] = new LaserGun();
             }
@@ -208,7 +208,7 @@ public class Ship extends Entity implements ControlSystem{
             shields /= 1.1;
             
             //Increases Agility
-            mass /= 1.1
+            mass /= 1.1;
         } else {
             return;
         }
@@ -399,7 +399,7 @@ public class Ship extends Entity implements ControlSystem{
             }
         } else if(order.substring(0,6).equals("(WAIT)")){
             //Does nothing; I added this just to make sure nothing happens.
-            if(!order(0).getStatus()){
+            if(!orders.get(0).getStatus()){
                 orders.remove(0);
             }
         } else if(order.substring(0,5).equals("(WRP)")){
@@ -412,7 +412,7 @@ public class Ship extends Entity implements ControlSystem{
                 }
             }
             
-            if(!orders(0).getStatus()){
+            if(!orders.get(0).getStatus()){
                 setWarp(0);
                 orders.remove(0);
             }
@@ -517,7 +517,7 @@ public class Ship extends Entity implements ControlSystem{
      * Sets the warp mode of the Ship (in multiples of the speed of light)
      * @param level
      */
-    public void setWarp(int level){
+    public void setWarp(double level){
         if(level > 0){
             warpMode = level;
         }

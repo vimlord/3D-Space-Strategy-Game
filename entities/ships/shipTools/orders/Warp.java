@@ -1,5 +1,7 @@
 package entities.ships.shipTools.orders;
 
+import main.CycleRunner;
+
 public class Warp extends Order{
     double cyclesLeft;
     
@@ -25,7 +27,7 @@ public class Warp extends Order{
     
     public boolean getStatus(){
         if(cyclesLeft <= 0){
-            retun false;
+            return false;
         } else {
             return true;
         }
