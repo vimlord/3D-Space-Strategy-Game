@@ -66,9 +66,8 @@ public class Tester extends Applet {
         
         
         EntityList.addShip(new Ship(200,0,0,10,0,0,0,1,0));
-        EntityList.addShip(new Ship(-200,0,0,10,1,1,1,1,0));
-        EntityList.getShip(0).setSpeedX(-100);
-        EntityList.getShip(1).fireLasers(0,EntityList.getShip(0).getID());
+        EntityList.addShip(new Ship(-200,0,0,10,1,1,35,1,0));
+        EntityList.getShip(1).giveOrders(new Attack(true, false, false, EntityList.getShip(0)));
         
         
         /*
@@ -77,16 +76,18 @@ public class Tester extends Applet {
         EntityList.addCelestialBody(new CelestialBody(0,0,100,1,10));
         EntityList.addCelestialBody(new CelestialBody(0,0,-100,1,10));
         */
-        
+        int count = 0;
         //An infinite loop that only stops running when the Applet is closed
-        while(true){
+        while(count < 1000000){
             //Outputs the contents of the screen
             
             printScreen();
             XZ_ROT += Math.toRadians(0);
             CycleRunner.executeCycle();
+            count++;
         }
         
+        System.exit(0);
     }
     
     /**
@@ -167,6 +168,10 @@ public class Tester extends Applet {
         }
         
         int radius = (int)(250 * R/distCam);
+        
+        if((250 * R/distCam) < 0.5){
+            return;
+        }
         
         double magnitudeXZ = Math.sqrt(Math.pow((X-x),2) + Math.pow((Z-z),2));
         if(magnitudeXZ == 0){

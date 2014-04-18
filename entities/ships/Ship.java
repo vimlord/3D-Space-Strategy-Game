@@ -50,6 +50,9 @@ public class Ship extends Entity implements ControlSystem{
     protected LaserGun[] lasers;
     protected MissileBattery[] missiles;
     
+    //A cycling variable to help choose which weapons to fire
+    private int tubeCount = 0;
+    
     //The list of orders
     private ArrayList<Order> orders = new ArrayList<>();
     
@@ -230,6 +233,9 @@ public class Ship extends Entity implements ControlSystem{
         healHealth(1);
         healShields(1);
         chargeWarpDrive();
+        if(tubeCount >= missiles.length){
+            tubeCount -= missiles.length;
+        }
     }
      
     
@@ -381,7 +387,6 @@ public class Ship extends Entity implements ControlSystem{
         setAcceleration(0);
         setRotationTarget(XZ_ROT,Y_ROT);
         
-        
         if(order.substring(0,5).equals("(ACC)")){
             //This is an acceleration order
             setAcceleration(Double.parseDouble(order.substring(5)));
@@ -397,7 +402,7 @@ public class Ship extends Entity implements ControlSystem{
             if(Math.abs(Y_ROT - Y) < Math.toRadians(500/CycleRunner.cyclesPerSecond) && Math.abs(XZ_ROT - XZ) < Math.toRadians(500/CycleRunner.cyclesPerSecond)){
                 orders.remove(0);
             }
-        } else if(order.substring(0,6).equals("(WAIT)")){
+        } else if(order.equals("(WAIT)")){
             //Does nothing; I added this just to make sure nothing happens.
             if(!orders.get(0).getStatus()){
                 orders.remove(0);
@@ -430,9 +435,8 @@ public class Ship extends Entity implements ControlSystem{
                 long targ = Long.parseLong(order.substring(10));
                 
                 if(fireMissile){
-                    for(int i = 0; i < missiles.length; i++){
-                        fireMissiles(i,targ);
-                    }
+                    fireMissiles(tubeCount,targ);
+                    tubeCount++;
                 }
                 
                 if(fireLaser){
@@ -444,6 +448,10 @@ public class Ship extends Entity implements ControlSystem{
                     for(int i = 0; i < railguns.length; i++){
                         fireRailgun(i);
                     }
+                }
+                
+                if(!o.getStatus()){
+                    orders.remove(o);
                 }
                 
                 break;

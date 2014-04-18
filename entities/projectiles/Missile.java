@@ -25,23 +25,23 @@ public class Missile extends Projectile implements ControlSystem{
     public Missile(Ship shooter, Entity target){
         super(shooter.getX(),shooter.getY(),shooter.getX(),500,10,0.5,0);
         
-        velX = shooter.getSpeedX();
-        velY = shooter.getSpeedY();
-        velZ = shooter.getSpeedZ();
-        
         double relX = target.getX() - shooter.getX();
         double relY = target.getY() - shooter.getY();
         double relZ = target.getZ() - shooter.getZ();
         double relXZ = Math.sqrt(Math.pow(relX,2) + Math.pow(relZ, 2));
         double rel = Math.sqrt(Math.pow(relXZ, 2) + Math.pow(relY, 2));
         
+        double randomXZ = Math.toRadians((int)(121 * Math.random()) - 60);
         
-        double angleXZ = Math.acos(relX/relXZ);
+        
+        double angleXZ = Math.acos(relX/relXZ) + randomXZ;
         if(relZ < 0){
             angleXZ *= -1;
         }
         
-        double angleY = Math.sinh(relY/rel);
+        double randomY = Math.toRadians((int)(121 * Math.random()) - 60);
+        
+        double angleY = Math.sinh(relY/rel) + randomY;
         
         x = shooter.getX() + (shooter.getRadius() + radius + 0.1) * Math.cos(angleXZ) * Math.cos(angleY);
         y = shooter.getY() + (shooter.getRadius() + radius + 0.1) * Math.sin(angleY);
@@ -54,6 +54,9 @@ public class Missile extends Projectile implements ControlSystem{
         hasEntityTarget = true;
         targetID = target.getID();
         
+        velX = shooter.getSpeedX() + 20 * Math.cos(angleXZ) * Math.cos(angleY);
+        velY = shooter.getSpeedY() + 20 * Math.sin(angleY);
+        velZ = shooter.getSpeedZ() + 20 * Math.sin(angleXZ) * Math.cos(angleY);
         
     }
     
@@ -69,7 +72,7 @@ public class Missile extends Projectile implements ControlSystem{
     
     @Override
     public void accelerate() {
-        if(fuel <= 0){
+        if(fuel <= 0 || !hasEntityTarget){
             return;
         }
         
@@ -98,6 +101,8 @@ public class Missile extends Projectile implements ControlSystem{
             targX = e.getX() + (e.getSpeedX() - velX);
             targY = e.getY() + (e.getSpeedY() - velY);
             targZ = e.getZ() + (e.getSpeedZ() - velZ);
+        } else {
+            hasEntityTarget = false;
         }
         
         

@@ -6,6 +6,7 @@
 package entities.ships.shipTools.orders;
 
 import entities.Entity;
+import main.CycleRunner;
 
 /**
  *
@@ -13,7 +14,9 @@ import entities.Entity;
  */
 public class Attack extends Order{
     
-    public Attack(boolean missile, boolean laser, long targID){
+    private double count = 0;
+    
+    public Attack(boolean missile, boolean laser, boolean railgun, long targID){
         order = "(ATK)[";
         if(missile) order += "T";
             else order += "F";
@@ -33,6 +36,20 @@ public class Attack extends Order{
             else order += "F";
         
         order += "]" + target.getID();
+    }
+    
+    public String getOrder(){
+        count += 0.5;
+        return super.getOrder();
+    }
+    
+    public boolean getStatus(){
+        if(count > CycleRunner.cyclesPerSecond/2.0){
+            status = false;
+        } else {
+            status = true;
+        }
+        return status;
     }
     
 }

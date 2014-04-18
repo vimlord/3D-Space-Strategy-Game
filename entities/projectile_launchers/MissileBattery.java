@@ -52,7 +52,7 @@ public class MissileBattery implements ProjectileLauncher {
             EntityList.addProjectile(new Missile(shooter, target));
             shotsLeft--;
             if(shotsLeft > 0){
-                wait = CycleRunner.cyclesPerSecond/10;
+                wait = (int)(1.5 * CycleRunner.cyclesPerSecond);
             } else {
                 wait = reloadTime * CycleRunner.cyclesPerSecond;
             }
