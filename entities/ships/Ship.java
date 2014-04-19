@@ -10,8 +10,7 @@ package entities.ships;
  
 import entities.ships.shipTools.orders.*;
 import entities.*;
-import entities.projectiles.*;
-import entities.projectile_launchers.*;
+import entities.ships.shipTools.projectile_launchers.*;
 import java.util.ArrayList;
 import main.*;
  
