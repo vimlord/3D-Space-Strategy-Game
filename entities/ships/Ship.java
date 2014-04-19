@@ -420,6 +420,19 @@ public class Ship extends Entity implements ControlSystem{
                 setWarp(0);
                 orders.remove(0);
             }
+        } else if(order.substring(0,6).equals("(MNVR)")){
+            orders.remove(0);
+            String data = order.substring(6);
+            double magnitude = Double.parseDouble(data.substring(1,data.indexOf(")")));
+            data = data.substring(data.indexOf(")") + 1);
+            double XZ = Double.parseDouble(data.substring(1,data.indexOf(")")));
+            data = data.substring(data.indexOf(")") + 1);
+            double Y = Double.parseDouble(data.substring(1,data.indexOf(")")));
+            orders.add(0, new Rotate(XZ,Y));
+            
+            double accelerationTime = magnitude/(30 * 750000000.0 / mass);
+            orders.add(1, new Accelerate(100,accelerationTime));
+            
         }
         for(Order o : orders){
             //Tests for an Attack order. The Railgun will have to be coded
