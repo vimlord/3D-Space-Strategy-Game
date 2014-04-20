@@ -420,7 +420,7 @@ public class Ship extends Entity implements ControlSystem{
                 setWarp(0);
                 orders.remove(0);
             }
-        } else if(order.substring(0,6).equals("(MNVR)")){
+        } else if(order.substring(0,5).equals("(MNV)")){
             orders.remove(0);
             String data = order.substring(6);
             double magnitude = Double.parseDouble(data.substring(1,data.indexOf(")")));

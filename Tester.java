@@ -67,6 +67,7 @@ public class Tester extends Applet {
         
         EntityList.addShip(new Ship(200,0,0,10,0,0,0,1,0));
         EntityList.addShip(new Ship(-200,0,0,10,1,1,35,1,0));
+        
         EntityList.getShip(1).giveOrders(new Attack(true, false, false, EntityList.getShip(0)));
         
         
@@ -78,16 +79,18 @@ public class Tester extends Applet {
         */
         int count = 0;
         //An infinite loop that only stops running when the Applet is closed
-        while(count < 1000000){
+        while(true){
             //Outputs the contents of the screen
             
             printScreen();
             XZ_ROT += Math.toRadians(0);
             CycleRunner.executeCycle();
             count++;
+            if(count%32 == 0){
+                Thread.sleep(0,1);
+            }
         }
         
-        System.exit(0);
     }
     
     /**

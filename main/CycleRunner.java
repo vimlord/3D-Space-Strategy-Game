@@ -8,7 +8,7 @@ package main;
  * @author Christopher Hittner
  */
 public class CycleRunner {
-    public static final int cyclesPerSecond = 60000;
+    public static final int cyclesPerSecond = 16000;
      
      
     public static void executeCycle(){

@@ -22,7 +22,7 @@ public class Maneuver extends AdvancedOrder{
      * @param rIn_rOut The velocity change along the radial in/out vector. Positive goes to left of prograde
      */
     public Maneuver(Ship ship, double PG_RG, double N_AN, double rIn_rOut) {
-        order = "(MNVR)";
+        order = "(MNV)";
         
         double velX = ship.getSpeedX();
         double velY = ship.getSpeedY();
