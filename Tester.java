@@ -1,6 +1,7 @@
-
 import entities.*;
 import entities.planetaryBodies.*;
+import entities.ships.Ship;
+import entities.ships.shipTools.orders.*;
 import java.applet.Applet;
 import java.awt.Color;
 import java.awt.Font;
@@ -63,9 +64,20 @@ public class Tester extends Applet {
         //clicked on
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        EntityList.addCelestialBody(new CelestialBody(100, 0, 0, 10000000000000000.0, 6));
-        EntityList.addCelestialBody(new CelestialBody(-100, 0, 0, 10000000000000000.0, 6));
         
+        EntityList.addShip(new Ship(200,0,0,10,0,0,0,1,0));
+        EntityList.addShip(new Ship(-200,0,0,10,1,1,35,1,0));
+        
+        EntityList.getShip(1).giveOrders(new Attack(true, false, false, EntityList.getShip(0)));
+        
+        
+        /*
+        EntityList.addCelestialBody(new CelestialBody(100,0,0,1,10));
+        EntityList.addCelestialBody(new CelestialBody(-100,0,0,1,10));
+        EntityList.addCelestialBody(new CelestialBody(0,0,100,1,10));
+        EntityList.addCelestialBody(new CelestialBody(0,0,-100,1,10));
+        */
+        int count = 0;
         //An infinite loop that only stops running when the Applet is closed
         while(true){
             //Outputs the contents of the screen
@@ -73,6 +85,10 @@ public class Tester extends Applet {
             printScreen();
             XZ_ROT += Math.toRadians(0);
             CycleRunner.executeCycle();
+            count++;
+            if(count%32 == 0){
+                Thread.sleep(0,1);
+            }
         }
         
     }
@@ -111,13 +127,18 @@ public class Tester extends Applet {
         //Debug mode that draws the origin
         if(debug){
             //X Axis
+            g2.setColor(Color.red);
             g2.drawLine(frame.getWidth()/2 - (int)(Math.cos(XZ_ROT) * 200),  (frame.getHeight()/2 - 18) + (int)(Math.sin(XZ_ROT) * 200 * Math.sin(Y_ROT)), frame.getWidth()/2 + (int)(Math.cos(XZ_ROT) * 200), (frame.getHeight()/2 - 18) - (int)(Math.sin(XZ_ROT) * 200 * Math.sin(Y_ROT)));
 
             //Y Axis
+            g2.setColor(Color.blue);
             g2.drawLine(frame.getWidth()/2 - (int)(Math.sin(XZ_ROT) * 200),  (frame.getHeight()/2 - 18) - (int)(Math.cos(XZ_ROT) * 200 * Math.sin(Y_ROT)), frame.getWidth()/2 + (int)(Math.sin(XZ_ROT) * 200), (frame.getHeight()/2 - 18) + (int)(Math.cos(XZ_ROT) * 200 * Math.sin(Y_ROT)));
 
             //Z Axis
+            g2.setColor(Color.green);
             g2.drawLine(frame.getWidth()/2, (frame.getHeight()/2 - 18) + (int)(200 * Math.cos(Y_ROT)), frame.getWidth()/2, (frame.getHeight()/2 - 18) - (int)(200 * Math.cos(Y_ROT)));
+            
+            g2.setColor(Color.black);
         }
         
         ArrayList<Entity> list = EntityList.getEntityList();
@@ -136,9 +157,9 @@ public class Tester extends Applet {
         double dist = Math.sqrt(Math.pow(distX, 2) + Math.pow(distY, 2) + Math.pow(distZ, 2));
         
         
-        double camX = x + 250 * pixelMeterRatio * (Math.cos(XZ_ROT) * Math.cos(Y_ROT));
-        double camY = x + 250 * pixelMeterRatio * (Math.sin(Y_ROT));
-        double camZ = x + 250 * pixelMeterRatio * (Math.sin(XZ_ROT) * Math.cos(Y_ROT));
+        double camX = x + 250 * pixelMeterRatio * (Math.cos(Math.toRadians(90) - XZ_ROT) * Math.cos(Math.toRadians(90) - Y_ROT));
+        double camY = y + 250 * pixelMeterRatio * (-Y_ROT);
+        double camZ = z + 250 * pixelMeterRatio * (Math.sin(Math.toRadians(90) - XZ_ROT) * Math.cos(Math.toRadians(90) - Y_ROT));
         
         double distCamX = X+camX;
         double distCamY = Y+camY;
@@ -151,7 +172,15 @@ public class Tester extends Applet {
         
         int radius = (int)(250 * R/distCam);
         
+        if((250 * R/distCam) < 0.5){
+            return;
+        }
+        
         double magnitudeXZ = Math.sqrt(Math.pow((X-x),2) + Math.pow((Z-z),2));
+        if(magnitudeXZ == 0){
+            g.drawOval((int)((frame.getWidth()/2) - radius / pixelMeterRatio), (int)((frame.getHeight()/2 - 18) - radius / pixelMeterRatio), (int)(2 * radius / pixelMeterRatio), (int)(2 * radius / pixelMeterRatio));
+            return;
+        }
         double angleXZ = Math.atan((Z-z)/(X-x));
         if((X-x) < 0){
             angleXZ += Math.toRadians(180);

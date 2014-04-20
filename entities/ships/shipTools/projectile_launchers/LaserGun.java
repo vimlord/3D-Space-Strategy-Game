@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package entities.projectile_launchers;
+package entities.ships.shipTools.projectile_launchers;
 
 import entities.*;
 import entities.projectiles.*;
@@ -16,8 +16,9 @@ import main.*;
  */
 public class LaserGun implements ProjectileLauncher{
     private int temperature = 0;
-    public final int maxTemp = 1000, cooldownMinimum = 200;
-    private boolean coolLock = true, firing = false;
+    public final int maxTemp = 10 * CycleRunner.cyclesPerSecond, cooldownMinimum = 2 * CycleRunner.cyclesPerSecond;
+    private boolean coolLock = false, firing = false;
+    public static final double mass = 50;
     
     public LaserGun(){
         
@@ -72,6 +73,10 @@ public class LaserGun implements ProjectileLauncher{
         if(coolLock && temperature < cooldownMinimum){
             coolLock = false;
         }
+    }
+    
+    public static double getMass() {
+        return mass;
     }
 
 }

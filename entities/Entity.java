@@ -47,11 +47,22 @@ public abstract class Entity implements PhysicsConstants{
      * Moves the Entity based on its speed
      */
     public void move(){
+        testSpeedOfLight();
         x += velX/CycleRunner.cyclesPerSecond;
         y += velY/CycleRunner.cyclesPerSecond;
         z += velZ/CycleRunner.cyclesPerSecond;
         
     }
+    
+    private void testSpeedOfLight(){
+        double speed = Math.sqrt(Math.pow(velX,2) + Math.pow(velY,2) + Math.pow(velZ,2));
+        if(speed > c){
+            double factor = c/speed;
+            velX *= factor;
+            velY *= factor;
+            velZ *= factor;
+        }
+    } 
  
     /**
      * Enacts gravity on the Entity towards the provided Entity object

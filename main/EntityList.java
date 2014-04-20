@@ -90,58 +90,79 @@ public class EntityList {
         for(CelestialBody c : bodies){
             c.move();
         }
+        for(Projectile p : projectiles){
+            p.move();
+        }
     }
 	
-	public static void executeCollisions(){
-		//Planetary collisions
-		for(int i = 0; i < bodies.size() - 1; i++){
-			for(int j = i + 1; j < bodies.size(); j++){
-				if((bodies.get(i)).testCollision(bodies.get(j))){
-					(bodies.get(i)).collide(bodies.get(j));
-				}
-			}
-		}
-		
-		//Vessel collisions
-		for(int i = 0; i < ships.size() - 1; i++){
-                    for(int j = i + 1; j < ships.size(); j++){
-                            if((ships.get(i)).testCollision(ships.get(j))){
-                                    (ships.get(i)).collide(ships.get(j));
+    public static void executeCollisions(){
+            //Planetary collisions
+            for(int i = 0; i < bodies.size() - 1; i++){
+                    for(int j = i + 1; j < bodies.size(); j++){
+                            if((bodies.get(i)).testCollision(bodies.get(j))){
+                                    (bodies.get(i)).collide(bodies.get(j));
                             }
                     }
-		}
-		
-		//Planet-Ship Collisions
-		for(CelestialBody c : bodies){
-                    for(Ship s : ships){
-                            if(c.testCollision(s)){
-                                    c.collide(s);
-                            }
-                    }
-		}
-		
-                //Projectile collisions
-                for(Projectile p : projectiles){
-                    for(Ship s : ships){
-                        if(p.testCollision(s)){
-                            p.collide(s);
-                            projectiles.remove(p);
-                            break;
+            }
+
+            //Vessel collisions
+            for(int i = 0; i < ships.size() - 1; i++){
+                for(int j = i + 1; j < ships.size(); j++){
+                        if((ships.get(i)).testCollision(ships.get(j))){
+                                (ships.get(i)).collide(ships.get(j));
                         }
-                    }
-                    
-                    for(CelestialBody c : bodies){
-                        if(p.testCollision(c)){
-                            p.collide(c);
-                            projectiles.remove(p);
-                            break;
-                        }
-                    }
-                    
                 }
-                
-	}
-	
+            }
+
+            //Planet-Ship Collisions
+            for(CelestialBody c : bodies){
+                for(Ship s : ships){
+                        if(c.testCollision(s)){
+                                c.collide(s);
+                        }
+                }
+            }
+
+            //Projectile collisions
+            
+            for(int i = 0; i < projectiles.size(); i++){
+                Projectile p = projectiles.get(i);
+                for(Ship s : ships){
+                    if(p.testCollision(s)){
+                        p.collide(s);
+                        projectiles.remove(p);
+                        break;
+                    }
+                }
+
+                for(CelestialBody c : bodies){
+                    if(p.testCollision(c)){
+                        p.collide(c);
+                        projectiles.remove(p);
+                        break;
+                    }
+                }
+
+            }
+            
+    }
+    
+    
+    public static void executeCasualties(){
+        //Kills dead ships because... they're dead... duh.
+        for(int i = 0; i < ships.size(); i++){
+            Ship s = ships.get(i);
+            if(s.getHealth() < 0){
+                ships.remove(s);
+            }
+        }
+        for(int i = 0; i < projectiles.size(); i++){
+            if(projectiles.get(i) instanceof Laser && projectiles.get(i).getDamage() < 0.02){
+                projectiles.remove(i);
+            }
+        }
+    }
+    
      
     public static CelestialBody getCelestialBody(int index){
         return bodies.get(index);
@@ -179,6 +200,9 @@ public class EntityList {
         }
         for(CelestialBody c : bodies){
             list.add(c);
+        }
+        for(int i = 0; i < projectiles.size(); i++){
+            list.add(projectiles.get(i));
         }
         
         return list;

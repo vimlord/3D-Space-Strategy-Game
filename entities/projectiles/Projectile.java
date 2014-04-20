@@ -24,4 +24,8 @@ public abstract class Projectile extends Entity{
         s.collide(this);
         s.damage(damage);
     }
+    
+    public double getDamage(){
+        return damage;
+    }
 }

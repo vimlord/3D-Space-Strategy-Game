@@ -8,14 +8,18 @@ package main;
  * @author Christopher Hittner
  */
 public class CycleRunner {
-    public static final int cyclesPerSecond = 60000;
+    public static final int cyclesPerSecond = 16000;
      
      
     public static void executeCycle(){
+        //Causes gravitation
         EntityList.executeGravity();
-        EntityList.executeCollisions();
+        //Moves stuff
         EntityList.executeMovement();
-        
+        //Moves stuff
+        EntityList.executeCollisions();
+        //Kills "dead" Ships and other stuff... if the other stuff is implemented
+        EntityList.executeCasualties();
         
     }
 }

@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package entities.projectile_launchers;
+package entities.ships.shipTools.projectile_launchers;
 
 import entities.*;
 import entities.projectiles.*;
@@ -17,6 +17,8 @@ import main.*;
 public class MissileBattery implements ProjectileLauncher {
     private final int magazineSize, startMagazines, reloadTime;
     private int wait = 0, shotsLeft, magazinesLeft;
+    public static final double mass = 500;
+    
     
     /**
      * Creates a MissileBattery object that hold 25 shots in a magazine, carries
@@ -50,7 +52,7 @@ public class MissileBattery implements ProjectileLauncher {
             EntityList.addProjectile(new Missile(shooter, target));
             shotsLeft--;
             if(shotsLeft > 0){
-                wait = CycleRunner.cyclesPerSecond/10;
+                wait = (int)(1.5 * CycleRunner.cyclesPerSecond);
             } else {
                 wait = reloadTime * CycleRunner.cyclesPerSecond;
             }
@@ -69,6 +71,10 @@ public class MissileBattery implements ProjectileLauncher {
                 magazinesLeft--;
             }
         }
+    }
+    
+    public static double getMass() {
+        return mass;
     }
     
 }

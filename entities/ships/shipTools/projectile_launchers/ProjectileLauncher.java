@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package entities.projectile_launchers;
+package entities.ships.shipTools.projectile_launchers;
 
 import entities.*;
 import entities.ships.*;
