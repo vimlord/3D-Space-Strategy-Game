@@ -40,17 +40,17 @@ public class Orbit implements PhysicsConstants{
     private void calculateData() {
         double vel = Math.sqrt(G * mass/a);
         
-        velY = vel * Math.cos(MaE) * Math.sin(inc);
-        y = a * Math.cos(MaE) * Math.sin(inc);
+        velY = vel * Math.sin(MaE - LAN) * Math.sin(inc);
+        y = a * Math.sin(MaE - LAN) * Math.sin(inc);
         
         double velXZ = vel * Math.sin(MaE) * Math.cos(inc);
         double xz = Math.sqrt(Math.pow(a,2) - Math.pow(y, 2));
         
-        double x = xz * Math.cos(MaE + LAN);
-        double velX = velXZ * Math.cos(MaE + LAN);
+        double x = xz * Math.cos(MaE - LAN);
+        double velX = velXZ * Math.cos(MaE - LAN);
         
-        double z = xz * Math.sin(MaE + LAN);
-        double velZ = velXZ * Math.cos(MaE + LAN);
+        double z = xz * Math.sin(MaE - LAN);
+        double velZ = velXZ * Math.cos(MaE - LAN);
         
     }
     
