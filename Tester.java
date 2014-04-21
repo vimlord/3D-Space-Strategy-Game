@@ -1,5 +1,5 @@
 import entities.*;
-import entities.planetaryBodies.*;
+import entities.celestialBodies.*;
 import entities.ships.Ship;
 import entities.ships.shipTools.orders.*;
 import java.applet.Applet;

@@ -1,7 +1,7 @@
 package main;
  
 import entities.*;
-import entities.planetaryBodies.CelestialBody;
+import entities.celestialBodies.CelestialBody;
 import entities.projectiles.*;
 import entities.ships.Ship;
 import java.util.ArrayList;

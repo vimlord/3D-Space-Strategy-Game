@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
  
-package entities.planetaryBodies;
+package entities.celestialBodies;
  
 import entities.Entity;
 import entities.ships.*;
