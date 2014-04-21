@@ -46,11 +46,11 @@ public class Orbit implements PhysicsConstants{
         double velXZ = vel * Math.sin(MaE) * Math.cos(inc);
         double xz = Math.sqrt(Math.pow(a,2) - Math.pow(y, 2));
         
-        double x = xz * Math.cos(MaE);
-        double velX = velXZ * Math.cos(MaE);
+        double x = xz * Math.cos(MaE + LAN);
+        double velX = velXZ * Math.cos(MaE + LAN);
         
-        double z = xz * Math.sin(MaE);
-        double velZ = velXZ * Math.cos(MaE);
+        double z = xz * Math.sin(MaE + LAN);
+        double velZ = velXZ * Math.cos(MaE + LAN);
         
     }
     
