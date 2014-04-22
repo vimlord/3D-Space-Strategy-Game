@@ -1,6 +1,7 @@
 package main;
  
 import entities.*;
+import entities.celestialBodies.BlackHole;
 import entities.celestialBodies.CelestialBody;
 import entities.projectiles.*;
 import entities.ships.Ship;
@@ -101,6 +102,10 @@ public class EntityList {
                     for(int j = i + 1; j < bodies.size(); j++){
                             if((bodies.get(i)).testCollision(bodies.get(j))){
                                     (bodies.get(i)).collide(bodies.get(j));
+                                    if(bodies.get(i) instanceof BlackHole){
+                                        bodies.remove(j);
+                                        j--;
+                                    }
                             }
                     }
             }
@@ -117,9 +122,12 @@ public class EntityList {
             //Planet-Ship Collisions
             for(CelestialBody c : bodies){
                 for(Ship s : ships){
-                        if(c.testCollision(s)){
-                                c.collide(s);
+                    if(c.testCollision(s)){
+                        c.collide(s);
+                        if(c instanceof BlackHole){
+                            bodies.remove(c);
                         }
+                    }
                 }
             }
 

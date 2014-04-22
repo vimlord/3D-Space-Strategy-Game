@@ -121,7 +121,7 @@ public class Planet extends CelestialBody{
             double relVelZ = other.getSpeedZ() - this.velZ;
             double relVel = Math.sqrt(Math.pow(relVelX,2) + Math.pow(relVelY,2) + Math.pow(relVelZ,2));
 
-            double dragForce = getPressure(other) * 0.47 * Math.pow(relVel,2);
+            double dragForce = getPressure(other) * 0.47 * Math.pow(relVel,2) * Math.PI * Math.pow(other.getRadius(),2);
             other.setSpeedX(other.getSpeedX() - ((relVelX/relVel) * dragForce/other.getMass()));
             other.setSpeedY(other.getSpeedY() - ((relVelY/relVel) * dragForce/other.getMass()));
             other.setSpeedZ(other.getSpeedZ() - ((relVelZ/relVel) * dragForce/other.getMass()));
@@ -143,13 +143,15 @@ public class Planet extends CelestialBody{
             double relVelY = other.getSpeedY() - this.velY;
             double relVelZ = other.getSpeedZ() - this.velZ;
             double relVel = Math.sqrt(Math.pow(relVelX,2) + Math.pow(relVelY,2) + Math.pow(relVelZ,2));
-
-            double dragForce = getPressure(other) * 0.47 * Math.pow(relVel,2);
+            
+            other.damage(getPressure(other) * (relVel - 120)/CycleRunner.cyclesPerSecond);
+            
+            double dragForce = getPressure(other) * 0.47 * Math.pow(relVel,2) * Math.PI * Math.pow(other.getRadius(),2);
             other.setSpeedX(other.getSpeedX() - ((relVelX/relVel) * dragForce/other.getMass()));
             other.setSpeedY(other.getSpeedY() - ((relVelY/relVel) * dragForce/other.getMass()));
             other.setSpeedZ(other.getSpeedZ() - ((relVelZ/relVel) * dragForce/other.getMass()));
 
-            other.damage(getPressure(other) * (relVel - 120)/CycleRunner.cyclesPerSecond);
+            
         }
     }
 
