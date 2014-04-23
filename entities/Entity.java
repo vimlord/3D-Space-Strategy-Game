@@ -56,8 +56,8 @@ public abstract class Entity implements PhysicsConstants{
     
     private void testSpeedOfLight(){
         double speed = Math.sqrt(Math.pow(velX,2) + Math.pow(velY,2) + Math.pow(velZ,2));
-        if(speed > c){
-            double factor = c/speed;
+        if(speed >= c){
+            double factor = (c - Double.MIN_VALUE)/speed;
             velX *= factor;
             velY *= factor;
             velZ *= factor;
