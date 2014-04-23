@@ -64,12 +64,14 @@ public class Tester extends Applet {
         //clicked on
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        
+        /*
         EntityList.addShip(new Ship(200,0,0,10,0,0,0,1,0));
         EntityList.addShip(new Ship(-200,0,0,10,1,1,35,1,0));
         
         EntityList.getShip(1).giveOrders(new Attack(true, false, false, EntityList.getShip(0)));
+        */ 
         
+        EntityList.addCelestialBody(new BlackHole(0,0,0,20));
         
         /*
         EntityList.addCelestialBody(new CelestialBody(100,0,0,1,10));
@@ -143,14 +145,31 @@ public class Tester extends Applet {
         
         ArrayList<Entity> list = EntityList.getEntityList();
         for(Entity e : list){
-            drawSphere(g2, e.getX(), e.getY(), e.getZ(), (int)e.getRadius());
+            drawEntity(g2, e);
         }
         
         
         
     }
     
-    public void drawSphere(Graphics2D g, double X, double Y, double Z, int R){
+    public void drawEntity(Graphics2D g2, Entity e){
+        if(e instanceof BlackHole){
+            g2.setColor(Color.BLACK);
+            drawSphere(g2, e.getX(), e.getY(), e.getZ(), 2.0 * e.getRadius(), true);
+        } else if(e instanceof Planet){
+            Planet p = (Planet) e;
+            drawSphere(g2, e.getX(), e.getY(), e.getZ(), e.getRadius(), true);
+            drawSphere(g2, e.getX(), e.getY(), e.getZ(), 2.0 * p.getAtmosphereHeight(), false);
+        } else {
+            drawSphere(g2, e.getX(), e.getY(), e.getZ(), e.getRadius(), false);
+        }
+    }
+    
+    
+    public void drawSphere(Graphics2D g, double X, double Y, double Z, double R, boolean fill){
+        
+        
+        
         double distX = X-x;
         double distY = Y-y;
         double distZ = Z-z;
@@ -172,15 +191,22 @@ public class Tester extends Applet {
         
         int radius = (int)(250 * R/distCam);
         
+        
         if((250 * R/distCam) < 0.5){
             return;
         }
         
         double magnitudeXZ = Math.sqrt(Math.pow((X-x),2) + Math.pow((Z-z),2));
         if(magnitudeXZ == 0){
-            g.drawOval((int)((frame.getWidth()/2) - radius / pixelMeterRatio), (int)((frame.getHeight()/2 - 18) - radius / pixelMeterRatio), (int)(2 * radius / pixelMeterRatio), (int)(2 * radius / pixelMeterRatio));
+            if(fill){
+                g.fillOval((int)((frame.getWidth()/2) - radius / pixelMeterRatio), (int)((frame.getHeight()/2 - 18) - radius / pixelMeterRatio), (int)(2 * radius / pixelMeterRatio), (int)(2 * radius / pixelMeterRatio));
+            } else {
+                g.drawOval((int)((frame.getWidth()/2) - radius / pixelMeterRatio), (int)((frame.getHeight()/2 - 18) - radius / pixelMeterRatio), (int)(2 * radius / pixelMeterRatio), (int)(2 * radius / pixelMeterRatio));
+            }
+            
             return;
         }
+        
         double angleXZ = Math.atan((Z-z)/(X-x));
         if((X-x) < 0){
             angleXZ += Math.toRadians(180);
@@ -192,7 +218,13 @@ public class Tester extends Applet {
         
         double ptX = frame.getWidth()/2 - radius / pixelMeterRatio + (Math.cos(angleXZ + XZ_ROT) * magnitudeXZ / pixelMeterRatio);
         double ptY = (frame.getHeight()/2 - 18) - radius / pixelMeterRatio - (Math.sin(angleXZ + XZ_ROT) * magnitudeXZ * Math.sin(Y_ROT)) / pixelMeterRatio - Y * Math.cos(Y_ROT) / pixelMeterRatio;
-        g.drawOval((int)(ptX), (int)(ptY), (int)(2 * radius / pixelMeterRatio), (int)(2 * radius / pixelMeterRatio));
+        
+        
+        if(fill){
+            g.fillOval((int)(ptX), (int)(ptY), (int)(2 * radius / pixelMeterRatio), (int)(2 * radius / pixelMeterRatio));
+        } else {
+            g.drawOval((int)(ptX), (int)(ptY), (int)(2 * radius / pixelMeterRatio), (int)(2 * radius / pixelMeterRatio));
+        }
     }
     
     /**

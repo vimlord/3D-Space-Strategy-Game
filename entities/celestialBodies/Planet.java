@@ -154,7 +154,14 @@ public class Planet extends CelestialBody{
             
         }
     }
-
+    
+    public boolean getAtmospherePresence(){
+        return hasAtmosphere;
+    }
+    
+    public double getAtmosphereHeight(){
+        return atmosphereHeight;
+    }
 
     
 }
