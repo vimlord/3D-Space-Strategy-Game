@@ -8,7 +8,7 @@ package entities.ships;
 public class Corvette extends Ship{
 	
 	public Corvette(double X, double Y, double Z, int modifier){
-		super(X,Y,Z,80,0,0,4,1,modifier);
+		super(X,Y,Z,40,0,0,4,1,modifier);
 	}
 	
 }
