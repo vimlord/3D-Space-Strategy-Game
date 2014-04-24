@@ -11,6 +11,7 @@ import java.awt.Image;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import main.*;
+import physics.Orbit;
 
 /*
  * This code is a template for creating shapes on a 3D canvas. The base code
@@ -64,16 +65,24 @@ public class Tester extends Applet {
         //clicked on
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        /*
+        /* Tests Ships and Missiles
         EntityList.addShip(new Ship(200,0,0,10,0,0,0,1,0));
         EntityList.addShip(new Ship(-200,0,0,10,1,1,35,1,0));
         
         EntityList.getShip(1).giveOrders(new Attack(true, false, false, EntityList.getShip(0)));
         */ 
         
+        /* Tests Black Holes
         EntityList.addCelestialBody(new BlackHole(0,0,0,20));
+         */
         
-        /*
+        EntityList.addCelestialBody(new CelestialBody(0,0,0,15082956259426847.662141779788839,10));
+        EntityList.addCelestialBody(new CelestialBody(100,0,0,100,10));
+        
+        Orbit o = new Orbit(100,Math.toRadians(90),0,Math.toRadians(0),EntityList.getCelestialBody(0));
+        EntityList.getCelestialBody(1).putIntoOrbit(o);
+        
+        /* Tests CelestialBody collisions
         EntityList.addCelestialBody(new CelestialBody(100,0,0,1,10));
         EntityList.addCelestialBody(new CelestialBody(-100,0,0,1,10));
         EntityList.addCelestialBody(new CelestialBody(0,0,100,1,10));

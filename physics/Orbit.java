@@ -17,13 +17,13 @@ public class Orbit implements PhysicsConstants{
     protected double velX, velY, velZ;
     protected double x, y, z;
     
+    protected long ID;
+    
     /**
      * Defines an orbit around an Entity
-     * @param eccentricity measured in radians
      * @param semimajorAxis
      * @param inclination
      * @param longitudeAscendingNode
-     * @param argumentPeriapsis
      * @param meanAnomaly
      * @param entity The Entity being orbited
      */
@@ -33,6 +33,7 @@ public class Orbit implements PhysicsConstants{
         LAN = longitudeAscendingNode;
         MaE = meanAnomaly;
         mass = entity.getMass();
+        ID = entity.getID();
         
         calculateData();
     }
@@ -40,23 +41,26 @@ public class Orbit implements PhysicsConstants{
     private void calculateData() {
         double vel = Math.sqrt(G * mass/a);
         
-        velY = vel * Math.sin(MaE - LAN) * Math.sin(inc);
+        velY = vel * Math.cos(MaE - LAN) * Math.sin(inc);
         y = a * Math.sin(MaE - LAN) * Math.sin(inc);
         
-        double velXZ = vel * Math.sin(MaE) * Math.cos(inc);
+        double velXZ = vel * Math.cos(inc);
         double xz = Math.sqrt(Math.pow(a,2) - Math.pow(y, 2));
         
-        double x = xz * Math.cos(MaE - LAN);
-        double velX = velXZ * Math.cos(MaE - LAN);
+        x = xz * Math.cos(MaE - LAN);
+        velX = velXZ * Math.cos(MaE - LAN + Math.toRadians(90));
         
-        double z = xz * Math.sin(MaE - LAN);
-        double velZ = velXZ * Math.cos(MaE - LAN);
+        z = xz * Math.sin(MaE - LAN);
+        velZ = velXZ * Math.sin(MaE - LAN + Math.toRadians(90));
         
     }
     
     
     
-    
+    public void setMeanAnomaly(double meanAnomaly){
+        MaE = meanAnomaly;
+        calculateData();
+    }
     public double getX(){
         return x;
     }
@@ -74,6 +78,9 @@ public class Orbit implements PhysicsConstants{
     }
     public double getSpeedZ(){
         return velZ;
+    }
+    public long getID(){
+        return ID;
     }
     
 }

@@ -165,8 +165,26 @@ public abstract class Entity implements PhysicsConstants{
         other.velZ = newVelZ;
         
     }
-	
-	
+    
+    //-------------------
+    //Orbital Positioning
+    //-------------------
+    
+    public void putIntoOrbit(Orbit o){
+        x = o.getX() + EntityList.getEntity(o.getID()).getX();
+        y = o.getY() + EntityList.getEntity(o.getID()).getY();
+        z = o.getZ() + EntityList.getEntity(o.getID()).getZ();
+        
+        velX = o.getSpeedX();
+        velY = o.getSpeedY();
+        velZ = o.getSpeedZ();
+        
+    }
+    
+    public void putIntoOrbit(Orbit o, double MaE){
+        o.setMeanAnomaly(MaE);
+        putIntoOrbit(o);
+    }
      
     public double getX(){
         return x;
