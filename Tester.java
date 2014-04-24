@@ -79,8 +79,9 @@ public class Tester extends Applet {
         EntityList.addCelestialBody(new CelestialBody(0,0,0,15082956259426847.662141779788839,10));
         EntityList.addCelestialBody(new CelestialBody(100,0,0,100,10));
         
-        Orbit o = new Orbit(100,Math.toRadians(90),0,Math.toRadians(0),EntityList.getCelestialBody(0));
+        Orbit o = new Orbit(100,Math.toRadians(90),0,Math.toRadians(90),EntityList.getCelestialBody(0));
         EntityList.getCelestialBody(1).putIntoOrbit(o);
+        
         
         /* Tests CelestialBody collisions
         EntityList.addCelestialBody(new CelestialBody(100,0,0,1,10));
@@ -92,7 +93,6 @@ public class Tester extends Applet {
         //An infinite loop that only stops running when the Applet is closed
         while(true){
             //Outputs the contents of the screen
-            
             printScreen();
             XZ_ROT += Math.toRadians(0);
             CycleRunner.executeCycle();

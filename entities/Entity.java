@@ -82,10 +82,16 @@ public abstract class Entity implements PhysicsConstants{
          
         //Modifies force value based on cycles per second
         force *= (1/(double)(CycleRunner.cyclesPerSecond));
-         
-        velX += (distanceX/distanceXZ) *(distanceXZ/distance) * (force);
+        
+        //If there's no distance on the XZ plane, it doesn't gravitate on that
+        //axis.
+        if(distanceXZ != 0){
+            velX += (distanceX/distanceXZ) * (distanceXZ/distance) * (force);
+            velZ += (distanceZ/distanceXZ) * (distanceXZ/distance) * (force);
+        }
         velY += (distanceY/distance) * (force);
-        velZ += (distanceZ/distanceXZ) * (distanceXZ/distance) * (force);
+        
+        
          
     }
     
@@ -137,14 +143,18 @@ public abstract class Entity implements PhysicsConstants{
          
         //Modifies force value based on cycles per second
         force *= (1/(double)(CycleRunner.cyclesPerSecond));
-         
-        velX -= (distanceX/distanceXZ) *(distanceXZ/distance) * (force)/this.mass;
-        velY -= (distanceY/distance) * (force)/this.mass;
-        velZ -= (distanceZ/distanceXZ) * (distanceXZ/distance) * (force)/this.mass;
         
-        other.velX += (distanceX/distanceXZ) *(distanceXZ/distance) * (force)/other.mass;
+        if(distanceXZ != 0){
+            velX -= (distanceX/distanceXZ) *(distanceXZ/distance) * (force)/this.mass;
+            velZ -= (distanceZ/distanceXZ) * (distanceXZ/distance) * (force)/this.mass;
+        }
+        velY -= (distanceY/distance) * (force)/this.mass;
+        
+        if(distanceXZ != 0){
+            other.velX += (distanceX/distanceXZ) *(distanceXZ/distance) * (force)/other.mass;
+            other.velZ += (distanceZ/distanceXZ) * (distanceXZ/distance) * (force)/other.mass;
+        }
         other.velY += (distanceY/distance) * (force)/other.mass;
-        other.velZ += (distanceZ/distanceXZ) * (distanceXZ/distance) * (force)/other.mass;
         
         
         //The code below creates a system for perfectly inelastic collisions
