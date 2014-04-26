@@ -76,6 +76,7 @@ public class MapGenerator {
             list.add(new Planet(0,0,0,1.0243 * Math.pow(10,26), 24622000,0.45,200000));
             list.get(9).putIntoOrbit(new Orbit(2876679082000.0, Math.toRadians(6.43), Math.toRadians(131.79431), Math.toRadians(267.767281), list.get(0)),list.get(0));
             
+            return list;
             
         }
         return null;
