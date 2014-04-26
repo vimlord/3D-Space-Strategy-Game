@@ -50,14 +50,19 @@ public class MapGenerator {
             list.add(new Star(0, 0, 0, 1.98855 * Math.pow(10,30), 696342000));
             //Adds Mercury
             list.add(new Planet(0, 0, 0, 3.3022 * Math.pow(10,22), 2439700));
-            list.get(1).putIntoOrbit(new Orbit(57909050000.0,Math.toRadians(7.005),Math.toRadians(48.331),Math.toRadians(174.796),list.get(0)),list.get(0));
+            list.get(1).putIntoOrbit(new Orbit(57909050000.0, Math.toRadians(7.005), Math.toRadians(48.331), Math.toRadians(174.796), list.get(0)),list.get(0));
             //Adds Venus
             list.add(new Planet(0, 0, 0, 4.6876 * Math.pow(10,24), 6051800));
             list.get(2).putIntoOrbit(new Orbit(108208000000.0,Math.toRadians(3.86),Math.toRadians(76.678),Math.toRadians(50.115),list.get(0)),list.get(0));
-            //Adds Earth
-            
+            //Adds the Earth
+            list.add(new Planet(0,0,0,5.97219 * Math.pow(10,24), 6378100,1,100000));
+            list.get(3).putIntoOrbit(new Orbit(149598261000.0, Math.toRadians(7.155), Math.toRadians(348.73936), Math.toRadians(357.51716), list.get(0)),list.get(0));
+            //Adds the Moon
+            list.add(new Planet(0,0,0,7.34767309 * Math.pow(10,22),1737400));
+            list.get(4).putIntoOrbit(new Orbit(384399000,Math.toRadians(5.145),0,0, list.get(3)), list.get(3));
             //Adds Mars
-            
+            list.add(new Planet(0,0,0,6.4185 * Math.pow(10,23), 3386200,0.00627683197,200000));
+            list.get(5).putIntoOrbit(new Orbit(227939100000.0, Math.toRadians(5.65), Math.toRadians(49.562), Math.toRadians(19.3564), list.get(0)),list.get(0));
             //Adds Jupiter
             
             //Adds Saturn
