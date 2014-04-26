@@ -14,7 +14,7 @@ import main.CycleRunner;
  * @author Christopher
  */
 public class Planet extends CelestialBody{
-    private double atmPressure = 0;
+    private double atmDensity = 0;
     private boolean hasAtmosphere;
     private double atmosphereHeight = 0;
     
@@ -42,7 +42,7 @@ public class Planet extends CelestialBody{
      */
     public Planet(double X, double Y, double Z, double M, double R, double pressure, double height){
         super(X, Y, Z, M, R);
-        atmPressure = pressure;
+        atmDensity = pressure;
         if(height <= 0){
             atmosphereHeight = 0;
             hasAtmosphere = false;
@@ -58,7 +58,7 @@ public class Planet extends CelestialBody{
      * @param other The air pressure wherever the Entity is
      * @return The air pressure at the Entity's coordinates
      */
-    public double getPressure(Entity other){
+    public double getDensity(Entity other){
         if(testCollision(other) || !hasAtmosphere){
             return 0;
         }
@@ -68,7 +68,7 @@ public class Planet extends CelestialBody{
         double distance = Math.sqrt(Math.pow(distanceX,2) + Math.pow(distanceY,2) + Math.pow(distanceZ,2));
         distance -= this.radius;
         if(distance <= atmosphereHeight)
-            return (atmPressure * (1-(double)(distance/atmosphereHeight)));
+            return (atmDensity * (1-(double)(distance/atmosphereHeight)));
         else return 0;
     }
      
@@ -79,7 +79,7 @@ public class Planet extends CelestialBody{
      * @param Z The z-coordinate
      * @return The air pressure at the provided coordinates
      */
-    public double getPressure(double X, double Y, double Z){
+    public double getDensity(double X, double Y, double Z){
         if(!hasAtmosphere){
             return 0;
         }
@@ -91,7 +91,7 @@ public class Planet extends CelestialBody{
         if(distance < 0 || distance > atmosphereHeight){
             return 0;
         } else
-            return (atmPressure * (1-(double)(distance/atmosphereHeight)));
+            return (atmDensity * (1-(double)(distance/atmosphereHeight)));
     }
     
     public boolean testCollision(Entity other){
@@ -121,7 +121,7 @@ public class Planet extends CelestialBody{
             double relVelZ = other.getSpeedZ() - this.velZ;
             double relVel = Math.sqrt(Math.pow(relVelX,2) + Math.pow(relVelY,2) + Math.pow(relVelZ,2));
 
-            double dragForce = getPressure(other) * 0.47 * Math.pow(relVel,2) * Math.PI * Math.pow(other.getRadius(),2);
+            double dragForce = getDensity(other) * 0.47 * Math.pow(relVel,2) * Math.PI * Math.pow(other.getRadius(),2);
             other.setSpeedX(other.getSpeedX() - ((relVelX/relVel) * dragForce/other.getMass()));
             other.setSpeedY(other.getSpeedY() - ((relVelY/relVel) * dragForce/other.getMass()));
             other.setSpeedZ(other.getSpeedZ() - ((relVelZ/relVel) * dragForce/other.getMass()));
@@ -144,9 +144,9 @@ public class Planet extends CelestialBody{
             double relVelZ = other.getSpeedZ() - this.velZ;
             double relVel = Math.sqrt(Math.pow(relVelX,2) + Math.pow(relVelY,2) + Math.pow(relVelZ,2));
             
-            other.damage(getPressure(other) * (relVel - 120)/CycleRunner.cyclesPerSecond);
+            other.damage(getDensity(other) * (relVel - 120)/CycleRunner.cyclesPerSecond);
             
-            double dragForce = getPressure(other) * 0.47 * Math.pow(relVel,2) * Math.PI * Math.pow(other.getRadius(),2);
+            double dragForce = getDensity(other) * 0.47 * Math.pow(relVel,2) * Math.PI * Math.pow(other.getRadius(),2);
             other.setSpeedX(other.getSpeedX() - ((relVelX/relVel) * dragForce/other.getMass()));
             other.setSpeedY(other.getSpeedY() - ((relVelY/relVel) * dragForce/other.getMass()));
             other.setSpeedZ(other.getSpeedZ() - ((relVelZ/relVel) * dragForce/other.getMass()));
