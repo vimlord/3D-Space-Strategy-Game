@@ -185,10 +185,20 @@ public abstract class Entity implements PhysicsConstants{
         y = o.getY() + EntityList.getEntity(o.getID()).getY();
         z = o.getZ() + EntityList.getEntity(o.getID()).getZ();
         
-        velX = o.getSpeedX();
-        velY = o.getSpeedY();
-        velZ = o.getSpeedZ();
+        velX = o.getSpeedX() + EntityList.getEntity(o.getID()).getSpeedX();
+        velY = o.getSpeedY() + EntityList.getEntity(o.getID()).getSpeedY();
+        velZ = o.getSpeedZ() + EntityList.getEntity(o.getID()).getSpeedZ();
         
+    }
+    
+    public void putIntoOrbit(Orbit o, Entity e){
+        x = o.getX() + e.getX();
+        y = o.getY() + e.getY();
+        z = o.getZ() + e.getZ();
+
+        velX = o.getSpeedX() + e.getSpeedX();
+        velY = o.getSpeedY() + e.getSpeedY();
+        velZ = o.getSpeedZ() + e.getSpeedZ();
     }
     
     public void putIntoOrbit(Orbit o, double MaE){
