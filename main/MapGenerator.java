@@ -3,11 +3,13 @@
  * of the program. It is meant to generate map layouts, Ship positions, etc.
  * The code can generate maps, which are listed in a table below with their ID number
  *  
- * ID Number  |Map Name        |Description
- * -----------+----------------+-----------------------------------------
- *    0       |Empty Map       |An empty map with nothing in it.
- *    1       |Earth-Moon      |A 1:1 scale model of Earth and its moon.
- *    2       |Solar System    |A 1:1 scale version of the Solar System
+ * ID Number  |Map Name           |Description
+ * -----------+-------------------+-----------------------------------------
+ *    0       |Empty Map          |An empty map with nothing in it.
+ *    1       |Earth-Moon         |A 1:1 scale model of Earth and its moon.
+ *    2       |Solar System       |A 1:1 scale version of the Solar System
+ *    3       |Binary Star System |A pair of stars with a planet orbiting each one.
+ *    4       |Black Hole System  |A star (possibly two) orbiting a black hole. May or may not contain planets
  * 
  */
 
@@ -77,7 +79,16 @@ public class MapGenerator {
             list.get(9).putIntoOrbit(new Orbit(2876679082000.0, Math.toRadians(6.43), Math.toRadians(131.79431), Math.toRadians(267.767281), list.get(0)),list.get(0));
             
             return list;
+        } else if(ID == 3){
+            //This list stores a binary pair of stars with a planet around each.
+            ArrayList<CelestialBody> list = new ArrayList<>();
             
+            return list;
+        } else if(ID == 4){
+            //This list stores a black hole with stuff orbiting it.
+            ArrayList<CelestialBody> list = new ArrayList<>();
+            
+            return list;
         }
         return null;
     }
