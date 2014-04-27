@@ -215,7 +215,39 @@ public class EntityList {
         
         return list;
     }
-     
-     
+    
+    /**
+     * Resets the list of CelestialBody objects
+     */
+    public static void resetMap(){
+        bodies = new ArrayList<CelestialBody>();
+    }
+    
+    /**
+     *
+     * @param ID The map ID
+     * @param reset Whether or not the map should be reset if the requested map is available
+     */
+    public static void loadMap(int ID, boolean reset){
+        //Grabs the map
+        ArrayList<CelestialBody> add = MapGenerator.generateMap(ID);
+        
+        //Error check
+        if(add == null){
+            return;
+        }
+        
+        //Resets CelestialBody list if needed
+        if(reset){
+            resetMap();
+        }
+        
+        //Adds the CelestialBody objects
+        for(CelestialBody c : add){
+            bodies.add(c);
+        }
+        
+    }
+    
 }
 
