@@ -5,6 +5,7 @@ import entities.celestialBodies.BlackHole;
 import entities.celestialBodies.CelestialBody;
 import entities.projectiles.*;
 import entities.ships.Ship;
+import entities.ships.shipTools.Formation;
 import java.util.ArrayList;
  
 /*
@@ -247,6 +248,18 @@ public class EntityList {
             bodies.add(c);
         }
         
+    }
+    
+    public static void loadFormation(int ID, boolean reset){
+        if(reset){
+            ships = new ArrayList<>();
+        }
+        
+        ArrayList<Ship> list = Formation.getFormation(ID);
+        
+        for(Ship s : list){
+            ships.add(s);
+        }
     }
     
 }
