@@ -83,10 +83,29 @@ public class MapGenerator {
             //This list stores a binary pair of stars with a planet around each.
             ArrayList<CelestialBody> list = new ArrayList<>();
             
+            //Adds the first star
+            list.add(new Star(5000000000.0,0,0,1.49 * Math.pow(10,30), 560000000));
+            list.get(0).setSpeedX(7.911304);
+            
+            //Adds the second star
+            list.add(new Star(-5000000000.0,0,0,1.4907 * Math.pow(10,30), 560000000));
+            list.get(1).setSpeedX(-7.911304);
+            
             return list;
         } else if(ID == 4){
             //This list stores a black hole with stuff orbiting it.
             ArrayList<CelestialBody> list = new ArrayList<>();
+            
+            //Adds the promised Black Hole
+            list.add(new BlackHole(0,0,0,15000));
+            
+            //Adds a Star
+            list.add(new Star(0,0,0,Math.pow(10,30),6 * Math.pow(10,6)));
+            list.get(1).putIntoOrbit(new Orbit(20000000,0,0,0,list.get(0)), list.get(0));
+            
+            //Adds another star
+            list.add(new Star(0,0,0,Math.pow(10,30),6 * Math.pow(10,6)));
+            list.get(2).putIntoOrbit(new Orbit(20000000,0,Math.toRadians(180),0,list.get(0)), list.get(0));
             
             return list;
         }
