@@ -1,8 +1,7 @@
 package main;
  
 import entities.*;
-import entities.celestialBodies.BlackHole;
-import entities.celestialBodies.CelestialBody;
+import entities.celestialBodies.*;
 import entities.projectiles.*;
 import entities.ships.Ship;
 import entities.ships.shipTools.Formation;
