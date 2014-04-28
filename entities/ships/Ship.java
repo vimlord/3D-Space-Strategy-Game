@@ -8,9 +8,10 @@
  
 package entities.ships;
  
-import entities.ships.shipTools.orders.*;
 import entities.*;
+import entities.ships.shipTools.orders.*;
 import entities.ships.shipTools.projectile_launchers.*;
+import gameMechanics.FactionTag;
 import java.util.ArrayList;
 import main.*;
  
@@ -18,7 +19,7 @@ import main.*;
  *
  * @author Christopher Hittner
  */
-public class Ship extends Entity implements ControlSystem{
+public class Ship extends Entity implements ControlSystem, FactionTag{
     //Healths stats
     protected double maxHealth;
     protected double health;
@@ -55,7 +56,7 @@ public class Ship extends Entity implements ControlSystem{
     //The list of orders
     private ArrayList<Order> orders = new ArrayList<>();
     
-    
+    private int factionID;
     
     
     
@@ -766,6 +767,16 @@ public class Ship extends Entity implements ControlSystem{
      */
     public double getY_RotSpeed(){
         return Y_RotSpeed;
+    }
+
+    @Override
+    public void setFactionID(int ID) {
+        factionID = ID;
+    }
+
+    @Override
+    public int getFactionID() {
+        return factionID;
     }
 
     
