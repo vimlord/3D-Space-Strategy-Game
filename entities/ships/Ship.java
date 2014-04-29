@@ -11,7 +11,7 @@ package entities.ships;
 import entities.*;
 import entities.ships.shipTools.orders.*;
 import entities.ships.shipTools.projectile_launchers.*;
-import gameMechanics.FactionTag;
+import gameMechanics.factions.FactionTag;
 import java.util.ArrayList;
 import main.*;
  

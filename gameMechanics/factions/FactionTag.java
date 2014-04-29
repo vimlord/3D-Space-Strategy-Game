@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package gameMechanics;
+package gameMechanics.factions;
 
 /**
  *
@@ -13,6 +13,7 @@ package gameMechanics;
 public interface FactionTag {
     public void setFactionID(int ID);
     public int getFactionID();
+    
     
     
 }
