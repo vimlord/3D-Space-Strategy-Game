@@ -11,6 +11,8 @@ package entities.ships;
 import entities.*;
 import entities.ships.shipTools.orders.*;
 import entities.ships.shipTools.projectile_launchers.*;
+import gameMechanics.factions.Faction;
+import gameMechanics.factions.FactionList;
 import gameMechanics.factions.FactionTag;
 import java.util.ArrayList;
 import main.*;
@@ -446,6 +448,13 @@ public class Ship extends Entity implements ControlSystem, FactionTag{
                 boolean fireRailgun = (order.substring(8, 9).equals("T"));
                 
                 long targ = Long.parseLong(order.substring(10));
+                
+                Faction targFaction = FactionList.getFaction(((Ship)(EntityList.getEntity(targ))).getFactionID());
+                Faction thisFaction = FactionList.getFaction(factionID);
+                if(!(thisFaction.getDiplomaticStatus(targFaction) != 1) && thisFaction.getID() == targFaction.getID()){
+                    break;
+                }
+                
                 
                 if(fireMissile){
                     fireMissiles(tubeCount,targ);
