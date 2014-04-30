@@ -779,8 +779,13 @@ public class Ship extends Entity implements ControlSystem, FactionTag{
     }
 
     @Override
-    public void setFactionID(int ID) {
+    public long setFactionID(int ID) {
+        Faction joining = FactionList.getFaction(ID);
+        if(joining == null)
+            return -1;
+        FactionList.getFaction(ID).addMember(this);
         factionID = ID;
+        return getID();
     }
 
     @Override

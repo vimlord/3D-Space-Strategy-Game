@@ -41,4 +41,30 @@ public class FactionList {
         return null;
     }
     
+    public static ArrayList<Faction> getFactionList(){
+        return factions;
+    }
+    
+    public static void removeFaction(int ID){
+        for(int i = 0; i < factions.size(); i++){
+            Faction f = factions.get(i);
+            if(f.getID() == ID){
+                factions.remove(f);
+            }
+        }
+    }
+    public static void removeFaction(String tag){
+        for(int i = 0; i < factions.size(); i++){
+            Faction f = factions.get(i);
+            if(f.getTag() == tag){
+                factions.remove(f);
+            }
+        }
+    }
+    
+    public static void resetFactions(){
+        factions = new ArrayList<Faction>();
+        factionsGenerated = 0;
+    }
+    
 }

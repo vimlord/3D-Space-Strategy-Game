@@ -223,6 +223,12 @@ public class EntityList {
         bodies = new ArrayList<CelestialBody>();
     }
     
+    public static void resetList(){
+        resetMap();
+        ships = new ArrayList<>();
+        projectiles = new ArrayList<>();
+    }
+    
     /**
      *
      * @param ID The map ID

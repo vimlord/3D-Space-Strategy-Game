@@ -11,7 +11,7 @@ package gameMechanics.factions;
  * @author Christopher
  */
 public interface FactionTag {
-    public void setFactionID(int ID);
+    public long setFactionID(int ID);
     public int getFactionID();
     
     

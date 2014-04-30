@@ -41,9 +41,16 @@ public class Faction {
         factionName = name;
     }
     
-    public void addMember(Entity e){
-        if(e instanceof FactionTag)
-            ownedEntities.add(e.getID());
+    public void addMember(FactionTag f){
+        ownedEntities.add(f.setFactionID(this.factionID));
+        
+        
+    }
+    
+    public void removeMember(Entity e){
+        if(e instanceof FactionTag){
+            ownedEntities.remove(e.getID());
+        }
     }
     
     public Entity getEntity(int index){
@@ -98,6 +105,9 @@ public class Faction {
     }
     public String getName(){
         return factionName;
+    }
+    public ArrayList<Long> getMembers(){
+        return ownedEntities;
     }
     
 }
