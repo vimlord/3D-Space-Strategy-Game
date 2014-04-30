@@ -10,7 +10,8 @@
 package entities.ships.shipTools;
 
 import entities.ships.*;
-import java.util.ArrayList;
+import gameMechanics.factions.*;
+import java.util.*;
 
 /**
  *
@@ -28,6 +29,21 @@ public class Formation {
         }
         return null;
         
+    }
+    
+    public static ArrayList<Ship> getFormation(int ID, int modifier, Faction f){
+        return getFormation(ID, modifier, f.getID());
+    }
+    
+    public static ArrayList<Ship> getFormation(int ID, int modifier, int factionID){
+        ArrayList<Ship> ships = getFormation(ID, modifier);
+        
+        //Adds every ship to the Faction
+        for(Ship s : ships){
+            FactionList.getFaction(factionID).addMember(s);
+        }
+        
+        return ships;
     }
     
     public static ArrayList<Ship> Alpha(double XZ_ROT, double Y_ROT){
