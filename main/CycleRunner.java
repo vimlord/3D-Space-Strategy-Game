@@ -13,7 +13,7 @@ import gameMechanics.gameModes.*;
 public class CycleRunner {
     public static final int cyclesPerSecond = 16000;
     
-    private GameMode gamemode = new GameMode(0);
+    private static GameMode gamemode = null;
      
     public static void executeCycle(){
         //Causes gravitation
@@ -24,6 +24,10 @@ public class CycleRunner {
         EntityList.executeCollisions();
         //Kills "dead" Ships and other stuff... if the other stuff is implemented
         EntityList.executeCasualties();
+        //Runs necessary gamemode stuff
+        if(gamemode != null)
+            gamemode.executeCycle();
+        
         
     }
     

@@ -13,7 +13,7 @@ import main.*;
  *
  * @author Christopher
  */
-public class GameMode {
+public abstract class GameMode {
     private boolean running = false;
     
     int winner = -1;
@@ -46,6 +46,18 @@ public class GameMode {
     public void endGame(){
         running = false;
     }
+    
+    
+    public void executeCycle(){
+        if(!running)
+            return;
+    }
+    
+    /**
+     *
+     * @return Whether the game has been won
+     */
+    public abstract boolean testVictory();
     
     /**
      * Tests how many Factions still have members
