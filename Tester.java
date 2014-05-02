@@ -36,7 +36,7 @@ public class Tester extends Applet {
     
     private static int WIDTH = 800, HEIGHT = 600;
     private static boolean debug = true;
-    private static double XZ_ROT = Math.toRadians(30), Y_ROT = Math.toRadians(30);
+    private static double XZ_ROT = Math.toRadians(0), Y_ROT = Math.toRadians(0);
     private static double x = 0, y = 0, z = 0;
     
     //For value n, one pixel will represent n meters
@@ -86,6 +86,11 @@ public class Tester extends Applet {
         
         EntityList.loadFormation(0, false);
         
+        for(int i = 0; i < 13; i++){
+            EntityList.getShip(i).giveOrders(new Accelerate(100,100));
+        }
+        
+        
         /* Tests CelestialBody collisions
         EntityList.addCelestialBody(new CelestialBody(100,0,0,1,10));
         EntityList.addCelestialBody(new CelestialBody(-100,0,0,1,10));
@@ -97,7 +102,7 @@ public class Tester extends Applet {
         while(true){
             //Outputs the contents of the screen
             printScreen();
-            XZ_ROT += Math.toRadians(0);
+            Y_ROT += Math.toRadians(0);
             CycleRunner.executeCycle();
             count++;
             if(count%32 == 0){
@@ -189,31 +194,31 @@ public class Tester extends Applet {
         
         
         double camX = x + 250 * pixelMeterRatio * (Math.cos(Math.toRadians(90) - XZ_ROT) * Math.cos(Math.toRadians(90) - Y_ROT));
-        double camY = y + 250 * pixelMeterRatio * (-Y_ROT);
+        double camY = y + 250 * pixelMeterRatio * Math.cos(-Y_ROT);
         double camZ = z + 250 * pixelMeterRatio * (Math.sin(Math.toRadians(90) - XZ_ROT) * Math.cos(Math.toRadians(90) - Y_ROT));
         
-        double distCamX = X+camX;
-        double distCamY = Y+camY;
-        double distCamZ = Z+camZ;
+        double distCamX = -X + camX;
+        double distCamY = -Y + camY;
+        double distCamZ = -Z + camZ;
         double distCam = Math.sqrt(Math.pow(distCamX, 2) + Math.pow(distCamY, 2) + Math.pow(distCamZ, 2));
         
-        if(dist > 250 && distCam < dist){
+        if(dist > 250 * pixelMeterRatio && distCam < dist){
             return;
         }
         
-        int radius = (int)(250 * R/distCam);
+        int radius = (int)(250 * R/(distCam));
         
         
-        if((250 * R/distCam) < 0.5){
+        if(radius < 0.5){
             return;
         }
         
         double magnitudeXZ = Math.sqrt(Math.pow((X-x),2) + Math.pow((Z-z),2));
         if(magnitudeXZ == 0){
             if(fill){
-                g.fillOval((int)((frame.getWidth()/2) - radius / pixelMeterRatio), (int)((frame.getHeight()/2 - 18) - radius / pixelMeterRatio), (int)(2 * radius / pixelMeterRatio), (int)(2 * radius / pixelMeterRatio));
+                g.fillOval((int)((frame.getWidth()/2) - radius), (int)((frame.getHeight()/2 - 18) - radius), (int)(2 * radius), (int)(2 * radius));
             } else {
-                g.drawOval((int)((frame.getWidth()/2) - radius / pixelMeterRatio), (int)((frame.getHeight()/2 - 18) - radius / pixelMeterRatio), (int)(2 * radius / pixelMeterRatio), (int)(2 * radius / pixelMeterRatio));
+                g.drawOval((int)((frame.getWidth()/2) - radius), (int)((frame.getHeight()/2 - 18) - radius), (int)(2 * radius), (int)(2 * radius));
             }
             
             return;
@@ -223,19 +228,19 @@ public class Tester extends Applet {
         if((X-x) < 0){
             angleXZ += Math.toRadians(180);
         }
-        
-        double magnitude = Math.sqrt(Math.pow(magnitudeXZ,2) + Math.pow((Y-y),2));
+        double magnitudeY = Y-y;
+        double magnitude = Math.sqrt(Math.pow(magnitudeXZ,2) + Math.pow(magnitudeY,2));
         double angleY = Math.atan((Y-y)/magnitudeXZ);
         
         
-        double ptX = frame.getWidth()/2 - radius / pixelMeterRatio + (Math.cos(angleXZ + XZ_ROT) * magnitudeXZ / pixelMeterRatio);
-        double ptY = (frame.getHeight()/2 - 18) - radius / pixelMeterRatio - (Math.sin(angleXZ + XZ_ROT) * magnitudeXZ * Math.sin(Y_ROT)) / pixelMeterRatio - Y * Math.cos(Y_ROT) / pixelMeterRatio;
+        double ptX = frame.getWidth()/2 - radius + (Math.cos(angleXZ + XZ_ROT) * magnitudeXZ / pixelMeterRatio);
+        double ptY = (frame.getHeight()/2 - 18) - radius - (Math.sin(angleXZ + XZ_ROT) * magnitudeXZ * Math.sin(Y_ROT) / pixelMeterRatio) - (magnitudeY * Math.cos(Y_ROT) / pixelMeterRatio);
         
         
         if(fill){
-            g.fillOval((int)(ptX), (int)(ptY), (int)(2 * radius / pixelMeterRatio), (int)(2 * radius / pixelMeterRatio));
+            g.fillOval((int)(ptX), (int)(ptY), (int)(2 * radius), (int)(2 * radius));
         } else {
-            g.drawOval((int)(ptX), (int)(ptY), (int)(2 * radius / pixelMeterRatio), (int)(2 * radius / pixelMeterRatio));
+            g.drawOval((int)(ptX), (int)(ptY), (int)(2 * radius), (int)(2 * radius));
         }
     }
     
