@@ -402,7 +402,7 @@ public class Ship extends Entity implements ControlSystem, FactionTag{
             }
         } else if(order.substring(0,5).equals("(ROT)")){
             //This is an rotation order
-            int border = order.indexOf("-");
+            int border = order.indexOf("|");
             double XZ = Double.parseDouble(order.substring(5, border));
             double Y = Double.parseDouble(order.substring(border + 1));
             

@@ -15,7 +15,7 @@ public class Rotate extends Order{
     
     public Rotate(double XZ, double Y){
         order = "(ROT)";
-        order += (XZ + "-" + Y);
+        order += (XZ + "|" + Y);
     }
     
 }
