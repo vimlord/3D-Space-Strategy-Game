@@ -48,9 +48,9 @@ public abstract class Entity implements PhysicsConstants{
      */
     public void move(){
         testSpeedOfLight();
-        x += velX/CycleRunner.cyclesPerSecond;
-        y += velY/CycleRunner.cyclesPerSecond;
-        z += velZ/CycleRunner.cyclesPerSecond;
+        x += CycleRunner.getTimeWarp() * velX/CycleRunner.cyclesPerSecond;
+        y += CycleRunner.getTimeWarp() * velY/CycleRunner.cyclesPerSecond;
+        z += CycleRunner.getTimeWarp() * velZ/CycleRunner.cyclesPerSecond;
         
     }
     
@@ -81,7 +81,7 @@ public abstract class Entity implements PhysicsConstants{
          
          
         //Modifies force value based on cycles per second
-        force *= (1/(double)(CycleRunner.cyclesPerSecond));
+        force *= (CycleRunner.getTimeWarp()/(CycleRunner.cyclesPerSecond));
         
         //If there's no distance on the XZ plane, it doesn't gravitate on that
         //axis.
@@ -142,7 +142,7 @@ public abstract class Entity implements PhysicsConstants{
          
          
         //Modifies force value based on cycles per second
-        force *= (1/(double)(CycleRunner.cyclesPerSecond));
+        force *= (CycleRunner.getTimeWarp()/(double)(CycleRunner.cyclesPerSecond));
         
         if(distanceXZ != 0){
             velX -= (distanceX/distanceXZ) *(distanceXZ/distance) * (force)/this.mass;

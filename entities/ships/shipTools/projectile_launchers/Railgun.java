@@ -17,7 +17,7 @@ import main.EntityList;
  */
 public class Railgun implements ProjectileLauncher{
     public final int cooldownTime = 60 * CycleRunner.cyclesPerSecond;
-    private int cooldown = 0;
+    private double cooldown = 0;
     private int ammo;
     public static final double mass = 5000;
     
@@ -38,12 +38,14 @@ public class Railgun implements ProjectileLauncher{
     
     public void cycle(){
         if(cooldown > 0){
-            cooldown--;
+            cooldown-= CycleRunner.getTimeWarp();
+        } else {
+            cooldown = 0;
         }
     }
     
     public boolean canFire(){
-        if(cooldown == 0 && ammo > 0){ 
+        if(cooldown <= 0 && ammo > 0){ 
             return true;
         } else {
             return false;

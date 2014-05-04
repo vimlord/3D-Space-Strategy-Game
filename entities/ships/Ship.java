@@ -30,7 +30,7 @@ public class Ship extends Entity implements ControlSystem, FactionTag{
     
     protected double maxShields;
     protected double shields;
-    protected int cyclesSinceAttacked = 0;
+    protected double cyclesSinceAttacked = 0;
     protected final int secondsToStartCharge = 10, secondsToRebootShields = 20;
     
     protected double XZ_ROT = 0, Y_ROT = 0;
@@ -232,8 +232,8 @@ public class Ship extends Entity implements ControlSystem, FactionTag{
     
     public void cycle(){
         weaponCycle();
-        healHealth(1);
-        healShields(1);
+        healHealth(CycleRunner.getTimeWarp());
+        healShields(CycleRunner.getTimeWarp());
         chargeWarpDrive();
         if(tubeCount >= missiles.length){
             tubeCount -= missiles.length;
@@ -249,7 +249,7 @@ public class Ship extends Entity implements ControlSystem, FactionTag{
      * Heals a little bit of HP
      * @param factor The factor at which the ship's repair speed will be multiplied
      */
-    public void healHealth(int factor){
+    public void healHealth(double factor){
         //Determines max health that will be healed this cycle
         double healthToHeal = factor * (Math.random()/CycleRunner.cyclesPerSecond) / 30.0;
         
@@ -273,20 +273,20 @@ public class Ship extends Entity implements ControlSystem, FactionTag{
         }
     }
     
-    public void healShields(int factor){
-        double shieldPerSecond = 1;
+    public void healShields(double factor){
+        double shieldPerSecond = factor;
         
         if(shields <= 0){
             //The shields are down; extra time will be needed to reboot the shields
             if(cyclesSinceAttacked < (CycleRunner.cyclesPerSecond * (secondsToStartCharge + secondsToRebootShields))){
-                cyclesSinceAttacked++;
+                cyclesSinceAttacked+= factor;
             } else {
                 shields += shieldPerSecond/CycleRunner.cyclesPerSecond;
             }
         } else {
             //The shields are up and operational, but need some time to start recharging
             if(cyclesSinceAttacked < (CycleRunner.cyclesPerSecond * secondsToStartCharge)){
-                cyclesSinceAttacked++;
+                cyclesSinceAttacked+= factor;
             } else {
                 shields += shieldPerSecond/CycleRunner.cyclesPerSecond;
             }
@@ -331,8 +331,8 @@ public class Ship extends Entity implements ControlSystem, FactionTag{
      * Performs rotation based on specified values
      */
     public void rotate(){
-        XZ_ROT += XZ_RotSpeed/CycleRunner.cyclesPerSecond;
-        Y_ROT += Y_RotSpeed/CycleRunner.cyclesPerSecond;
+        XZ_ROT += CycleRunner.getTimeWarp() * XZ_RotSpeed/CycleRunner.cyclesPerSecond;
+        Y_ROT += CycleRunner.getTimeWarp() * Y_RotSpeed/CycleRunner.cyclesPerSecond;
         
         //Corrections in case the ship rotates beyond a certain degree value
         if(Y_ROT > Math.toRadians(90.0)){
@@ -532,9 +532,9 @@ public class Ship extends Entity implements ControlSystem, FactionTag{
      */
     public void accelerate() {
         double force = 30 * 750000000.0 * throttle/100;
-        velX += Math.cos(XZ_ROT) * Math.cos(Y_ROT) * (force/mass)/CycleRunner.cyclesPerSecond;
-        velZ += Math.sin(XZ_ROT) * Math.cos(Y_ROT) * (force/mass)/CycleRunner.cyclesPerSecond;
-        velY += Math.sin(Y_ROT) * (force/mass)/CycleRunner.cyclesPerSecond;
+        velX += CycleRunner.getTimeWarp() * Math.cos(XZ_ROT) * Math.cos(Y_ROT) * (force/mass)/CycleRunner.cyclesPerSecond;
+        velZ += CycleRunner.getTimeWarp() * Math.sin(XZ_ROT) * Math.cos(Y_ROT) * (force/mass)/CycleRunner.cyclesPerSecond;
+        velY += CycleRunner.getTimeWarp() * Math.sin(Y_ROT) * (force/mass)/CycleRunner.cyclesPerSecond;
     }
     
     
@@ -606,9 +606,9 @@ public class Ship extends Entity implements ControlSystem, FactionTag{
         }
         
         if(warping){
-            x += (c * warpMode) * Math.cos(XZ_ROT) * Math.cos(Y_ROT) / CycleRunner.cyclesPerSecond;
-            y += (c * warpMode) * Math.sin(Y_ROT) / CycleRunner.cyclesPerSecond;
-            z += (c * warpMode) * Math.sin(XZ_ROT) * Math.cos(Y_ROT) / CycleRunner.cyclesPerSecond;
+            x += CycleRunner.getTimeWarp() * (c * warpMode) * Math.cos(XZ_ROT) * Math.cos(Y_ROT) / CycleRunner.cyclesPerSecond;
+            y += CycleRunner.getTimeWarp() * (c * warpMode) * Math.sin(Y_ROT) / CycleRunner.cyclesPerSecond;
+            z += CycleRunner.getTimeWarp() * (c * warpMode) * Math.sin(XZ_ROT) * Math.cos(Y_ROT) / CycleRunner.cyclesPerSecond;
         }
     }
     

@@ -16,7 +16,8 @@ import main.*;
  */
 public class MissileBattery implements ProjectileLauncher {
     private final int magazineSize, startMagazines, reloadTime;
-    private int wait = 0, shotsLeft, magazinesLeft;
+    private double wait = 0;
+    private int shotsLeft, magazinesLeft;
     public static final double mass = 500;
     
     
@@ -62,10 +63,10 @@ public class MissileBattery implements ProjectileLauncher {
     @Override
     public void cycle() {
         if(wait > 0){
-            wait--;
+            wait-= CycleRunner.getTimeWarp();
         }
         
-        if(wait == 0){
+        if(wait <= 0){
             if(shotsLeft == 0 && magazinesLeft > 0){
                 shotsLeft = magazineSize;
                 magazinesLeft--;

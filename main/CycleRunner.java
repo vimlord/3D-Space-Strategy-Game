@@ -11,7 +11,11 @@ import gameMechanics.gameModes.*;
  * @author Christopher Hittner
  */
 public class CycleRunner {
+    //The amount of cycles executed per secod
     public static final int cyclesPerSecond = 16000;
+    //The factor by which all physics calculations are multipled; a higher number
+    //represents a higher speed
+    private static double timeWarp = 1;
     
     private static GameMode gamemode = null;
      
@@ -37,6 +41,12 @@ public class CycleRunner {
     
     public void setGamemode(GameMode g){
         gamemode = g;
+    }
+    public static double getTimeWarp(){
+        return timeWarp;
+    }
+    public static void setTimeWarp(double value){
+        timeWarp = value;
     }
 }
 
