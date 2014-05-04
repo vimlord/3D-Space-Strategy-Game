@@ -36,7 +36,7 @@ public class Tester extends Applet {
     
     private static int WIDTH = 800, HEIGHT = 600;
     private static boolean debug = true;
-    private static double XZ_ROT = Math.toRadians(0), Y_ROT = Math.toRadians(0);
+    private static double XZ_ROT = Math.toRadians(30), Y_ROT = Math.toRadians(30);
     private static double x = 0, y = 0, z = 0;
     
     //For value n, one pixel will represent n meters
@@ -86,9 +86,8 @@ public class Tester extends Applet {
         
         EntityList.loadFormation(0, false);
         
-        for(int i = 0; i < 13; i++){
-            EntityList.getShip(i).giveOrders(new Accelerate(100,100));
-        }
+        EntityList.getShip(0).giveOrders(new Rotate(Math.toRadians(0),Math.toRadians(-180)));
+        EntityList.getShip(0).giveOrders(new Accelerate(100,100));
         
         
         /* Tests CelestialBody collisions

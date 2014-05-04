@@ -322,27 +322,21 @@ public class Ship extends Entity implements ControlSystem, FactionTag{
             XZ_RotSpeed = 0;
             Y_RotSpeed = 0;
         } else {
-            XZ_RotSpeed = 5.0 * Math.toRadians((7500000000.0/mass) * horiz)/CycleRunner.cyclesPerSecond;
-            Y_RotSpeed = 5.0 * Math.toRadians((7500000000.0/mass) * vert)/CycleRunner.cyclesPerSecond;
+            XZ_RotSpeed = 10000.0 * Math.toRadians((10000000000.0/mass) * horiz)/CycleRunner.cyclesPerSecond;
+            Y_RotSpeed = 10000.0 * Math.toRadians((7500000000.0/mass) * vert)/CycleRunner.cyclesPerSecond;
         }
     }
      
-    /**
-     * Performs rotation based on specified values
-     */
-    public void rotate(){
-        XZ_ROT += CycleRunner.getTimeWarp() * XZ_RotSpeed/CycleRunner.cyclesPerSecond;
-        Y_ROT += CycleRunner.getTimeWarp() * Y_RotSpeed/CycleRunner.cyclesPerSecond;
-        
+    private void rotationCorrection(){
         //Corrections in case the ship rotates beyond a certain degree value
         if(Y_ROT > Math.toRadians(90.0)){
-            Y_ROT -= Math.toRadians(180.0);
+            Y_ROT = Math.toRadians(180.0) - Y_ROT;
             Y_ROT_Target -= Math.toRadians(180.0);
             Y_RotSpeed *= -1.0;
             XZ_ROT += Math.toRadians(180.0);
             XZ_ROT_Target += Math.toRadians(180.0);
         } else if(Y_ROT < Math.toRadians(-90.0)){
-            Y_ROT += Math.toRadians(180.0);
+            Y_ROT = Math.toRadians(-180.0) - Y_ROT;
             Y_ROT_Target += Math.toRadians(180.0);
             Y_RotSpeed *= -1.0;
             XZ_ROT += Math.toRadians(180);
@@ -356,7 +350,17 @@ public class Ship extends Entity implements ControlSystem, FactionTag{
             XZ_ROT_Target += Math.toRadians(360.0);
         }
     }
-     
+    
+    /**
+     * Performs rotation based on specified values
+     */
+    public void rotate(){
+        rotationCorrection();
+        
+        XZ_ROT += CycleRunner.getTimeWarp() * XZ_RotSpeed/CycleRunner.cyclesPerSecond;
+        Y_ROT += CycleRunner.getTimeWarp() * Y_RotSpeed/CycleRunner.cyclesPerSecond;
+    }
+    
     public void setRotationTarget(double XZ, double Y){
         XZ_ROT_Target = XZ;
         Y_ROT_Target = Y;
@@ -384,6 +388,7 @@ public class Ship extends Entity implements ControlSystem, FactionTag{
             order = "(   )";
         }
         
+        
         //This will make sure that if a Ship doesn't have rotation orders or
         //acceleration orders, it won't accelerate
         setAcceleration(0);
@@ -397,11 +402,17 @@ public class Ship extends Entity implements ControlSystem, FactionTag{
             }
         } else if(order.substring(0,5).equals("(ROT)")){
             //This is an rotation order
-            int border = orders.indexOf("-");
+            int border = order.indexOf("-");
             double XZ = Double.parseDouble(order.substring(5, border));
             double Y = Double.parseDouble(order.substring(border + 1));
+            
             setRotationTarget(XZ, Y);
-            if(Math.abs(Y_ROT - Y) < Math.toRadians(500/CycleRunner.cyclesPerSecond) && Math.abs(XZ_ROT - XZ) < Math.toRadians(500/CycleRunner.cyclesPerSecond)){
+            rotationCorrection();
+            
+            orders.remove(0);
+            orders.add(0,new Rotate(XZ_ROT_Target,Y_ROT_Target));
+            
+            if(Math.abs(Y_ROT - Y) < Math.toRadians(200.0/CycleRunner.cyclesPerSecond) && Math.abs(XZ_ROT - XZ) < Math.toRadians(200.0/CycleRunner.cyclesPerSecond)){
                 orders.remove(0);
             }
         } else if(order.equals("(WAIT)")){
@@ -481,7 +492,6 @@ public class Ship extends Entity implements ControlSystem, FactionTag{
                 break;
             }
         }
-        
         
         
         if(rotationTarget){
