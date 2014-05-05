@@ -23,22 +23,29 @@ public abstract class GameMode {
     
     protected int winner = -1;
     
-    private int[] involvedFactions;
+    protected int[][] involvedFactions;
     protected ArrayList<Integer> survivors = new ArrayList<>();
     private int mapNumber;
     
-    public GameMode(int factions, int map){
-        involvedFactions = new int[factions];
+    public GameMode(int[][] factions, int map){
+        involvedFactions = factions;
         mapNumber = map;
     }
     
-    public GameMode(int factions){
-        involvedFactions = new int[factions];
+    public GameMode(int factions[][]){
+        involvedFactions = factions;
         mapNumber = 0;
     }
     
     
     public void startGame(){
+        for(int x = 0; x < involvedFactions.length; x++){
+            for(int y = 0; y < involvedFactions[x].length; y++)
+                if(involvedFactions[x][y] < 0){
+                    return;
+                }
+        }
+        
         running = true;
         
         winner = -1;
@@ -69,8 +76,17 @@ public abstract class GameMode {
      * Tests how many Factions still have members
      * @return
      */
+    /**
+     * Tests how many Factions still have members
+     * @return
+     */
     public int testSurvivors(){
-        ArrayList<Faction> factions = FactionList.getFactionList();
+        ArrayList<Faction> factions = new ArrayList<>();
+        for(int x = 0; x < involvedFactions.length; x++){
+            for(int y = 0; y < involvedFactions[x].length; y++){
+                factions.add(FactionList.getFaction(involvedFactions[x][y]));
+            }
+        }
         survivors = new ArrayList<>();
         for(Faction f : factions){
             ArrayList<Long> members = f.getMembers();
@@ -84,6 +100,30 @@ public abstract class GameMode {
         return survivors.size();
     }
     
+    public int testSurvivingTeams(){
+        int count = 0;
+        survivors = new ArrayList<>();
+        for (int x = 0; x < involvedFactions.length; x++) {
+            for (int y = 0; y < involvedFactions[x].length; y++) {
+                Faction f = FactionList.getFaction(involvedFactions[x][y]);
+                ArrayList<Long> members = f.getMembers();
+                boolean teamLiving = false;
+                for(long l : members){
+                    if(EntityList.getEntity(l) != null){
+                        survivors.add(x);
+                        teamLiving = true;
+                        break;
+                    }
+                }
+                if(teamLiving){
+                    break;
+                }
+            }
+        }
+        return count;
+    }
+    
+    protected abstract void determineWinner();
     /**
      * Returns the ID of the winning Faction, or -1 if there is no winner.
      * @return The winner's ID, or -1.
@@ -93,6 +133,26 @@ public abstract class GameMode {
     }
     public boolean getStatus(){
         return running;
+    }
+    public void addFaction(int ID){
+        for(int x = 0; x < involvedFactions.length; x++){
+            for(int y = 0; y < involvedFactions[x].length; y++)
+                if(involvedFactions[x][y] == -1){
+                involvedFactions[x][y] = ID;
+                return;
+                } else if(involvedFactions[x][y] == ID){
+                    return;
+                }
+        }
+    }
+    public void removeFaction(int ID){
+        for(int x = 0; x < involvedFactions.length; x++){
+            for(int y = 0; y < involvedFactions[x].length; y++)
+                if(involvedFactions[x][y] == ID){
+                    involvedFactions[x][y] = -1;
+                    return;
+            }
+        }
     }
             
 }
