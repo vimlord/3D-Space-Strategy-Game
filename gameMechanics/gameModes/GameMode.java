@@ -1,6 +1,11 @@
 /*
  * This class stores data for a game mode. This will track stats for how a
  * series of Factions are doing.
+ *
+ * I want to have the following gamemodes:
+    Free-for-all
+    Team Deathmatch
+    
  */
 
 package gameMechanics.gameModes;
@@ -16,9 +21,10 @@ import main.*;
 public abstract class GameMode {
     private boolean running = false;
     
-    int winner = -1;
+    protected int winner = -1;
     
     private int[] involvedFactions;
+    protected ArrayList<Integer> survivors = new ArrayList<>();
     private int mapNumber;
     
     public GameMode(int factions, int map){
@@ -65,23 +71,17 @@ public abstract class GameMode {
      */
     public int testSurvivors(){
         ArrayList<Faction> factions = FactionList.getFactionList();
-        int living = 0;
+        survivors = new ArrayList<>();
         for(Faction f : factions){
             ArrayList<Long> members = f.getMembers();
             for(long l : members){
                 if(EntityList.getEntity(l) != null){
-                    living++;
-                    //This will only remain if it is the only one with members.
-                    //If it isn't, it will become null again.
-                    winner = f.getID();
+                    survivors.add(f.getID());
                     break;
                 }
             }
         }
-        if(living > 1){
-            winner = -1;
-        }
-        return living;
+        return survivors.size();
     }
     
     /**
