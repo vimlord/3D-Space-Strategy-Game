@@ -205,7 +205,16 @@ public abstract class Entity implements PhysicsConstants{
         o.setMeanAnomaly(MaE);
         putIntoOrbit(o);
     }
-     
+    
+    public void setX(double X){
+        x = X;
+    }
+    public void setY(double Y){
+        y = Y;
+    }
+    public void setZ(double Z){
+        z = Z;
+    }
     public double getX(){
         return x;
     }

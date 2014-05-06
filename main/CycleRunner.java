@@ -31,6 +31,8 @@ public class CycleRunner {
         //Runs necessary gamemode stuff
         if(gamemode != null)
             gamemode.executeCycle();
+        //Runs the Structure act methods
+        EntityList.executeStructure();
         
         
     }
