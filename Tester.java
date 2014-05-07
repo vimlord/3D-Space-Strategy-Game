@@ -2,6 +2,7 @@ import entities.*;
 import entities.celestialBodies.*;
 import entities.ships.Ship;
 import entities.ships.shipTools.orders.*;
+import entities.structures.WarpGate;
 import java.applet.Applet;
 import java.awt.Color;
 import java.awt.Font;
@@ -171,21 +172,20 @@ public class Tester extends Applet {
     public void drawEntity(Graphics2D g2, Entity e){
         if(e instanceof BlackHole){
             g2.setColor(Color.BLACK);
-            drawSphere(g2, e.getX(), e.getY(), e.getZ(), 2.0 * e.getRadius(), true);
+            fillSphere(g2, e.getX(), e.getY(), e.getZ(), 2.0 * e.getRadius());
         } else if(e instanceof Planet){
             Planet p = (Planet) e;
-            drawSphere(g2, e.getX(), e.getY(), e.getZ(), e.getRadius(), true);
-            drawSphere(g2, e.getX(), e.getY(), e.getZ(), 2.0 * p.getAtmosphereHeight(), false);
+            drawSphere(g2, e.getX(), e.getY(), e.getZ(), e.getRadius());
+            drawSphere(g2, e.getX(), e.getY(), e.getZ(), 2.0 * p.getAtmosphereHeight());
+        } else if(e instanceof WarpGate){
+            drawRing(g2, e.getX(), e.getY(), e.getZ(), e.getRadius());
         } else {
-            drawSphere(g2, e.getX(), e.getY(), e.getZ(), e.getRadius(), false);
+            drawSphere(g2, e.getX(), e.getY(), e.getZ(), e.getRadius());
         }
     }
     
-    
-    public void drawSphere(Graphics2D g, double X, double Y, double Z, double R, boolean fill){
-        
-        
-        
+    public int[] buildSphere(double X, double Y, double Z, double R){
+        int[] values = new int[3];
         double distX = X-x;
         double distY = Y-y;
         double distZ = Z-z;
@@ -202,25 +202,24 @@ public class Tester extends Applet {
         double distCam = Math.sqrt(Math.pow(distCamX, 2) + Math.pow(distCamY, 2) + Math.pow(distCamZ, 2));
         
         if(dist > 250 * pixelMeterRatio && distCam < dist){
-            return;
+            return null;
         }
         
         int radius = (int)(250 * R/(distCam));
         
+        values[2] = (int)(radius);
         
         if(radius < 0.5){
-            return;
+            return null;
         }
+        
+        
         
         double magnitudeXZ = Math.sqrt(Math.pow((X-x),2) + Math.pow((Z-z),2));
         if(magnitudeXZ == 0){
-            if(fill){
-                g.fillOval((int)((frame.getWidth()/2) - radius), (int)((frame.getHeight()/2 - 18) - radius), (int)(2 * radius), (int)(2 * radius));
-            } else {
-                g.drawOval((int)((frame.getWidth()/2) - radius), (int)((frame.getHeight()/2 - 18) - radius), (int)(2 * radius), (int)(2 * radius));
-            }
-            
-            return;
+            values[0] = (int)(frame.getWidth()/2) - radius;
+            values[1] = (int)((frame.getHeight()/2 - 18) - radius);
+            return values;
         }
         
         double angleXZ = Math.atan((Z-z)/(X-x));
@@ -232,16 +231,49 @@ public class Tester extends Applet {
         double angleY = Math.atan((Y-y)/magnitudeXZ);
         
         
-        double ptX = frame.getWidth()/2 - radius + (Math.cos(angleXZ + XZ_ROT) * magnitudeXZ / pixelMeterRatio);
-        double ptY = (frame.getHeight()/2 - 18) - radius - (Math.sin(angleXZ + XZ_ROT) * magnitudeXZ * Math.sin(Y_ROT) / pixelMeterRatio) - (magnitudeY * Math.cos(Y_ROT) / pixelMeterRatio);
+        values[0] = (int)(frame.getWidth()/2 - radius + (Math.cos(angleXZ + XZ_ROT) * magnitudeXZ / pixelMeterRatio));
+        values[1] = (int)((frame.getHeight()/2 - 18) - radius - (Math.sin(angleXZ + XZ_ROT) * magnitudeXZ * Math.sin(Y_ROT) / pixelMeterRatio) - (magnitudeY * Math.cos(Y_ROT) / pixelMeterRatio));
         
+        return values;
         
-        if(fill){
-            g.fillOval((int)(ptX), (int)(ptY), (int)(2 * radius), (int)(2 * radius));
-        } else {
-            g.drawOval((int)(ptX), (int)(ptY), (int)(2 * radius), (int)(2 * radius));
-        }
     }
+    
+    public void drawSphere(Graphics2D g, double X, double Y, double Z, double R){
+        int[] points = buildSphere(X,Y,Z,R);
+        
+        if(points == null){
+            return;
+        }
+        
+        g.drawOval(points[0], points[1], (int)(2 * points[2]), (int)(2 * points[2]));
+        
+    }
+    
+    public void fillSphere(Graphics2D g, double X, double Y, double Z, double R){
+        int[] points = buildSphere(X,Y,Z,R);
+        
+        if(points == null){
+            return;
+        }
+        
+        g.fillOval(points[0], points[1], (int)(2 * points[2]), (int)(2 * points[2]));
+    }
+    
+    public void drawRing(Graphics2D g, double X, double Y, double Z, double R){
+        int[] points = buildSphere(X,Y,Z,R);
+        
+        if(points == null){
+            return;
+        }
+        
+        
+        g.drawOval(points[0], (int)(points[1] + Math.cos(Y_ROT) * points[2]), (int)(2 * points[2]), (int)(2 * points[2] * Math.sin(Y_ROT)));
+        
+    }
+    
+    
+    
+    
     
     /**
      * Sets a new width for the Applet
