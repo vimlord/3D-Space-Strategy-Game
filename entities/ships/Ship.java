@@ -14,6 +14,7 @@ import entities.ships.shipTools.projectile_launchers.*;
 import gameMechanics.factions.Faction;
 import gameMechanics.factions.FactionList;
 import gameMechanics.factions.FactionTag;
+import gameMechanics.generators.NameGenerator;
 import java.util.ArrayList;
 import main.*;
  
@@ -114,6 +115,8 @@ public class Ship extends Entity implements ControlSystem, FactionTag{
         shields = maxShields;
         
         setModifier(modifier);
+        
+        name = "S.S. " + NameGenerator.shipName();
     }
      
     /*
@@ -803,7 +806,13 @@ public class Ship extends Entity implements ControlSystem, FactionTag{
         return factionID;
     }
 
-    
+    public String[] getTag(){
+        String[] tag = new String[2];
+        tag[0] = name;
+        tag[1] = "Health: " + (int)(100 * health / maxHealth) + "%";
+        
+        return tag;
+    }
     
     
 }

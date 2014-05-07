@@ -18,6 +18,8 @@ public abstract class Entity implements PhysicsConstants{
     protected double mass;
     protected double radius;
     private long IDCode;
+    
+    protected String name = "Unnamed Entity";
      
     /**
      * Creates an Entity object
@@ -251,6 +253,18 @@ public abstract class Entity implements PhysicsConstants{
     public long getID(){
         return IDCode;
     }
+    public void setName(String nm){
+        name = nm;
+    }
+    public String getName(){
+        return name;
+    }
+    public String[] getTag(){
+        String[] tag = new String[1];
+        tag[0] = name;
+        return tag;
+    }
+    
      
 }
 

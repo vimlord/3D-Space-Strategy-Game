@@ -163,6 +163,10 @@ public class Tester extends Applet {
         ArrayList<Entity> list = EntityList.getEntityList();
         for(Entity e : list){
             drawEntity(g2, e);
+            drawTagLines(g2,e);
+        }
+        for(Entity e : list){
+            drawTag(g2, e);
         }
         
         
@@ -179,13 +183,54 @@ public class Tester extends Applet {
             drawSphere(g2, e.getX(), e.getY(), e.getZ(), 2.0 * p.getAtmosphereHeight());
         } else if(e instanceof WarpGate){
             drawRing(g2, e.getX(), e.getY(), e.getZ(), e.getRadius());
+        } else if(e instanceof Ship){
+            drawSphere(g2, e.getX(), e.getY(), e.getZ(), e.getRadius());
         } else {
-            drawRing(g2, e.getX(), e.getY(), e.getZ(), e.getRadius());
+            drawSphere(g2, e.getX(), e.getY(), e.getZ(), e.getRadius());
         }
+        
+    }
+    
+    public void drawTag(Graphics2D g2, Entity e){
+        String[] tag = e.getTag();
+        drawTag(g2, e.getX(), e.getY(), e.getZ(), tag);
+    }
+    public void drawTagLines(Graphics2D g2, Entity e){
+        String[] tag = e.getTag();
+        drawTagLines(g2, e.getX(), e.getY(), e.getZ(), tag);
+    }
+    
+    
+    public int[] buildSphere(double X, double Y, double Z){
+        int[] values = new int[2];
+        
+        double magnitudeXZ = Math.sqrt(Math.pow((X-x),2) + Math.pow((Z-z),2));
+        if(magnitudeXZ == 0){
+            values[0] = (int)(frame.getWidth()/2);
+            values[1] = (int)((frame.getHeight()/2 - 18));
+            return values;
+        }
+        
+        double angleXZ = Math.atan((Z-z)/(X-x));
+        if((X-x) < 0){
+            angleXZ += Math.toRadians(180);
+        }
+        double magnitudeY = Y-y;
+        
+        
+        values[0] = (int)(frame.getWidth()/2 + (Math.cos(angleXZ + XZ_ROT) * magnitudeXZ / pixelMeterRatio));
+        values[1] = (int)((frame.getHeight()/2 - 18) - (Math.sin(angleXZ + XZ_ROT) * magnitudeXZ * Math.sin(Y_ROT) / pixelMeterRatio) - (magnitudeY * Math.cos(Y_ROT) / pixelMeterRatio));
+        
+        return values;
+        
     }
     
     public int[] buildSphere(double X, double Y, double Z, double R){
         int[] values = new int[3];
+        int[] input = buildSphere(X,Y,Z);
+        values[0] = input[0];
+        values[1] = input[1];
+        
         double distX = X-x;
         double distY = Y-y;
         double distZ = Z-z;
@@ -213,27 +258,6 @@ public class Tester extends Applet {
             return null;
         }
         
-        
-        
-        double magnitudeXZ = Math.sqrt(Math.pow((X-x),2) + Math.pow((Z-z),2));
-        if(magnitudeXZ == 0){
-            values[0] = (int)(frame.getWidth()/2) - radius;
-            values[1] = (int)((frame.getHeight()/2 - 18) - radius);
-            return values;
-        }
-        
-        double angleXZ = Math.atan((Z-z)/(X-x));
-        if((X-x) < 0){
-            angleXZ += Math.toRadians(180);
-        }
-        double magnitudeY = Y-y;
-        double magnitude = Math.sqrt(Math.pow(magnitudeXZ,2) + Math.pow(magnitudeY,2));
-        double angleY = Math.atan((Y-y)/magnitudeXZ);
-        
-        
-        values[0] = (int)(frame.getWidth()/2 - radius + (Math.cos(angleXZ + XZ_ROT) * magnitudeXZ / pixelMeterRatio));
-        values[1] = (int)((frame.getHeight()/2 - 18) - radius - (Math.sin(angleXZ + XZ_ROT) * magnitudeXZ * Math.sin(Y_ROT) / pixelMeterRatio) - (magnitudeY * Math.cos(Y_ROT) / pixelMeterRatio));
-        
         return values;
         
     }
@@ -245,7 +269,7 @@ public class Tester extends Applet {
             return;
         }
         
-        g.drawOval(points[0], points[1], (int)(2 * points[2]), (int)(2 * points[2]));
+        g.drawOval(points[0] - points[2], points[1] - points[2], (int)(2 * points[2]), (int)(2 * points[2]));
         
     }
     
@@ -256,7 +280,7 @@ public class Tester extends Applet {
             return;
         }
         
-        g.fillOval(points[0], points[1], (int)(2 * points[2]), (int)(2 * points[2]));
+        g.fillOval(points[0] - points[2], points[1] - points[2], (int)(2 * points[2]), (int)(2 * points[2]));
     }
     
     public void drawRing(Graphics2D g, double X, double Y, double Z, double R){
@@ -267,10 +291,37 @@ public class Tester extends Applet {
         }
         
         
-        g.drawOval(points[0], (int)(points[1] + (1 - Math.sin(Y_ROT)) * points[2]), (int)(2 * points[2]), (int)(2 * points[2] * Math.sin(Y_ROT)));
+        g.drawOval(points[0] - points[2], (int)(points[1]  - (Math.sin(Y_ROT)) * points[2]), (int)(2 * points[2]), (int)(2 * points[2] * Math.sin(Y_ROT)));
         
     }
     
+    public void drawTag(Graphics2D g, double X, double Y, double Z, String[] contents){
+        int[] points = buildSphere(X,Y,Z);
+        
+        int lines = contents.length;
+        
+        g.setColor(Color.BLACK);
+        g.drawRect(points[0] + 25, points[1] - (25 + 20 * lines) , 125, 20 * lines);
+        g.setColor(Color.WHITE);
+        g.fillRect(points[0] + 26, points[1] - (24 + 20 * lines) , 124, 20 * lines - 1);
+        g.setColor(Color.BLACK);
+        
+        for(int i = 0; i < lines; i++){
+            g.drawString(contents[i],points[0] + 27, points[1] - (7 + 20 * (lines - i)));
+        }
+        
+    }
+    public void drawTagLines(Graphics2D g, double X, double Y, double Z, String[] contents){
+        int[] points = buildSphere(X,Y,Z);
+        
+        int lines = contents.length;
+        
+        g.drawLine(points[0],points[1],points[0] + 25, points[1] - 25);
+        g.drawLine(points[0] + 25, points[1] - 25, points[0] + 25, points[1] - (25 + 20 * lines));
+        g.drawLine(points[0] + 25, points[1] - 25, points[0] + 125, points[1] - 25);
+        
+        
+    }
     
     
     
