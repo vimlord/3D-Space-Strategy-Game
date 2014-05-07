@@ -180,7 +180,7 @@ public class Tester extends Applet {
         } else if(e instanceof WarpGate){
             drawRing(g2, e.getX(), e.getY(), e.getZ(), e.getRadius());
         } else {
-            drawSphere(g2, e.getX(), e.getY(), e.getZ(), e.getRadius());
+            drawRing(g2, e.getX(), e.getY(), e.getZ(), e.getRadius());
         }
     }
     
@@ -267,7 +267,7 @@ public class Tester extends Applet {
         }
         
         
-        g.drawOval(points[0], (int)(points[1] + Math.cos(Y_ROT) * points[2]), (int)(2 * points[2]), (int)(2 * points[2] * Math.sin(Y_ROT)));
+        g.drawOval(points[0], (int)(points[1] + (1 - Math.sin(Y_ROT)) * points[2]), (int)(2 * points[2]), (int)(2 * points[2] * Math.sin(Y_ROT)));
         
     }
     
