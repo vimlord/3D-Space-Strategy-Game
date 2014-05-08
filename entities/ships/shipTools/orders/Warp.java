@@ -21,7 +21,7 @@ public class Warp extends Order{
     }
     
     public String getOrder(){
-        cyclesLeft--;
+        cyclesLeft-= CycleRunner.getTimeWarp();
         return order;
     }
     

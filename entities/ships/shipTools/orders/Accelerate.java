@@ -27,7 +27,7 @@ public class Accelerate extends Order{
     }
     
     public String getOrder(){
-        cyclesToAct--;
+        cyclesToAct-= CycleRunner.getTimeWarp();
         testStatus();
         return super.getOrder();
         

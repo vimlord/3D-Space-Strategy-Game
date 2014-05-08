@@ -3,7 +3,7 @@ package entities.ships.shipTools.orders;
 import main.CycleRunner;
 
 public class Wait extends Order{
-    int cyclesLeft;
+    double cyclesLeft;
     
     public Wait(double seconds){
         order = "(WAIT)";
@@ -11,7 +11,7 @@ public class Wait extends Order{
     }
     
     public String getOrder(){
-        cyclesLeft--;
+        cyclesLeft-= CycleRunner.getTimeWarp();
         return order;
     }
     
