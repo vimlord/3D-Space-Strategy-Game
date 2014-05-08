@@ -44,6 +44,7 @@ public class NameGenerator {
         shipNames.add("Guardian");
         shipNames.add("Halley");
         shipNames.add("Heinlein");
+        shipNames.add("Hercules");
         shipNames.add("Hubble");
         shipNames.add("Icarus");
         shipNames.add("Kennedy");
@@ -53,6 +54,7 @@ public class NameGenerator {
         shipNames.add("Newton");
         shipNames.add("Nimitz");
         shipNames.add("Odin");
+        shipNames.add("Odysseus");
         shipNames.add("Poseidon");
         shipNames.add("Thor");
         shipNames.add("Valiant");

@@ -7,14 +7,18 @@
 package entities.structures;
 
 import entities.*;
+import gameMechanics.factions.Faction;
+import gameMechanics.factions.FactionList;
+import gameMechanics.factions.FactionTag;
 import physics.Orbit;
 
 /**
  *
  * @author Christopher
  */
-public abstract class Structure extends Entity{
+public abstract class Structure extends Entity implements FactionTag{
     int owner;
+    int factionID;
     
     public Structure(double X, double Y, double Z, double M, double R) {
         super(X, Y, Z, M, R);
@@ -32,6 +36,21 @@ public abstract class Structure extends Entity{
     
     public int getOwner(){
         return owner;
+    }
+
+    @Override
+    public long setFactionID(int ID) {
+        Faction joining = FactionList.getFaction(ID);
+        if(joining == null)
+            return -1;
+        FactionList.getFaction(ID).addMember(this);
+        factionID = ID;
+        return getID();
+    }
+
+    @Override
+    public int getFactionID() {
+        return factionID;
     }
     
 }

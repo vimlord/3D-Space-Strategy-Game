@@ -72,10 +72,7 @@ public abstract class GameMode {
      */
     public abstract boolean testVictory();
     
-    /**
-     * Tests how many Factions still have members
-     * @return
-     */
+    
     /**
      * Tests how many Factions still have members
      * @return
