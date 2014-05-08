@@ -122,29 +122,31 @@ public class EntityList {
             //Planetary collisions
             for(int i = 0; i < bodies.size() - 1; i++){
                     for(int j = i + 1; j < bodies.size(); j++){
-                            if((bodies.get(i)).testCollision(bodies.get(j))){
-                                    (bodies.get(i)).collide(bodies.get(j));
-                                    if(bodies.get(i) instanceof BlackHole){
-                                        bodies.remove(j);
-                                        j--;
-                                    }
-                            }
+                        if((bodies.get(i)).testCollision(bodies.get(j))){
+                                (bodies.get(i)).collide(bodies.get(j));
+                                if(bodies.get(i) instanceof BlackHole){
+                                    bodies.remove(j);
+                                    j--;
+                                }
+                        }
                     }
             }
 
             //Vessel collisions
             for(int i = 0; i < ships.size() - 1; i++){
                 for(int j = i + 1; j < ships.size(); j++){
-                        if((ships.get(i)).testCollision(ships.get(j))){
-                                (ships.get(i)).collide(ships.get(j));
-                        }
+                    if((ships.get(i)).testCollision(ships.get(j))){
+                            (ships.get(i)).collide(ships.get(j));
+                    }
                 }
             }
             
             //Structure collisions
             for(Structure struct : structures){
                 for(Ship s : ships){
-                    struct.collide(s);
+                    if(struct.testCollision(s)){
+                        struct.collide(s);
+                    }
                 }
             }
             

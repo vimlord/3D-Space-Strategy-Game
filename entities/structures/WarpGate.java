@@ -43,10 +43,11 @@ public class WarpGate extends Structure{
         double distanceY = other.getY() - this.y;
         double distanceZ = other.getZ() - this.z;
         double distanceXZ = Math.sqrt(Math.pow(distanceX,2) + Math.pow(distanceZ,2));
+        double distance = Math.sqrt(Math.pow(distanceXZ,2) + Math.pow(distanceY,2));
         
         double ringDistance = Math.sqrt(Math.pow(radius - distanceXZ,2) + Math.pow(distanceY,2));
         
-        if(ringDistance < other.getRadius()){
+        if(ringDistance < other.getRadius() || distance < other.getRadius()){
             return true;
         }
         return false;
@@ -72,7 +73,19 @@ public class WarpGate extends Structure{
     }
     
     public void collide(Ship other){
+        double distanceX = other.getX() - this.x;
+        double distanceY = other.getY() - this.y;
+        double distanceZ = other.getZ() - this.z;
+        double distanceXZ = Math.sqrt(Math.pow(distanceX,2) + Math.pow(distanceZ,2));
+        double distance = Math.sqrt(Math.pow(distanceXZ,2) + Math.pow(distanceY,2));
+        double ringDistance = Math.sqrt(Math.pow(radius - distanceXZ,2) + Math.pow(distanceY,2));
         
+        if(distance < other.getRadius() && ringDistance >= other.getRadius()){
+            sendShip(other);
+        }
+        if(testCollision(other)){
+            super.collide(other);
+        }
     }
     
     @Override
