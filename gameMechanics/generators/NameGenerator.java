@@ -14,54 +14,56 @@ import java.util.ArrayList;
  */
 public class NameGenerator {
     static ArrayList<String> shipNames = null;
-    static ArrayList<Boolean> shipTaken = null;
         
     public static String shipName(){
         if(shipNames == null){
             generateShipNames();
         }
+        if(shipNames.size() > 0){
+            int index = (int)(Math.random() * (shipNames.size() - 1));
+            String choice = shipNames.get(index);
+            shipNames.remove(index);
+            return choice;
+        } else {
+            return "Unnamed Ship";
+        }
         
-        int index = (int)(Math.random() * shipNames.size());
-        
-        if(!shipTaken.get(index)){
-            if(index != shipNames.size() - 1)
-                shipTaken.set(index,true);
-            return shipNames.get((int)(Math.random() * (shipNames.size() - 1)));
-        } else
-            return shipName();
     }
     
     public static void generateShipNames(){
         shipNames = new ArrayList<>();
-        shipNames.add("Nimitz");
-        shipNames.add("Heinlein");
-        shipNames.add("Enterprise");
-        shipNames.add("Armstrong");
-        shipNames.add("Kennedy");
-        shipNames.add("Daedalus");
         shipNames.add("Archimedes");
-        shipNames.add("Nautilus");
-        shipNames.add("Zeus");
-        shipNames.add("Poseidon");
         shipNames.add("Ares");
-        shipNames.add("Thor");
-        shipNames.add("Odin");
-        shipNames.add("Voyager");
-        shipNames.add("Newton");
-        shipNames.add("Halley");
-        shipNames.add("Hubble");
-        shipNames.add("Vengeance");
-        shipNames.add("Valiant");
-        shipNames.add("Monitor");
-        shipNames.add("Valkyrie");
+        shipNames.add("Arizona");
+        shipNames.add("Armstrong");
+        shipNames.add("Athena");
+        shipNames.add("Card");
+        shipNames.add("Daedalus");
+        shipNames.add("Einstein");
+        shipNames.add("Enterprise");
         shipNames.add("Guardian");
+        shipNames.add("Halley");
+        shipNames.add("Heinlein");
+        shipNames.add("Hubble");
+        shipNames.add("Icarus");
+        shipNames.add("Kennedy");
+        shipNames.add("Mayflower");
+        shipNames.add("Monitor");
+        shipNames.add("Nautilus");
+        shipNames.add("Newton");
+        shipNames.add("Nimitz");
+        shipNames.add("Odin");
+        shipNames.add("Poseidon");
+        shipNames.add("Thor");
+        shipNames.add("Valiant");
+        shipNames.add("Valkyrie");
+        shipNames.add("Vengeance");
+        shipNames.add("Voyager");
+        shipNames.add("Washington");
+        shipNames.add("Zeus");
         
-        shipNames.add("Unnamed Ship");
         
-        shipTaken = new ArrayList<>();
-        for(int i = 0; i < shipNames.size(); i++){
-            shipTaken.add(false);
-        }
+        
     }
     
     
