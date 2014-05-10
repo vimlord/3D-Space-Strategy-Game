@@ -59,7 +59,7 @@ public class Laser extends Projectile{
      * @param target The Entity being targeted
      */
     public Laser(Ship shooter, Entity target){
-        super(shooter.getX(),shooter.getY(),shooter.getZ(),0,0.1,0,c);
+        super(shooter.getX(),shooter.getY(),shooter.getZ(),0,0.1 * CycleRunner.getTimeWarp(),0,c);
         
         //The target coordinates
         double X = target.getX();

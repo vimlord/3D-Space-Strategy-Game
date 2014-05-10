@@ -18,6 +18,8 @@ public abstract class Entity implements PhysicsConstants{
     protected double mass;
     protected double radius;
     private long IDCode;
+    
+    protected String name = "Unnamed Entity";
      
     /**
      * Creates an Entity object
@@ -48,9 +50,9 @@ public abstract class Entity implements PhysicsConstants{
      */
     public void move(){
         testSpeedOfLight();
-        x += velX/CycleRunner.cyclesPerSecond;
-        y += velY/CycleRunner.cyclesPerSecond;
-        z += velZ/CycleRunner.cyclesPerSecond;
+        x += CycleRunner.getTimeWarp() * velX/CycleRunner.cyclesPerSecond;
+        y += CycleRunner.getTimeWarp() * velY/CycleRunner.cyclesPerSecond;
+        z += CycleRunner.getTimeWarp() * velZ/CycleRunner.cyclesPerSecond;
         
     }
     
@@ -81,7 +83,7 @@ public abstract class Entity implements PhysicsConstants{
          
          
         //Modifies force value based on cycles per second
-        force *= (1/(double)(CycleRunner.cyclesPerSecond));
+        force *= (CycleRunner.getTimeWarp()/(CycleRunner.cyclesPerSecond));
         
         //If there's no distance on the XZ plane, it doesn't gravitate on that
         //axis.
@@ -142,7 +144,7 @@ public abstract class Entity implements PhysicsConstants{
          
          
         //Modifies force value based on cycles per second
-        force *= (1/(double)(CycleRunner.cyclesPerSecond));
+        force *= (CycleRunner.getTimeWarp()/(double)(CycleRunner.cyclesPerSecond));
         
         if(distanceXZ != 0){
             velX -= (distanceX/distanceXZ) *(distanceXZ/distance) * (force)/this.mass;
@@ -205,7 +207,16 @@ public abstract class Entity implements PhysicsConstants{
         o.setMeanAnomaly(MaE);
         putIntoOrbit(o);
     }
-     
+    
+    public void setX(double X){
+        x = X;
+    }
+    public void setY(double Y){
+        y = Y;
+    }
+    public void setZ(double Z){
+        z = Z;
+    }
     public double getX(){
         return x;
     }
@@ -242,6 +253,18 @@ public abstract class Entity implements PhysicsConstants{
     public long getID(){
         return IDCode;
     }
+    public void setName(String nm){
+        name = nm;
+    }
+    public String getName(){
+        return name;
+    }
+    public String[] getTag(){
+        String[] tag = new String[1];
+        tag[0] = name;
+        return tag;
+    }
+    
      
 }
 

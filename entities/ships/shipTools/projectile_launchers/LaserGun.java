@@ -56,14 +56,14 @@ public class LaserGun implements ProjectileLauncher{
     }
     
     private void fire(){
-        temperature++;
+        temperature+= CycleRunner.getTimeWarp();
         firing = true;
     }
 
     @Override
     public void cycle() {
         if(!firing){
-            temperature--;
+            temperature-= CycleRunner.getTimeWarp();
         }
         
         if(temperature >= maxTemp){

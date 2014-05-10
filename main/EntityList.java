@@ -1,11 +1,11 @@
 package main;
  
 import entities.*;
-import entities.celestialBodies.BlackHole;
-import entities.celestialBodies.CelestialBody;
+import entities.celestialBodies.*;
 import entities.projectiles.*;
 import entities.ships.Ship;
 import entities.ships.shipTools.Formation;
+import entities.structures.*;
 import java.util.ArrayList;
  
 /*
@@ -21,6 +21,7 @@ public class EntityList {
     private static ArrayList<CelestialBody> bodies = new ArrayList<>();
     private static ArrayList<Ship> ships = new ArrayList<>();
     private static ArrayList<Projectile> projectiles = new ArrayList<>();
+    private static ArrayList<Structure> structures = new ArrayList<>();
     private static long valueToAssign = 0;
      
     /**
@@ -31,6 +32,16 @@ public class EntityList {
         c.setID(valueToAssign);
         valueToAssign++;
         bodies.add(c);
+    }
+    
+    /**
+     * Adds a Structure object to the game
+     * @param w The Structure object
+     */
+    public static void addStructure(Structure s){
+        s.setID(valueToAssign);
+        valueToAssign++;
+        structures.add(s);
     }
     
     /**
@@ -57,6 +68,13 @@ public class EntityList {
      * Simulates gravity for every Entity that exists
      */
     public static void executeGravity(){
+        //Simulates gravitation between structures and planets
+        for(Entity e : bodies){
+            for(Entity f : structures){
+                e.gravitate(f);
+            }
+        }
+        
         //Simulates gravitation between ships and planets
         for(Entity e : ships){
             for(Entity f : bodies){
@@ -95,32 +113,44 @@ public class EntityList {
         for(Projectile p : projectiles){
             p.move();
         }
+        for(Structure s : structures){
+            s.move();
+        }
     }
 	
     public static void executeCollisions(){
             //Planetary collisions
             for(int i = 0; i < bodies.size() - 1; i++){
                     for(int j = i + 1; j < bodies.size(); j++){
-                            if((bodies.get(i)).testCollision(bodies.get(j))){
-                                    (bodies.get(i)).collide(bodies.get(j));
-                                    if(bodies.get(i) instanceof BlackHole){
-                                        bodies.remove(j);
-                                        j--;
-                                    }
-                            }
+                        if((bodies.get(i)).testCollision(bodies.get(j))){
+                                (bodies.get(i)).collide(bodies.get(j));
+                                if(bodies.get(i) instanceof BlackHole){
+                                    bodies.remove(j);
+                                    j--;
+                                }
+                        }
                     }
             }
 
             //Vessel collisions
             for(int i = 0; i < ships.size() - 1; i++){
                 for(int j = i + 1; j < ships.size(); j++){
-                        if((ships.get(i)).testCollision(ships.get(j))){
-                                (ships.get(i)).collide(ships.get(j));
-                        }
+                    if((ships.get(i)).testCollision(ships.get(j))){
+                            (ships.get(i)).collide(ships.get(j));
+                    }
                 }
             }
-
-            //Planet-Ship Collisions
+            
+            //Structure collisions
+            for(Structure struct : structures){
+                for(Ship s : ships){
+                    if(struct.testCollision(s)){
+                        struct.collide(s);
+                    }
+                }
+            }
+            
+            //Planet Collisions
             for(CelestialBody c : bodies){
                 for(Ship s : ships){
                     if(c.testCollision(s)){
@@ -130,11 +160,16 @@ public class EntityList {
                         }
                     }
                 }
+                for(Structure s : structures){
+                    if(c.testCollision(s)){
+                        c.collide(s);
+                    }
+                }
             }
 
             //Projectile collisions
             
-            for(int i = 0; i < projectiles.size(); i++){
+            for(int i = projectiles.size() - 1; i >= 0; i++){
                 Projectile p = projectiles.get(i);
                 for(Ship s : ships){
                     if(p.testCollision(s)){
@@ -151,6 +186,15 @@ public class EntityList {
                         break;
                     }
                 }
+                
+                for(Structure s : structures){
+                    if(p.testCollision(s)){
+                        p.collide(s);
+                        projectiles.remove(p);
+                        break;
+                    }
+                }
+
 
             }
             
@@ -172,6 +216,26 @@ public class EntityList {
         }
     }
     
+    public static void executeStructure(){
+        for(Structure s : structures){
+            s.act();
+        }
+        executeWarpGates();
+    }
+    
+    public static void executeWarpGates(){
+        for(Structure st : structures){
+            if(st instanceof WarpGate){
+                WarpGate w = (WarpGate) st;
+                for(Ship s : ships){
+                    if(w.warpAllowed(s)){
+                        w.sendShip(s);
+                    }
+                }
+            }
+        }
+    }
+    
      
     public static CelestialBody getCelestialBody(int index){
         return bodies.get(index);
@@ -183,6 +247,10 @@ public class EntityList {
     
     public static Projectile getProjectile(int index){
         return projectiles.get(index);
+    }
+    
+    public static Structure getStructure(int index){
+        return structures.get(index);
     }
     
     public static Entity getEntity(long ID){
@@ -197,6 +265,11 @@ public class EntityList {
         for(Entity e : projectiles){
             if(e.getID() == ID)
                 return e;
+        }
+        for(Entity e : structures){
+            if(e.getID() == ID){
+                return e;
+            }
         }
         return null;
     }
@@ -213,6 +286,9 @@ public class EntityList {
         for(int i = 0; i < projectiles.size(); i++){
             list.add(projectiles.get(i));
         }
+        for(Structure s : structures){
+            list.add(s);
+        }
         
         return list;
     }
@@ -222,6 +298,12 @@ public class EntityList {
      */
     public static void resetMap(){
         bodies = new ArrayList<CelestialBody>();
+    }
+    
+    public static void resetList(){
+        resetMap();
+        ships = new ArrayList<>();
+        projectiles = new ArrayList<>();
     }
     
     /**

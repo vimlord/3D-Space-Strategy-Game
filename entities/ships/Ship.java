@@ -8,9 +8,13 @@
  
 package entities.ships;
  
-import entities.ships.shipTools.orders.*;
 import entities.*;
+import entities.ships.shipTools.orders.*;
 import entities.ships.shipTools.projectile_launchers.*;
+import gameMechanics.factions.Faction;
+import gameMechanics.factions.FactionList;
+import gameMechanics.factions.FactionTag;
+import gameMechanics.generators.NameGenerator;
 import java.util.ArrayList;
 import main.*;
  
@@ -18,7 +22,7 @@ import main.*;
  *
  * @author Christopher Hittner
  */
-public class Ship extends Entity implements ControlSystem{
+public class Ship extends Entity implements ControlSystem, FactionTag{
     //Healths stats
     protected double maxHealth;
     protected double health;
@@ -27,7 +31,7 @@ public class Ship extends Entity implements ControlSystem{
     
     protected double maxShields;
     protected double shields;
-    protected int cyclesSinceAttacked = 0;
+    protected double cyclesSinceAttacked = 0;
     protected final int secondsToStartCharge = 10, secondsToRebootShields = 20;
     
     protected double XZ_ROT = 0, Y_ROT = 0;
@@ -55,7 +59,7 @@ public class Ship extends Entity implements ControlSystem{
     //The list of orders
     private ArrayList<Order> orders = new ArrayList<>();
     
-    
+    private int factionID;
     
     
     
@@ -111,6 +115,8 @@ public class Ship extends Entity implements ControlSystem{
         shields = maxShields;
         
         setModifier(modifier);
+        
+        name = "S.S. " + NameGenerator.shipName();
     }
      
     /*
@@ -229,8 +235,8 @@ public class Ship extends Entity implements ControlSystem{
     
     public void cycle(){
         weaponCycle();
-        healHealth(1);
-        healShields(1);
+        healHealth(CycleRunner.getTimeWarp());
+        healShields(CycleRunner.getTimeWarp());
         chargeWarpDrive();
         if(tubeCount >= missiles.length){
             tubeCount -= missiles.length;
@@ -246,7 +252,7 @@ public class Ship extends Entity implements ControlSystem{
      * Heals a little bit of HP
      * @param factor The factor at which the ship's repair speed will be multiplied
      */
-    public void healHealth(int factor){
+    public void healHealth(double factor){
         //Determines max health that will be healed this cycle
         double healthToHeal = factor * (Math.random()/CycleRunner.cyclesPerSecond) / 30.0;
         
@@ -270,20 +276,20 @@ public class Ship extends Entity implements ControlSystem{
         }
     }
     
-    public void healShields(int factor){
-        double shieldPerSecond = 1;
+    public void healShields(double factor){
+        double shieldPerSecond = factor;
         
         if(shields <= 0){
             //The shields are down; extra time will be needed to reboot the shields
             if(cyclesSinceAttacked < (CycleRunner.cyclesPerSecond * (secondsToStartCharge + secondsToRebootShields))){
-                cyclesSinceAttacked++;
+                cyclesSinceAttacked+= factor;
             } else {
                 shields += shieldPerSecond/CycleRunner.cyclesPerSecond;
             }
         } else {
             //The shields are up and operational, but need some time to start recharging
             if(cyclesSinceAttacked < (CycleRunner.cyclesPerSecond * secondsToStartCharge)){
-                cyclesSinceAttacked++;
+                cyclesSinceAttacked+= factor;
             } else {
                 shields += shieldPerSecond/CycleRunner.cyclesPerSecond;
             }
@@ -319,27 +325,21 @@ public class Ship extends Entity implements ControlSystem{
             XZ_RotSpeed = 0;
             Y_RotSpeed = 0;
         } else {
-            XZ_RotSpeed = 5.0 * Math.toRadians((7500000000.0/mass) * horiz)/CycleRunner.cyclesPerSecond;
-            Y_RotSpeed = 5.0 * Math.toRadians((7500000000.0/mass) * vert)/CycleRunner.cyclesPerSecond;
+            XZ_RotSpeed = 10000.0 * Math.toRadians((10000000000.0/mass) * horiz)/CycleRunner.cyclesPerSecond;
+            Y_RotSpeed = 10000.0 * Math.toRadians((7500000000.0/mass) * vert)/CycleRunner.cyclesPerSecond;
         }
     }
      
-    /**
-     * Performs rotation based on specified values
-     */
-    public void rotate(){
-        XZ_ROT += XZ_RotSpeed/CycleRunner.cyclesPerSecond;
-        Y_ROT += Y_RotSpeed/CycleRunner.cyclesPerSecond;
-        
+    private void rotationCorrection(){
         //Corrections in case the ship rotates beyond a certain degree value
         if(Y_ROT > Math.toRadians(90.0)){
-            Y_ROT -= Math.toRadians(180.0);
+            Y_ROT = Math.toRadians(180.0) - Y_ROT;
             Y_ROT_Target -= Math.toRadians(180.0);
             Y_RotSpeed *= -1.0;
             XZ_ROT += Math.toRadians(180.0);
             XZ_ROT_Target += Math.toRadians(180.0);
         } else if(Y_ROT < Math.toRadians(-90.0)){
-            Y_ROT += Math.toRadians(180.0);
+            Y_ROT = Math.toRadians(-180.0) - Y_ROT;
             Y_ROT_Target += Math.toRadians(180.0);
             Y_RotSpeed *= -1.0;
             XZ_ROT += Math.toRadians(180);
@@ -353,7 +353,17 @@ public class Ship extends Entity implements ControlSystem{
             XZ_ROT_Target += Math.toRadians(360.0);
         }
     }
-     
+    
+    /**
+     * Performs rotation based on specified values
+     */
+    public void rotate(){
+        rotationCorrection();
+        
+        XZ_ROT += CycleRunner.getTimeWarp() * XZ_RotSpeed/CycleRunner.cyclesPerSecond;
+        Y_ROT += CycleRunner.getTimeWarp() * Y_RotSpeed/CycleRunner.cyclesPerSecond;
+    }
+    
     public void setRotationTarget(double XZ, double Y){
         XZ_ROT_Target = XZ;
         Y_ROT_Target = Y;
@@ -381,6 +391,7 @@ public class Ship extends Entity implements ControlSystem{
             order = "(   )";
         }
         
+        
         //This will make sure that if a Ship doesn't have rotation orders or
         //acceleration orders, it won't accelerate
         setAcceleration(0);
@@ -394,11 +405,17 @@ public class Ship extends Entity implements ControlSystem{
             }
         } else if(order.substring(0,5).equals("(ROT)")){
             //This is an rotation order
-            int border = orders.indexOf("-");
+            int border = order.indexOf("|");
             double XZ = Double.parseDouble(order.substring(5, border));
             double Y = Double.parseDouble(order.substring(border + 1));
+            
             setRotationTarget(XZ, Y);
-            if(Math.abs(Y_ROT - Y) < Math.toRadians(500/CycleRunner.cyclesPerSecond) && Math.abs(XZ_ROT - XZ) < Math.toRadians(500/CycleRunner.cyclesPerSecond)){
+            rotationCorrection();
+            
+            orders.remove(0);
+            orders.add(0,new Rotate(XZ_ROT_Target,Y_ROT_Target));
+            
+            if(Math.abs(Y_ROT - Y) < Math.toRadians(200.0/CycleRunner.cyclesPerSecond) && Math.abs(XZ_ROT - XZ) < Math.toRadians(200.0/CycleRunner.cyclesPerSecond)){
                 orders.remove(0);
             }
         } else if(order.equals("(WAIT)")){
@@ -446,6 +463,13 @@ public class Ship extends Entity implements ControlSystem{
                 
                 long targ = Long.parseLong(order.substring(10));
                 
+                Faction targFaction = FactionList.getFaction(((Ship)(EntityList.getEntity(targ))).getFactionID());
+                Faction thisFaction = FactionList.getFaction(factionID);
+                if(!(thisFaction.getDiplomaticStatus(targFaction) != 1) && thisFaction.getID() == targFaction.getID()){
+                    break;
+                }
+                
+                
                 if(fireMissile){
                     fireMissiles(tubeCount,targ);
                     tubeCount++;
@@ -471,7 +495,6 @@ public class Ship extends Entity implements ControlSystem{
                 break;
             }
         }
-        
         
         
         if(rotationTarget){
@@ -522,9 +545,9 @@ public class Ship extends Entity implements ControlSystem{
      */
     public void accelerate() {
         double force = 30 * 750000000.0 * throttle/100;
-        velX += Math.cos(XZ_ROT) * Math.cos(Y_ROT) * (force/mass)/CycleRunner.cyclesPerSecond;
-        velZ += Math.sin(XZ_ROT) * Math.cos(Y_ROT) * (force/mass)/CycleRunner.cyclesPerSecond;
-        velY += Math.sin(Y_ROT) * (force/mass)/CycleRunner.cyclesPerSecond;
+        velX += CycleRunner.getTimeWarp() * Math.cos(XZ_ROT) * Math.cos(Y_ROT) * (force/mass)/CycleRunner.cyclesPerSecond;
+        velZ += CycleRunner.getTimeWarp() * Math.sin(XZ_ROT) * Math.cos(Y_ROT) * (force/mass)/CycleRunner.cyclesPerSecond;
+        velY += CycleRunner.getTimeWarp() * Math.sin(Y_ROT) * (force/mass)/CycleRunner.cyclesPerSecond;
     }
     
     
@@ -596,9 +619,9 @@ public class Ship extends Entity implements ControlSystem{
         }
         
         if(warping){
-            x += (c * warpMode) * Math.cos(XZ_ROT) * Math.cos(Y_ROT) / CycleRunner.cyclesPerSecond;
-            y += (c * warpMode) * Math.sin(Y_ROT) / CycleRunner.cyclesPerSecond;
-            z += (c * warpMode) * Math.sin(XZ_ROT) * Math.cos(Y_ROT) / CycleRunner.cyclesPerSecond;
+            x += CycleRunner.getTimeWarp() * (c * warpMode) * Math.cos(XZ_ROT) * Math.cos(Y_ROT) / CycleRunner.cyclesPerSecond;
+            y += CycleRunner.getTimeWarp() * (c * warpMode) * Math.sin(Y_ROT) / CycleRunner.cyclesPerSecond;
+            z += CycleRunner.getTimeWarp() * (c * warpMode) * Math.sin(XZ_ROT) * Math.cos(Y_ROT) / CycleRunner.cyclesPerSecond;
         }
     }
     
@@ -768,7 +791,28 @@ public class Ship extends Entity implements ControlSystem{
         return Y_RotSpeed;
     }
 
-    
+    @Override
+    public long setFactionID(int ID) {
+        Faction joining = FactionList.getFaction(ID);
+        if(joining == null)
+            return -1;
+        FactionList.getFaction(ID).addMember(this);
+        factionID = ID;
+        return getID();
+    }
+
+    @Override
+    public int getFactionID() {
+        return factionID;
+    }
+
+    public String[] getTag(){
+        String[] tag = new String[2];
+        tag[0] = name;
+        tag[1] = "Health: " + (int)(100 * health / maxHealth) + "%";
+        
+        return tag;
+    }
     
     
 }
