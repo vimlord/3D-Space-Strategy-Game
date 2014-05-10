@@ -7,8 +7,11 @@
 package entities.structures;
 
 import entities.Entity;
+import entities.miscellaneous.DetectionRadius;
 import entities.ships.Ship;
+import gameMechanics.factions.Faction;
 import gameMechanics.factions.FactionList;
+import java.util.ArrayList;
 import main.CycleRunner;
 import main.EntityList;
 import physics.*;
@@ -22,6 +25,9 @@ public class WarpGate extends Structure{
     private final int indexOfReceiver;
     private final double maxEnergy = 250000000 * Math.pow(c,2), energyPerSecond = 100000;
     private double energy = maxEnergy;
+    
+    double cycle = 0;
+    
     
     public WarpGate(double X, double Y, double Z, double M, double R, int index) {
         super(X, Y, Z, M, R);
@@ -94,6 +100,34 @@ public class WarpGate extends Structure{
         
         if(energy > maxEnergy){
             energy = maxEnergy;
+        }
+        
+        
+        if(cycle == 0.0){
+            //Finds a new owner, if applicable
+            DetectionRadius d = new DetectionRadius(x,y,z,1000);
+
+            ArrayList<Integer> IDvalues = new ArrayList<>();
+            for(Faction f : FactionList.getFactionList()){
+                ArrayList<Long> members = f.getMembers();
+                for(long l : members){
+                    Entity e = EntityList.getEntity(l);
+                    if(e != null && e instanceof Ship && e.testCollision(d)){
+                        IDvalues.add(f.getID());
+                        break;
+                    }
+                }
+            }
+
+            if(IDvalues.size() == 1){
+                owner = IDvalues.get(0);
+            }
+        
+        }
+        
+        cycle += CycleRunner.getTimeWarp();
+        if(cycle >= CycleRunner.cyclesPerSecond){
+            cycle = 0;
         }
     }
 
