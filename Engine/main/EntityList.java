@@ -6,6 +6,7 @@ import entities.projectiles.*;
 import entities.ships.Ship;
 import entities.ships.shipTools.Formation;
 import entities.structures.*;
+import gameMechanics.generators.MapGenerator;
 import java.util.ArrayList;
  
 /*
@@ -304,6 +305,7 @@ public class EntityList {
         resetMap();
         ships = new ArrayList<>();
         projectiles = new ArrayList<>();
+        valueToAssign = 0;
     }
     
     /**
@@ -313,21 +315,27 @@ public class EntityList {
      */
     public static void loadMap(int ID, boolean reset){
         //Grabs the map
-        ArrayList<CelestialBody> add = MapGenerator.generateMap(ID);
+        ArrayList<CelestialBody> newBodies = MapGenerator.generateMap(ID);
+        //Grabs the ships
+        ArrayList<Ship> newShips = MapGenerator.generateShips(ID, CycleRunner.getGamemode());
         
         //Error check
-        if(add == null){
+        if(newBodies == null){
             return;
         }
         
         //Resets CelestialBody list if needed
         if(reset){
-            resetMap();
+            resetList();
         }
         
         //Adds the CelestialBody objects
-        for(CelestialBody c : add){
+        for(CelestialBody c : newBodies){
             bodies.add(c);
+        }
+        //Adds the Ship objects
+        for(Ship s : newShips){
+            ships.add(s);
         }
         
     }
@@ -337,7 +345,7 @@ public class EntityList {
             ships = new ArrayList<>();
         }
         
-        ArrayList<Ship> list = Formation.getFormation(ID);
+        ArrayList<Ship> list = Formation.getFormation();
         
         for(Ship s : list){
             ships.add(s);

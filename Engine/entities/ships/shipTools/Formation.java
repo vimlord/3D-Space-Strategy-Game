@@ -19,24 +19,21 @@ import java.util.*;
  */
 public class Formation {
     
-    public static ArrayList<Ship> getFormation(int ID){
-        return getFormation(ID, 0);
+    public static ArrayList<Ship> getFormation(){
+        return getFormation(0);
     }
     
-    public static ArrayList<Ship> getFormation(int ID, int modifier){
-        if(ID == 0){
-            return Alpha(0,0,modifier);
-        }
-        return null;
+    public static ArrayList<Ship> getFormation(int modifier){
+        return Alpha(0,0,modifier);
         
     }
     
-    public static ArrayList<Ship> getFormation(int ID, int modifier, Faction f){
-        return getFormation(ID, modifier, f.getID());
+    public static ArrayList<Ship> getFormation(int modifier, Faction f){
+        return getFormation(modifier, f.getID());
     }
     
-    public static ArrayList<Ship> getFormation(int ID, int modifier, int factionID){
-        ArrayList<Ship> ships = getFormation(ID, modifier);
+    public static ArrayList<Ship> getFormation(int modifier, int factionID){
+        ArrayList<Ship> ships = getFormation(modifier);
         
         //Adds every ship to the Faction
         for(Ship s : ships){

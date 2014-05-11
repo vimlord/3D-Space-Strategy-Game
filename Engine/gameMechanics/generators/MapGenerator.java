@@ -13,10 +13,15 @@
  * 
  */
 
-package main;
+package gameMechanics.generators;
 
 import entities.Entity;
 import entities.celestialBodies.*;
+import entities.ships.Ship;
+import entities.ships.shipTools.Formation;
+import gameMechanics.factions.Faction;
+import gameMechanics.factions.FactionList;
+import gameMechanics.gameModes.GameMode;
 import java.util.ArrayList;
 import physics.*;
 
@@ -111,4 +116,78 @@ public class MapGenerator {
         }
         return null;
     }
+
+    public static ArrayList<Ship> generateShips(int ID, GameMode gm) {
+        ArrayList<Ship> ships = null;
+        int numFactions = FactionList.getFactionList().size();
+        ArrayList<Faction> fact = FactionList.getFactionList();
+        if(ID == 0){
+            double angle = 2 * Math.PI / numFactions;
+            double magnitude = 5000 * numFactions;
+            for(int i = 0; i < numFactions; i++){
+                ArrayList<Ship> newShips = Formation.getFormation(0, fact.get(i));
+                for(Ship s : newShips){
+                    s.setX(magnitude * Math.cos(angle * i));
+                    s.setY(magnitude * Math.sin(angle * i));
+                    ships.add(s);
+                }
+            }
+        } else if(ID == 1){
+            double angle = 2 * Math.PI / numFactions;
+            
+            Entity orbited = new Planet(0,0,0,5.97219 * Math.pow(10,24), 6378100,1.225,100000);
+            
+            for(int i = 0; i < numFactions; i++){
+                ArrayList<Ship> newShips = Formation.getFormation(0, fact.get(i));
+                for(Ship s : newShips){
+                    s.putIntoOrbit(new Orbit(7000000,0,0,angle * i,orbited), orbited);
+                    ships.add(s);
+                }
+            }
+        } else if(ID == 2){
+            double angle = 2 * Math.PI / numFactions;
+            
+            Entity orbited = new Planet(0,0,0,5.97219 * Math.pow(10,24), 6378100,1.225,100000);
+            orbited.putIntoOrbit(new Orbit(149598261000.0, Math.toRadians(7.155), Math.toRadians(348.73936), Math.toRadians(357.51716), new Star(0, 0, 0, 1.98855 * Math.pow(10,30), 696342000)),new Star(0, 0, 0, 1.98855 * Math.pow(10,30), 696342000));
+            
+            for(int i = 0; i < numFactions; i++){
+                ArrayList<Ship> newShips = Formation.getFormation(0, fact.get(i));
+                for(Ship s : newShips){
+                    s.putIntoOrbit(new Orbit(7000000,0,0,angle * i,orbited), orbited);
+                    ships.add(s);
+                }
+            }
+        } else if(ID == 3){
+            double angle = 2 * Math.PI / numFactions;
+            
+            Entity orbited = new Star(5000000000.0,0,0,1.49 * Math.pow(10,30), 560000000);
+            orbited.setSpeedX(7.911304);
+            
+            for(int i = 0; i < numFactions; i++){
+                ArrayList<Ship> newShips = Formation.getFormation(0, fact.get(i));
+                for(Ship s : newShips){
+                    s.putIntoOrbit(new Orbit(7000000,0,0,angle * i,orbited), orbited);
+                    ships.add(s);
+                }
+            }
+        } else if(ID == 4){
+            double angle = 2 * Math.PI / numFactions;
+            
+            Entity orbited = new Star(0,0,0,Math.pow(10,30),6 * Math.pow(10,6));
+            orbited.putIntoOrbit(new Orbit(20000000,0,0,0,new BlackHole(0,0,0,15000)), new BlackHole(0,0,0,15000));
+            
+            for(int i = 0; i < numFactions; i++){
+                ArrayList<Ship> newShips = Formation.getFormation(0, fact.get(i));
+                for(Ship s : newShips){
+                    s.putIntoOrbit(new Orbit(7000000,0,0,angle * i,orbited), orbited);
+                    ships.add(s);
+                }
+            }
+        }
+        
+        
+        return ships;
+    }
+    
+    
 }

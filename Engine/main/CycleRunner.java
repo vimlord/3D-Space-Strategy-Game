@@ -37,11 +37,11 @@ public class CycleRunner {
         
     }
     
-    public GameMode getGamemode(){
+    public static GameMode getGamemode(){
         return gamemode;
     }
     
-    public void setGamemode(GameMode g){
+    public static void setGamemode(GameMode g){
         gamemode = g;
     }
     public static double getTimeWarp(){

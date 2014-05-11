@@ -41,7 +41,8 @@ public abstract class GameMode {
     public void startGame(){
         for(int x = 0; x < involvedFactions.length; x++){
             for(int y = 0; y < involvedFactions[x].length; y++)
-                if(involvedFactions[x][y] < 0){
+                //If it isn't a real Faction, it doesn't start
+                if(FactionList.getFaction(involvedFactions[x][y]) == null){
                     return;
                 }
         }
@@ -49,8 +50,6 @@ public abstract class GameMode {
         running = true;
         
         winner = -1;
-        
-        FactionList.resetFactions();
         EntityList.resetList();
         EntityList.loadMap(mapNumber, false);
         
