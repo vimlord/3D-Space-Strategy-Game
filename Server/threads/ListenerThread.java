@@ -8,6 +8,8 @@ package threads;
 
 import java.io.*;
 import java.net.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -15,6 +17,12 @@ import java.net.*;
  */
 public class ListenerThread extends Thread{
     private Socket socket = null;
+    
+    private PrintWriter out;
+    private BufferedReader in;
+    private ObjectInputStream inStream;
+    private ObjectOutputStream outputStream;
+    
     
     
     public ListenerThread(Socket socket) {
@@ -24,17 +32,29 @@ public class ListenerThread extends Thread{
     
     public void run(){
         
+        try{
+            out = new PrintWriter(socket.getOutputStream(), true);
+        } catch(Exception e){
+            e.printStackTrace();
+            return;
+        }
         try(
-            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-            BufferedReader in = new BufferedReader(
+                BufferedReader in = new BufferedReader(
                 new InputStreamReader(
                     socket.getInputStream()));
+            ObjectInputStream inStream = new ObjectInputStream(socket.getInputStream());
+            ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
             ){
             
-            String input = null;
+            Object input = null;
             
-            while((input = in.readLine()) != null){
-                processInput(input);
+            //This next line of code takes an Object as input. The Object will
+            //then be tested to see if it matches any of the known Object types.
+            while((input = inStream.readObject()) != null){
+                if(input instanceof String){
+                    String str = (String) input;
+                    processStringInput(str);
+                }
                 if(input.equals("[EXIT]")){
                     break;
                 }
@@ -45,12 +65,15 @@ public class ListenerThread extends Thread{
             
         } catch(IOException e){
             e.printStackTrace();
+            return;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            return;
         }
-        
         
     }
     
-    public void processInput(String input){
+    public void processStringInput(String input){
         //Makes sure the Alpha tag is correct
         if(!input.substring(0,1).equals("[")){
             return;
@@ -68,7 +91,17 @@ public class ListenerThread extends Thread{
             
             new OrderThread(faction, ship, order).start();
             
-        } else if(alphaTag.equals("[EXIT]")){
+        } else if(alphaTag.equals("[SEND]")){
+            String order = input.substring(alphaTag.length());
+            String betaTag = input.substring(0,order.indexOf("]"));
+            
+            if(betaTag.equals("[ENTITY_LIST]")){
+                //When the required code is added, have some code here to send the
+                //list of Entities to the client.
+            }
+        }
+        
+        if(alphaTag.equals("[EXIT]")){
             return;
         }
     }
