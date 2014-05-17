@@ -9,6 +9,7 @@ package main;
 import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 
 /**
  *
@@ -21,6 +22,8 @@ public class Client {
     private static BufferedReader stdIn;
     private static ObjectInputStream inStream;
     private static ObjectOutputStream outputStream;
+    
+    private static ArrayList<Object> outputQueue = new ArrayList<>();
     
     
     /**
@@ -62,7 +65,11 @@ public class Client {
             
             while(true){
                 Object input = inStream.readObject();
-
+                if(outputQueue.size() > 0){
+                    for(Object obj: outputQueue)
+                        outputStream.writeObject(obj);
+                    outputQueue = new ArrayList<>();
+                }
             }
             
         } catch (UnknownHostException e) {
@@ -83,6 +90,10 @@ public class Client {
         }
         
         
+    }
+    
+    public static void sendObject(Object obj){
+        outputQueue.add(obj);
     }
     
 }
