@@ -241,17 +241,46 @@ public class EntityList {
     public static CelestialBody getCelestialBody(int index){
         return bodies.get(index);
     }
+    public static CelestialBody getCelestialBody(long ID){
+        for(CelestialBody e : bodies){
+            if(e.getID() == ID)
+                return e;
+        }
+        return null;
+    }
      
     public static Ship getShip(int index){
         return ships.get(index);
+    }
+    public static Ship getShip(long ID){
+        for(Ship e : ships){
+            if(e.getID() == ID)
+                return e;
+        }
+        return null;
     }
     
     public static Projectile getProjectile(int index){
         return projectiles.get(index);
     }
+    public static Projectile getProjectile(long ID){
+        for(Projectile e : projectiles){
+            if(e.getID() == ID)
+                return e;
+        }
+        return null;
+    }
     
     public static Structure getStructure(int index){
         return structures.get(index);
+    }
+    public static Structure getStructure(long ID){
+        for(Structure e : structures){
+            if(e.getID() == ID){
+                return e;
+            }
+        }
+        return null;
     }
     
     public static Entity getEntity(long ID){

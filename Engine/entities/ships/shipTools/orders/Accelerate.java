@@ -24,12 +24,13 @@ public class Accelerate extends Order{
         } else {
             order += (percentPower);
         }
+        order += "|";
     }
     
     public String getOrder(){
         cyclesToAct-= CycleRunner.getTimeWarp();
         testStatus();
-        return super.getOrder();
+        return super.getOrder() + cyclesToAct;
         
     }
 

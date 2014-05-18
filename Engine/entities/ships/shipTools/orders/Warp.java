@@ -18,11 +18,12 @@ public class Warp extends Order{
         } else {
             order += factor;
         }
+        order += "|";
     }
     
     public String getOrder(){
         cyclesLeft-= CycleRunner.getTimeWarp();
-        return order;
+        return order + cyclesLeft;
     }
     
     public boolean getStatus(){

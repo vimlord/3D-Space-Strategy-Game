@@ -4,6 +4,7 @@ package entities;
  * for various types of objects.
  */
  
+import java.io.Serializable;
 import main.*;
 import physics.*;
  
@@ -11,7 +12,7 @@ import physics.*;
  *
  * @author Christopher Hittner
  */
-public abstract class Entity implements PhysicsConstants{
+public abstract class Entity implements PhysicsConstants, Serializable{
 
     protected double x, y, z;
     protected double velX = 0, velY = 0, velZ = 0;
