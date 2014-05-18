@@ -51,7 +51,7 @@ public class ConnectionThread extends Thread{
         } catch(Exception e){
             System.out.println("An error occured while reading from console:");
             System.err.println(e.toString());
-            System.out.println("Usage: Server <hostName> <portNumber>");
+            System.out.println("Usage: Client <hostName> <portNumber>");
             
             hostName = "localhost";
             portNumber = 25565;

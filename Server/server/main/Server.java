@@ -21,7 +21,20 @@ public class Server {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        int portNumber = 25565;
+        int portNumber;
+        
+        //Attempts to set values for the host name and the port number
+        try {
+            portNumber = Integer.parseInt(args[0]);
+        } catch(Exception e){
+            System.out.println("An error occured while reading from console:");
+            System.err.println(e.toString());
+            System.out.println("Usage: Server <portNumber>");
+            
+            portNumber = 25565;
+            
+            System.out.println("The port number has been set to \"" + portNumber + "\"." + "\n");
+        }
         
         boolean running = true;
         
