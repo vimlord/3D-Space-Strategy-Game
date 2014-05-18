@@ -8,6 +8,7 @@ package threads;
 
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,7 +24,7 @@ public class ListenerThread extends Thread{
     private ObjectInputStream inStream;
     private ObjectOutputStream outputStream;
     
-    
+    private ArrayList<Object> outputQueue = new ArrayList<>();
     
     public ListenerThread(Socket socket) {
         super("ListenerThread");
@@ -57,6 +58,14 @@ public class ListenerThread extends Thread{
                 }
                 if(input.equals("[EXIT]")){
                     break;
+                }
+                
+                //Processes the outgoing objects, if there are any.
+                if(outputQueue.size() > 0){
+                    for(Object o : outputQueue){
+                        outputStream.writeObject(o);
+                    }
+                    outputQueue = new ArrayList<>();
                 }
                 
             }

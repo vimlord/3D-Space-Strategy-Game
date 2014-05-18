@@ -22,12 +22,13 @@ public class Server {
     public static void main(String[] args) {
         int portNumber = 25565;
         
-        boolean listening = true;
+        boolean running = true;
         
         try(ServerSocket serverSocket = new ServerSocket(portNumber)){
             
-            while(listening){
+            while(running){
                 new ListenerThread(serverSocket.accept()).start();
+                CycleRunner.executeCycle();
             }
             
             

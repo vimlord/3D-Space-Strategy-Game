@@ -6,6 +6,11 @@
 
 package threads;
 
+import entities.ships.Ship;
+import entities.ships.shipTools.orders.*;
+import java.util.ArrayList;
+import main.*;
+
 /**
  *
  * @author Christopher
@@ -30,6 +35,66 @@ public class OrderThread extends Thread{
     
     public void run(){
         //Test to make sure the faction matches the Ship AND the Ship exists
+        Ship s = EntityList.getShip(ship);
+        if(s.getFactionID() != faction){
+            return;
+        }
+        
+        ArrayList<Order> add = new ArrayList<>();
+        
+        if(order.substring(0,5).equals("(ACC)")){
+            
+            //This is an acceleration order
+            double acceleration = Double.parseDouble(order.substring(5,order.indexOf("|")));
+            double time = (Double.parseDouble(order.substring(order.indexOf("|") + 1)))/CycleRunner.cyclesPerSecond;
+            add.add(new Accelerate(acceleration,time));
+            
+        } else if(order.substring(0,5).equals("(ROT)")){
+            
+            //This is an rotation order
+            int border = order.indexOf("|");
+            double XZ = Double.parseDouble(order.substring(5, border));
+            double Y = Double.parseDouble(order.substring(border + 1));
+            
+            add.add(new Rotate(XZ,Y));
+            
+        } else if(order.equals("(WAIT)")){
+            
+            add.add(new Wait(Double.parseDouble(order.substring(6))/CycleRunner.cyclesPerSecond));
+            
+        } else if(order.substring(0,5).equals("(WRP)")){
+            double magnitude = Double.parseDouble(order.substring(5,order.indexOf("|")));
+            double time = Double.parseDouble(order.substring(order.indexOf("|") + 1));
+            
+            add.add(new Warp(magnitude, time));
+            
+        } else if(order.substring(0,5).equals("(MNV)")){
+            String data = order.substring(6);
+            double magnitude = Double.parseDouble(data.substring(1,data.indexOf(")")));
+            data = data.substring(data.indexOf(")") + 1);
+            double XZ = Double.parseDouble(data.substring(1,data.indexOf(")")));
+            data = data.substring(data.indexOf(")") + 1);
+            double Y = Double.parseDouble(data.substring(1,data.indexOf(")")));
+            
+            add.add(0, new Rotate(XZ,Y));
+            
+            
+            double accelerationTime = magnitude/(30 * 750000000.0 / s.getMass());
+            
+            add.add(1, new Accelerate(100,accelerationTime));
+            
+        } else if(order.substring(0,5).equals("(ATK)")){
+            boolean fireMissile = (order.substring(6, 7).equals("T"));
+            boolean fireLaser = (order.substring(7, 8).equals("T"));
+            boolean fireRailgun = (order.substring(8, 9).equals("T"));
+                
+            long targ = Long.parseLong(order.substring(10));
+            
+            add.add(new Attack(fireMissile, fireLaser, fireRailgun, targ));
+        }
+        
+        EntityList.getShip(ship).giveOrders(add);
+        
         
         //Give the Ship the Order
         

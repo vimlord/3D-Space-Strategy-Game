@@ -11,8 +11,8 @@ public class Wait extends Order{
     }
     
     public String getOrder(){
-        cyclesLeft-= CycleRunner.getTimeWarp();
-        return order;
+        cyclesLeft -= CycleRunner.getTimeWarp();
+        return order + cyclesLeft;
     }
     
     public boolean getStatus(){

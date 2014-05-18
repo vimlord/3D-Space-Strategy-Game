@@ -399,7 +399,7 @@ public class Ship extends Entity implements ControlSystem, FactionTag{
         
         if(order.substring(0,5).equals("(ACC)")){
             //This is an acceleration order
-            setAcceleration(Double.parseDouble(order.substring(5)));
+            setAcceleration(Double.parseDouble(order.substring(5,order.indexOf("|"))));
             if(!orders.get(0).getStatus()){
                 orders.remove(0);
             }
@@ -426,7 +426,7 @@ public class Ship extends Entity implements ControlSystem, FactionTag{
         } else if(order.substring(0,5).equals("(WRP)")){
             if(!warping){
                 if(warpCharge >= warpMinimum){
-                    setWarp(Double.parseDouble(order.substring(5)));
+                    setWarp(Double.parseDouble(order.substring(5,order.indexOf("|"))));
                 } else {
                     orders.remove(0);
                     setWarp(0);
@@ -732,6 +732,10 @@ public class Ship extends Entity implements ControlSystem, FactionTag{
     //--------------------------------
     public void giveOrders(Order o){
         orders.add(o);
+    }
+    public void giveOrders(ArrayList<Order> order){
+        for(Order o : order)
+            orders.add(o);
     }
     
     public void cancelOrders(int index){
