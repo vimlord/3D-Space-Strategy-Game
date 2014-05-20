@@ -27,7 +27,11 @@ public class Server {
         try(ServerSocket serverSocket = new ServerSocket(portNumber)){
             
             while(running){
+                //Looks for a connection with a client and establishes it if possible
                 new ListenerThread(serverSocket.accept()).start();
+                //Executes a cycle in the CycleRunner class. This will move Entities
+                //and execute collisions, Ship orders, and other necessary processes.
+                //For a broader list, look at CycleRunner.executeCycle()
                 CycleRunner.executeCycle();
             }
             

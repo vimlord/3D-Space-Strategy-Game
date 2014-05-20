@@ -1,16 +1,16 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * The ListenerThread fulfills the requests made by a client.
  */
 
 package threads;
 
+import entities.Entity;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import main.EntityList;
 
 /**
  *
@@ -24,7 +24,7 @@ public class ListenerThread extends Thread{
     private ObjectInputStream inStream;
     private ObjectOutputStream outputStream;
     
-    private ArrayList<Object> outputQueue = new ArrayList<>();
+    private ArrayList<Serializable> outputQueue = new ArrayList<>();
     
     public ListenerThread(Socket socket) {
         super("ListenerThread");
@@ -62,10 +62,8 @@ public class ListenerThread extends Thread{
                 
                 //Processes the outgoing objects, if there are any.
                 if(outputQueue.size() > 0){
-                    for(Object o : outputQueue){
-                        outputStream.writeObject(o);
-                    }
-                    outputQueue = new ArrayList<>();
+                    //Outputs whatever is on the top of the list
+                    outputStream.writeObject(outputQueue.remove(0));
                 }
                 
             }
@@ -105,8 +103,9 @@ public class ListenerThread extends Thread{
             String betaTag = input.substring(0,order.indexOf("]"));
             
             if(betaTag.equals("[ENTITY_LIST]")){
-                //When the required code is added, have some code here to send the
-                //list of Entities to the client.
+                //Sends the EntityList to the client
+                ArrayList<Entity> entity = EntityList.getEntityList();
+                outputQueue.add(entity);
             }
         }
         

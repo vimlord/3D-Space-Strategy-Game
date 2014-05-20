@@ -66,9 +66,7 @@ public class Client {
             while(true){
                 Object input = inStream.readObject();
                 if(outputQueue.size() > 0){
-                    for(Object obj: outputQueue)
-                        outputStream.writeObject(obj);
-                    outputQueue = new ArrayList<>();
+                    outputStream.writeObject(outputQueue.remove(0));
                 }
             }
             
