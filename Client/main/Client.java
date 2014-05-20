@@ -65,6 +65,7 @@ public class Client {
             
             while(true){
                 Object input = inStream.readObject();
+                processInput(input);
                 if(outputQueue.size() > 0){
                     outputStream.writeObject(outputQueue.remove(0));
                 }
@@ -87,6 +88,10 @@ public class Client {
             
         }
         
+        
+    }
+    
+    public static void processInput(Object obj){
         
     }
     

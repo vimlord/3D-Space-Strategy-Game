@@ -52,10 +52,8 @@ public class ListenerThread extends Thread{
             //This next line of code takes an Object as input. The Object will
             //then be tested to see if it matches any of the known Object types.
             while((input = inStream.readObject()) != null){
-                if(input instanceof String){
-                    String str = (String) input;
-                    processStringInput(str);
-                }
+                processInput(input);
+                
                 if(input.equals("[EXIT]")){
                     break;
                 }
@@ -80,7 +78,14 @@ public class ListenerThread extends Thread{
         
     }
     
-    public void processStringInput(String input){
+    
+    public void processInput(Object obj){
+        if(obj instanceof String)
+            processInput((String) obj);
+        
+    }
+    
+    public void processInput(String input){
         //Makes sure the Alpha tag is correct
         if(!input.substring(0,1).equals("[")){
             return;
