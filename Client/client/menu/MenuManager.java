@@ -91,7 +91,7 @@ public class MenuManager {
         if(header.equals("[SETMENU]")){ //A menu change request has been made
             setMenu(Integer.parseInt(footer.substring(1,footer.length()-1))); //The program will attempt to set the menu to the parameter provided
         } else if(header.equals("[ORDER]")){
-            Client.sendObject(order);
+            Client.getConnection().sendObject(order);
         }
         
         
