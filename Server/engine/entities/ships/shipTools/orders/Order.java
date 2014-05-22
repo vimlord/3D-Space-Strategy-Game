@@ -2,7 +2,7 @@
  * This class stores code for a command to be executed by a Ship object
  */
 
-package entities.ships.shipTools.orders;
+package engine.entities.ships.shipTools.orders;
 
 /**
  *

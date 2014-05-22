@@ -1,12 +1,12 @@
-package main;
+package engine.main;
  
-import entities.*;
-import entities.celestialBodies.*;
-import entities.projectiles.*;
-import entities.ships.Ship;
-import entities.ships.shipTools.Formation;
-import entities.structures.*;
-import gameMechanics.generators.MapGenerator;
+import engine.entities.*;
+import engine.entities.celestialBodies.*;
+import engine.entities.projectiles.*;
+import engine.entities.ships.Ship;
+import engine.entities.ships.shipTools.Formation;
+import engine.entities.structures.*;
+import engine.gameMechanics.generators.MapGenerator;
 import java.util.ArrayList;
  
 /*

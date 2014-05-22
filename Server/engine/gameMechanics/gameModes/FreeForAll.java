@@ -2,11 +2,11 @@
  * This class stores the data required for a free-for-all gametype
  */
 
-package gameMechanics.gameModes;
+package engine.gameMechanics.gameModes;
 
-import gameMechanics.factions.*;
+import engine.gameMechanics.factions.*;
 import java.util.ArrayList;
-import main.*;
+import engine.main.*;
 
 /**
  *

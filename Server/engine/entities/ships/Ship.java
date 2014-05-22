@@ -6,17 +6,15 @@
  * and it will have a health level of 100 units.
  */
  
-package entities.ships;
+package engine.entities.ships;
  
-import entities.*;
-import entities.ships.shipTools.orders.*;
-import entities.ships.shipTools.projectile_launchers.*;
-import gameMechanics.factions.Faction;
-import gameMechanics.factions.FactionList;
-import gameMechanics.factions.FactionTag;
-import gameMechanics.generators.NameGenerator;
+import engine.entities.*;
+import engine.entities.ships.shipTools.orders.*;
+import engine.entities.ships.shipTools.projectile_launchers.*;
+import engine.gameMechanics.factions.*;
+import engine.gameMechanics.generators.NameGenerator;
 import java.util.ArrayList;
-import main.*;
+import engine.main.*;
  
 /**
  *

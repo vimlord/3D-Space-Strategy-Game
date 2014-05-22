@@ -1,6 +1,6 @@
-package entities.ships.shipTools.orders;
+package engine.entities.ships.shipTools.orders;
 
-import main.CycleRunner;
+import engine.main.CycleRunner;
 
 public class Wait extends Order{
     double cyclesLeft;

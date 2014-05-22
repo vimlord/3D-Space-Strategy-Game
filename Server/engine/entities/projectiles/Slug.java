@@ -3,9 +3,9 @@
  * Every Railgun slug will always have a mass of 10000 kg
  */
 
-package entities.projectiles;
+package engine.entities.projectiles;
 
-import entities.ships.*;
+import engine.entities.ships.*;
 
 /**
  *

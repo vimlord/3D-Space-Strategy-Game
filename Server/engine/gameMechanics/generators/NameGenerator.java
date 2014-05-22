@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package gameMechanics.generators;
+package engine.gameMechanics.generators;
 
 import java.util.ArrayList;
 

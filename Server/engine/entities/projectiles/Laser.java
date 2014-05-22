@@ -3,11 +3,11 @@
  * and open the template in the editor.
  */
 
-package entities.projectiles;
+package engine.entities.projectiles;
 
-import entities.Entity;
-import entities.ships.*;
-import main.CycleRunner;
+import engine.entities.Entity;
+import engine.entities.ships.*;
+import engine.main.CycleRunner;
 
 /**
  *

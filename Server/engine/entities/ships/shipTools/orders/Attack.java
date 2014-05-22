@@ -3,10 +3,10 @@
  * and open the template in the editor.
  */
 
-package entities.ships.shipTools.orders;
+package engine.entities.ships.shipTools.orders;
 
-import entities.Entity;
-import main.CycleRunner;
+import engine.entities.Entity;
+import engine.main.CycleRunner;
 
 /**
  *

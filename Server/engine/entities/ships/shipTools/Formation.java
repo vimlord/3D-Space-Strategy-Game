@@ -7,10 +7,10 @@
  * 6 Corvettes
  */
 
-package entities.ships.shipTools;
+package engine.entities.ships.shipTools;
 
-import entities.ships.*;
-import gameMechanics.factions.*;
+import engine.entities.ships.*;
+import engine.gameMechanics.factions.*;
 import java.util.*;
 
 /**

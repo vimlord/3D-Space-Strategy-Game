@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package gameMechanics.gameModes;
+package engine.gameMechanics.gameModes;
 
 /**
  *

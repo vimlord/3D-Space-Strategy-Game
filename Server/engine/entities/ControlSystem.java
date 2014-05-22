@@ -2,7 +2,7 @@
  * This class provides a series of methods needed to provide a means of controlling
  * ships and guided projectiles
  */
-package entities;
+package engine.entities;
 
 /**
  *

@@ -4,11 +4,12 @@
  * and open the template in the editor.
  */
 
-package main;
+package server.main;
 
 import java.io.IOException;
 import java.net.*;
-import threads.ListenerThread;
+import server.threads.ListenerThread;
+import engine.main.*;
 
 /**
  *

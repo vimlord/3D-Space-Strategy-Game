@@ -3,7 +3,7 @@
  * control of several Warp Gates.
  */
 
-package gameMechanics.gameModes;
+package engine.gameMechanics.gameModes;
 
 
 /**

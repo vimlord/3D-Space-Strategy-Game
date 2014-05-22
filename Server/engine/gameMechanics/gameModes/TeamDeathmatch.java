@@ -4,12 +4,12 @@
  * and open the template in the editor.
  */
 
-package gameMechanics.gameModes;
+package engine.gameMechanics.gameModes;
 
-import gameMechanics.factions.Faction;
-import gameMechanics.factions.FactionList;
+import engine.gameMechanics.factions.Faction;
+import engine.gameMechanics.factions.FactionList;
 import java.util.ArrayList;
-import main.EntityList;
+import engine.main.EntityList;
 
 /**
  *

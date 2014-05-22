@@ -1,9 +1,8 @@
-package entities.projectiles;
+package engine.entities.projectiles;
 
-import entities.*;
-import entities.ships.*;
-import main.CycleRunner;
-import main.EntityList;
+import engine.entities.*;
+import engine.entities.ships.*;
+import engine.main.*;
 
 public class Missile extends Projectile implements ControlSystem{
     

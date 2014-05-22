@@ -4,9 +4,9 @@
  * and open the template in the editor.
  */
 
-package entities.miscellaneous;
+package engine.entities.miscellaneous;
 
-import entities.Entity;
+import engine.entities.Entity;
 
 /**
  *

@@ -2,9 +2,9 @@
  * This class stores data for a black hole.
  */
 
-package entities.celestialBodies;
+package engine.entities.celestialBodies;
 
-import entities.Entity;
+import engine.entities.Entity;
 
 /**
  *

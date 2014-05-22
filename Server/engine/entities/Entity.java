@@ -1,12 +1,12 @@
-package entities;
+package engine.entities;
 /*
  * Holds data for an Entity object, from which subclasses will be made to allow
  * for various types of objects.
  */
  
 import java.io.Serializable;
-import main.*;
-import physics.*;
+import engine.main.*;
+import engine.physics.*;
  
 /**
  *
@@ -84,7 +84,7 @@ public abstract class Entity implements PhysicsConstants, Serializable{
          
          
         //Modifies force value based on cycles per second
-        force *= (CycleRunner.getTimeWarp()/(CycleRunner.cyclesPerSecond));
+        force *= (CycleRunner.getTimeWarp()/CycleRunner.cyclesPerSecond);
         
         //If there's no distance on the XZ plane, it doesn't gravitate on that
         //axis.
@@ -145,7 +145,7 @@ public abstract class Entity implements PhysicsConstants, Serializable{
          
          
         //Modifies force value based on cycles per second
-        force *= (CycleRunner.getTimeWarp()/(double)(CycleRunner.cyclesPerSecond));
+        force *= (CycleRunner.getTimeWarp()/CycleRunner.cyclesPerSecond);
         
         if(distanceXZ != 0){
             velX -= (distanceX/distanceXZ) *(distanceXZ/distance) * (force)/this.mass;

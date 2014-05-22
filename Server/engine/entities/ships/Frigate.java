@@ -1,4 +1,4 @@
-package entities.ships;
+package engine.entities.ships;
 
 /*
  * Frigates are the second smallest class of vessels. They each carry

@@ -3,9 +3,9 @@
  * All numbers are relative to the body being orbited, not the origin (0,0,0).
  */
 
-package physics;
+package engine.physics;
 
-import entities.Entity;
+import engine.entities.Entity;
 
 /**
  *

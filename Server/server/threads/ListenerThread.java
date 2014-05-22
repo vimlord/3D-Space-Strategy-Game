@@ -2,15 +2,15 @@
  * The ListenerThread fulfills the requests made by a client.
  */
 
-package threads;
+package server.threads;
 
-import entities.Entity;
+import engine.entities.Entity;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import main.EntityList;
+import engine.main.EntityList;
 
 /**
  *

@@ -3,12 +3,12 @@
  * and open the template in the editor.
  */
 
-package entities.ships.shipTools.projectile_launchers;
+package engine.entities.ships.shipTools.projectile_launchers;
 
-import entities.*;
-import entities.projectiles.*;
-import entities.ships.*;
-import main.*;
+import engine.entities.*;
+import engine.entities.projectiles.*;
+import engine.entities.ships.*;
+import engine.main.*;
 
 /**
  *

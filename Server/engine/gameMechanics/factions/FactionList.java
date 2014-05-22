@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package gameMechanics.factions;
+package engine.gameMechanics.factions;
 
 import java.util.ArrayList;
 

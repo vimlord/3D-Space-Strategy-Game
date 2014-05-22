@@ -4,13 +4,13 @@
  * and open the template in the editor.
  */
 
-package gameMechanics.factions;
+package engine.gameMechanics.factions;
 
-import gameMechanics.factions.FactionTag;
-import entities.Entity;
-import entities.ships.Ship;
+import engine.gameMechanics.factions.FactionTag;
+import engine.entities.Entity;
+import engine.entities.ships.Ship;
 import java.util.ArrayList;
-import main.EntityList;
+import engine.main.EntityList;
 
 /**
  *

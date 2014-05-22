@@ -13,17 +13,17 @@
  * 
  */
 
-package gameMechanics.generators;
+package engine.gameMechanics.generators;
 
-import entities.Entity;
-import entities.celestialBodies.*;
-import entities.ships.Ship;
-import entities.ships.shipTools.Formation;
-import gameMechanics.factions.Faction;
-import gameMechanics.factions.FactionList;
-import gameMechanics.gameModes.GameMode;
+import engine.entities.Entity;
+import engine.entities.celestialBodies.*;
+import engine.entities.ships.Ship;
+import engine.entities.ships.shipTools.Formation;
+import engine.gameMechanics.factions.Faction;
+import engine.gameMechanics.factions.FactionList;
+import engine.gameMechanics.gameModes.GameMode;
 import java.util.ArrayList;
-import physics.*;
+import engine.physics.*;
 
 
 /**

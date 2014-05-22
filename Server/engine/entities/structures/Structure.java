@@ -4,13 +4,13 @@
  * and open the template in the editor.
  */
 
-package entities.structures;
+package engine.entities.structures;
 
-import entities.*;
-import gameMechanics.factions.Faction;
-import gameMechanics.factions.FactionList;
-import gameMechanics.factions.FactionTag;
-import physics.Orbit;
+import engine.entities.*;
+import engine.gameMechanics.factions.Faction;
+import engine.gameMechanics.factions.FactionList;
+import engine.gameMechanics.factions.FactionTag;
+import engine.physics.Orbit;
 
 /**
  *

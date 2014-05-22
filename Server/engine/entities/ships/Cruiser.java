@@ -1,4 +1,4 @@
-package entities.ships;
+package engine.entities.ships;
 
 /*
  * Cruisers are slightly larger than Destroyers. They each carry

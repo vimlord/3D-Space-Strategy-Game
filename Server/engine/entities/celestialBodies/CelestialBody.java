@@ -3,11 +3,11 @@
  * and open the template in the editor.
  */
  
-package entities.celestialBodies;
+package engine.entities.celestialBodies;
  
-import entities.Entity;
-import entities.ships.*;
-import main.CycleRunner;
+import engine.entities.Entity;
+import engine.entities.ships.*;
+import engine.main.*;
  
 /**
  *

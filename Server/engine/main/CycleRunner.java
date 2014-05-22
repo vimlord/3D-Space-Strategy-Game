@@ -1,6 +1,6 @@
-package main;
+package engine.main;
 
-import gameMechanics.gameModes.*;
+import engine.gameMechanics.gameModes.*;
 
 /*
  * Runs the necessary code to execute a cycle in the game's processes.

@@ -2,10 +2,10 @@
  * This class stores data for a maneuver that should be executed
  */
 
-package entities.ships.shipTools.orders;
+package engine.entities.ships.shipTools.orders;
 
-import entities.Entity;
-import entities.ships.Ship;
+import engine.entities.Entity;
+import engine.entities.ships.Ship;
 
 /**
  *

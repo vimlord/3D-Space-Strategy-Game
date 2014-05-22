@@ -1,4 +1,4 @@
-package entities.ships;
+package engine.entities.ships;
 
 /*
  * Destroyers are the mid sized class of vessels. They each carry

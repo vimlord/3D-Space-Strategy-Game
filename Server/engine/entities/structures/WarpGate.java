@@ -4,17 +4,17 @@
  * and open the template in the editor.
  */
 
-package entities.structures;
+package engine.entities.structures;
 
-import entities.Entity;
-import entities.miscellaneous.DetectionRadius;
-import entities.ships.Ship;
-import gameMechanics.factions.Faction;
-import gameMechanics.factions.FactionList;
+import engine.entities.Entity;
+import engine.entities.miscellaneous.DetectionRadius;
+import engine.entities.ships.Ship;
+import engine.gameMechanics.factions.Faction;
+import engine.gameMechanics.factions.FactionList;
 import java.util.ArrayList;
-import main.CycleRunner;
-import main.EntityList;
-import physics.*;
+import engine.main.CycleRunner;
+import engine.main.EntityList;
+import engine.physics.*;
 
 /**
  *

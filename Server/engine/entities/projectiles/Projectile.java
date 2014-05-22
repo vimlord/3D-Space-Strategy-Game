@@ -1,8 +1,8 @@
 
-package entities.projectiles;
+package engine.entities.projectiles;
 
-import entities.*;
-import entities.ships.*;
+import engine.entities.*;
+import engine.entities.ships.*;
 
 /*
  * This class stores data for a Projectile entity that deals damage

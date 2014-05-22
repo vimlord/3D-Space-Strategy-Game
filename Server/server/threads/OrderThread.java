@@ -4,12 +4,13 @@
  * and open the template in the editor.
  */
 
-package threads;
+package server.threads;
 
-import entities.ships.Ship;
-import entities.ships.shipTools.orders.*;
+import engine.entities.ships.Ship;
+import engine.entities.ships.shipTools.orders.*;
 import java.util.ArrayList;
-import main.*;
+import server.main.*;
+import engine.main.*;
 
 /**
  *
