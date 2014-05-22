@@ -4,12 +4,12 @@
  * and open the template in the editor.
  */
 
-package menu;
+package client.menu;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
-import main.Client;
+import client.main.Client;
 
 /**
  *

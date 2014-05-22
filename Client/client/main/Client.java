@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package main;
+package client.main;
 
 import java.io.*;
 import java.net.Socket;

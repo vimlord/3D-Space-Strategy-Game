@@ -3,12 +3,12 @@
  * a series of buttons.
  */
 
-package menu;
+package client.menu;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
-import menu.buttons.Button;
+import client.menu.buttons.Button;
 
 /**
  *
