@@ -101,143 +101,7 @@ public class EntityList {
         
     }
      
-    /**
-     * Causes all Entity objects to move based on their velocities
-     */
-    public static void executeMovement(){
-        for(Ship s : ships){
-            s.move();
-        }
-        for(CelestialBody c : bodies){
-            c.move();
-        }
-        for(Projectile p : projectiles){
-            p.move();
-        }
-        for(Structure s : structures){
-            s.move();
-        }
-    }
-	
-    public static void executeCollisions(){
-            //Planetary collisions
-            for(int i = 0; i < bodies.size() - 1; i++){
-                    for(int j = i + 1; j < bodies.size(); j++){
-                        if((bodies.get(i)).testCollision(bodies.get(j))){
-                                (bodies.get(i)).collide(bodies.get(j));
-                                if(bodies.get(i) instanceof BlackHole){
-                                    bodies.remove(j);
-                                    j--;
-                                }
-                        }
-                    }
-            }
-
-            //Vessel collisions
-            for(int i = 0; i < ships.size() - 1; i++){
-                for(int j = i + 1; j < ships.size(); j++){
-                    if((ships.get(i)).testCollision(ships.get(j))){
-                            (ships.get(i)).collide(ships.get(j));
-                    }
-                }
-            }
-            
-            //Structure collisions
-            for(Structure struct : structures){
-                for(Ship s : ships){
-                    if(struct.testCollision(s)){
-                        struct.collide(s);
-                    }
-                }
-            }
-            
-            //Planet Collisions
-            for(CelestialBody c : bodies){
-                for(Ship s : ships){
-                    if(c.testCollision(s)){
-                        c.collide(s);
-                        if(c instanceof BlackHole){
-                            bodies.remove(c);
-                        }
-                    }
-                }
-                for(Structure s : structures){
-                    if(c.testCollision(s)){
-                        c.collide(s);
-                    }
-                }
-            }
-
-            //Projectile collisions
-            
-            for(int i = projectiles.size() - 1; i >= 0; i++){
-                Projectile p = projectiles.get(i);
-                for(Ship s : ships){
-                    if(p.testCollision(s)){
-                        p.collide(s);
-                        projectiles.remove(p);
-                        break;
-                    }
-                }
-
-                for(CelestialBody c : bodies){
-                    if(p.testCollision(c)){
-                        p.collide(c);
-                        projectiles.remove(p);
-                        break;
-                    }
-                }
-                
-                for(Structure s : structures){
-                    if(p.testCollision(s)){
-                        p.collide(s);
-                        projectiles.remove(p);
-                        break;
-                    }
-                }
-
-
-            }
-            
-    }
     
-    
-    public static void executeCasualties(){
-        //Kills dead ships because... they're dead... duh.
-        for(int i = 0; i < ships.size(); i++){
-            Ship s = ships.get(i);
-            if(s.getHealth() < 0){
-                ships.remove(s);
-            }
-        }
-        for(int i = 0; i < projectiles.size(); i++){
-            if(projectiles.get(i) instanceof Laser && projectiles.get(i).getDamage() < 0.02){
-                projectiles.remove(i);
-            }
-        }
-    }
-    
-    public static void executeStructure(){
-        for(Structure s : structures){
-            s.act();
-        }
-        executeWarpGates();
-    }
-    
-    public static void executeWarpGates(){
-        for(Structure st : structures){
-            if(st instanceof WarpGate){
-                WarpGate w = (WarpGate) st;
-                for(Ship s : ships){
-                    if(w.warpAllowed(s)){
-                        w.sendShip(s);
-                    }
-                }
-            }
-        }
-    }
-    
-     
     public static CelestialBody getCelestialBody(int index){
         return bodies.get(index);
     }
@@ -328,6 +192,20 @@ public class EntityList {
      */
     public static void resetMap(){
         bodies = new ArrayList<CelestialBody>();
+    }
+    
+    public static void setList(ArrayList<Entity> entities){
+        resetList();
+        for(Entity e : entities){
+            if(e instanceof Ship)
+                ships.add((Ship) e);
+            else if(e instanceof CelestialBody)
+                bodies.add((CelestialBody) e);
+            else if(e instanceof Projectile)
+                projectiles.add((Projectile) e);
+            else if(e instanceof Structure)
+                structures.add((Structure) e);
+        }
     }
     
     public static void resetList(){
