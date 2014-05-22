@@ -5,6 +5,8 @@
 package server.threads;
 
 import engine.entities.Entity;
+import engine.gameMechanics.gameModes.GameMode;
+import engine.main.CycleRunner;
 import engine.main.EntityList;
 import java.io.*;
 import java.net.*;
@@ -81,6 +83,10 @@ public class ListenerThread extends Thread{
     public void processInput(Object obj){
         if(obj instanceof String)
             processInput((String) obj);
+        else if(obj instanceof GameMode){
+            //Insert code here for setting the current GameMode. It doesn't have
+            //to be added, but you never know.
+        }
         
     }
     
@@ -110,6 +116,9 @@ public class ListenerThread extends Thread{
                 //Sends the EntityList to the client
                 ArrayList<Entity> entity = EntityList.getEntityList();
                 outputQueue.add((Serializable) new EntityListWrapper(entity));
+            }
+            if(betaTag.equals("[GAMEMODE]")){
+                outputQueue.add(CycleRunner.getGamemode());
             }
         }
         

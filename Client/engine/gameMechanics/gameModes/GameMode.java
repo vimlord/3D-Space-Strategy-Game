@@ -13,12 +13,13 @@ package engine.gameMechanics.gameModes;
 import engine.gameMechanics.factions.*;
 import java.util.ArrayList;
 import engine.main.*;
+import java.io.Serializable;
 
 /**
  *
  * @author Christopher
  */
-public abstract class GameMode {
+public abstract class GameMode  implements Serializable{
     private boolean running = false;
     
     protected int winner = -1;

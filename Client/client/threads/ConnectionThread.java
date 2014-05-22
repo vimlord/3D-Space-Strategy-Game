@@ -6,7 +6,10 @@
 
 package client.threads;
 
+import client.object_wrappers.EntityListWrapper;
 import engine.entities.Entity;
+import engine.gameMechanics.gameModes.GameMode;
+import engine.main.CycleRunner;
 import engine.main.EntityList;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,7 +20,6 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import client.object_wrappers.EntityListWrapper;
 
 /**
  *
@@ -110,8 +112,14 @@ public class ConnectionThread extends Thread{
     
     public void processInput(Object obj){
         if(obj instanceof EntityListWrapper){
+            
             EntityListWrapper w = (EntityListWrapper) obj;
             EntityList.setList(w.getContents());
+            
+        } else if(obj instanceof GameMode){
+            
+            CycleRunner.setGamemode((GameMode) obj);
+            
         }
     }
     

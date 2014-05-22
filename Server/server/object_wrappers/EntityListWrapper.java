@@ -7,13 +7,14 @@
 package server.object_wrappers;
 
 import engine.entities.Entity;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  *
  * @author Christopher
  */
-public class EntityListWrapper {
+public class EntityListWrapper  implements Serializable{
     private ArrayList<Entity> entities;
     
     public EntityListWrapper(ArrayList<Entity> e){
