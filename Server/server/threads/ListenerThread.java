@@ -5,12 +5,11 @@
 package server.threads;
 
 import engine.entities.Entity;
+import engine.main.EntityList;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import engine.main.EntityList;
+import server.object_wrappers.EntityListWrapper;
 
 /**
  *
@@ -110,7 +109,7 @@ public class ListenerThread extends Thread{
             if(betaTag.equals("[ENTITY_LIST]")){
                 //Sends the EntityList to the client
                 ArrayList<Entity> entity = EntityList.getEntityList();
-                outputQueue.add(entity);
+                outputQueue.add((Serializable) new EntityListWrapper(entity));
             }
         }
         
