@@ -6,6 +6,7 @@
 
 package client.threads;
 
+import client.main.Client;
 import client.object_wrappers.EntityListWrapper;
 import engine.entities.Entity;
 import engine.gameMechanics.gameModes.GameMode;
@@ -40,6 +41,7 @@ public class ConnectionThread extends Thread{
     private String hostName;
     private int portNumber;
     
+    
     public ConnectionThread(String[] args){
         
         
@@ -48,29 +50,32 @@ public class ConnectionThread extends Thread{
         try {
             hostName = args[0];
             portNumber = Integer.parseInt(args[1]);
+            Client.setName(args[2]);
         } catch(Exception e){
             System.out.println("An error occured while reading from console:");
             System.err.println(e.toString());
-            System.out.println("Usage: Client <hostName> <portNumber>");
+            System.out.println("Usage: Client <hostName> <portNumber> <clientName>");
             
             hostName = "localhost";
             portNumber = 25565;
+            Client.setName("Guest");
             
             System.out.println("The host name has been set to \"" + hostName + "\".");
             System.out.println("The port number has been set to \"" + portNumber + "\"." + "\n");
         }
+        
+        System.out.println("You will be connected as \"" + Client.getName() + "\"." + "\n");
         
         try{
             socket = new Socket(hostName, portNumber);
             out = new PrintWriter(socket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             stdIn = new BufferedReader(new InputStreamReader(System.in));
-            inStream = new ObjectInputStream(socket.getInputStream());
-            outputStream = new ObjectOutputStream(socket.getOutputStream());
         } catch (IOException e) {
             System.err.println("Couldn't get I/O for the connection to " + hostName);
             System.exit(1);
         }
+        
         
         
         
@@ -81,20 +86,32 @@ public class ConnectionThread extends Thread{
         
         listening = true;
         
+        System.out.println("We will now try to connect...");
+        
+        try{
+            outputStream = new ObjectOutputStream(socket.getOutputStream());
+            outputStream.flush();
+            
+            inStream = new ObjectInputStream(socket.getInputStream());
+            
+            outputStream.writeObject("[CONNECT]" + Client.getName());
+            
+        } catch (IOException e) {
+            System.err.println("Couldn't get I/O for the connection to " + hostName);
+            System.exit(1);
+        }
+        
         try {
             
             while(listening){
                 Object input = inStream.readObject();
+                System.out.println("Current input: " + input.toString());
+                System.out.println(input.toString());
                 processInput(input);
                 if(outputQueue.size() > 0){
                     outputStream.writeObject(outputQueue.remove(0));
                 }
             }
-            
-        } catch (UnknownHostException e) {
-            
-            System.err.println("Don't know about host " + hostName);
-            System.exit(1);
             
         } catch (IOException e) {
             
@@ -120,7 +137,20 @@ public class ConnectionThread extends Thread{
             
             CycleRunner.setGamemode((GameMode) obj);
             
+        } else if(obj instanceof String){
+            processInput((String) obj);
         }
+    }
+    
+    public void processInput(String input){
+        String alphaTag = input.substring(0,input.indexOf("]"));
+        
+        if(alphaTag.equals("[FACTIONID]")){
+            //Sets the Faction ID number
+            Client.setID(Integer.parseInt(input.replaceFirst(alphaTag, "")));
+            System.out.println("A Faction ID has been established.");
+        }
+        
     }
     
     public void sendObject(Object obj){

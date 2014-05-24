@@ -6,17 +6,20 @@
 
 package server.main;
 
+import engine.main.*;
 import java.io.IOException;
 import java.net.*;
 import server.threads.ListenerThread;
-import engine.main.*;
+import server.tools.GameClock;
 
 /**
  *
  * @author Christopher
  */
 public class Server {
-
+    
+    private static GameClock clock = new GameClock();
+    
     /**
      * @param args the command line arguments
      */
@@ -42,11 +45,12 @@ public class Server {
             
             while(running){
                 //Looks for a connection with a client and establishes it if possible
-                new ListenerThread(serverSocket.accept()).start();
+                (new ListenerThread(serverSocket.accept())).start();
                 //Executes a cycle in the CycleRunner class. This will move Entities
                 //and execute collisions, Ship orders, and other necessary processes.
                 //For a broader list, look at CycleRunner.executeCycle()
                 CycleRunner.executeCycle();
+                clock.cycle();
             }
             
             

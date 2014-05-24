@@ -18,7 +18,8 @@ import java.util.ArrayList;
  */
 public class Client {
     
-    
+    private static int factionID;
+    private static String clientName;
     
     private static ConnectionThread connection;
     
@@ -27,6 +28,7 @@ public class Client {
      */
     public static void main(String[] args) {
         connection = new ConnectionThread(args);
+        connection.start();
         
         while(connection.listening()){
             
@@ -36,6 +38,22 @@ public class Client {
     
     public static ConnectionThread getConnection(){
         return connection;
+    }
+    
+    public static void setName(String nm){
+        clientName = nm;
+    }
+    
+    public static String getName(){
+        return clientName;
+    }
+    
+    public static void setID(int id){
+        factionID = id;
+    }
+    
+    public static int getID(){
+        return factionID;
     }
     
     
