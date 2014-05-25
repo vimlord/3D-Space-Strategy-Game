@@ -6,9 +6,10 @@
 
 package gameMechanics.factions;
 
-import gameMechanics.factions.FactionTag;
 import entities.Entity;
 import entities.ships.Ship;
+import gameMechanics.factions.FactionTag;
+import java.io.Serializable;
 import java.util.ArrayList;
 import main.EntityList;
 
@@ -16,7 +17,7 @@ import main.EntityList;
  *
  * @author Christopher
  */
-public class Faction {
+public class Faction implements Serializable{
     
     
     private final int factionID;
