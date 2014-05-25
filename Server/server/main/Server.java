@@ -71,7 +71,7 @@ public class Server {
     }
     
     public static void addLogEvent(String event){
-        log.add(0,clock.toString(true) + " - "+ event);
+        log.add(0,getTime(true) + " - "+ event);
     }
     
     public static ArrayList<String> getLog(){

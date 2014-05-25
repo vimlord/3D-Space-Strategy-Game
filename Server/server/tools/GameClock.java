@@ -61,6 +61,11 @@ public class GameClock {
     }
     
     public String toString(boolean showTick){
+        
+        if(hours > 1){
+            System.out.println("----->" + hours + "<-----");
+        }
+        
         String timeElapsed = "";
         if(years > 0){
             timeElapsed += getYear() + ":" + getDay();

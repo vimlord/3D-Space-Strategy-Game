@@ -7,6 +7,8 @@
 package server.threads;
 
 import engine.main.CycleRunner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import server.main.Server;
 
 /**
@@ -16,13 +18,23 @@ import server.main.Server;
 public class GameThread extends Thread{
     
     
-    public GameThread(){
+    public GameThread() {
         
     }
     
     public void run(){
+        int count = 0;
         while(true){
             CycleRunner.executeCycle();
+            count++;
+            try{
+                if(count%32 == 0){
+                    Thread.sleep(0,1);
+                    count = count%32;
+                }
+            } catch(InterruptedException e){
+                e.printStackTrace();
+            }
             Server.cycleClock();
         }
     }
