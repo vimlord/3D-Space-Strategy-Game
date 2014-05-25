@@ -86,30 +86,34 @@ public class ConnectionThread extends Thread{
         
         listening = true;
         
-        System.out.println("We will now try to connect...");
-        
         try{
             outputStream = new ObjectOutputStream(socket.getOutputStream());
             outputStream.flush();
             
             inStream = new ObjectInputStream(socket.getInputStream());
-            
             outputStream.writeObject("[CONNECT]" + Client.getName());
-            
         } catch (IOException e) {
             System.err.println("Couldn't get I/O for the connection to " + hostName);
             System.exit(1);
         }
         
+        
+        
         try {
             
             while(listening){
+                if(Client.getID() == -1){
+                    outputQueue.add("[CONNECT]" + Client.getName());
+                }
+                
                 Object input = inStream.readObject();
-                System.out.println("Current input: " + input.toString());
-                System.out.println(input.toString());
+                //System.out.println("Current input: " + input);
                 processInput(input);
+                
                 if(outputQueue.size() > 0){
-                    outputStream.writeObject(outputQueue.remove(0));
+                    Object outputObject = outputQueue.remove(0);
+                    //System.out.println(outputObject);
+                    outputStream.writeObject(outputObject);
                 }
             }
             
@@ -143,12 +147,14 @@ public class ConnectionThread extends Thread{
     }
     
     public void processInput(String input){
-        String alphaTag = input.substring(0,input.indexOf("]"));
+        String alphaTag = input.substring(0,input.indexOf("]") + 1);
+        
+        System.out.println(alphaTag);
         
         if(alphaTag.equals("[FACTIONID]")){
             //Sets the Faction ID number
-            Client.setID(Integer.parseInt(input.replaceFirst(alphaTag, "")));
-            System.out.println("A Faction ID has been established.");
+            Client.setID(Integer.parseInt(input.substring(alphaTag.length())));
+            System.out.println("Faction ID established for \"" + Client.getName() + "\": " + Client.getID());
         }
         
     }

@@ -18,8 +18,8 @@ import java.util.ArrayList;
  */
 public class Client {
     
-    private static int factionID;
-    private static String clientName;
+    private static int factionID = -1;
+    private static String clientName = null;
     
     private static ConnectionThread connection;
     

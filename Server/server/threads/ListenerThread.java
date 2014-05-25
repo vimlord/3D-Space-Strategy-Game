@@ -12,6 +12,7 @@ import engine.main.EntityList;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
+import server.main.Server;
 import server.object_wrappers.EntityListWrapper;
 
 /**
@@ -26,6 +27,8 @@ public class ListenerThread extends Thread{
     private ObjectInputStream inStream;
     private ObjectOutputStream outputStream;
     
+    private String connectionUser = null;
+    
     private ArrayList<Serializable> outputQueue = new ArrayList<>();
     
     public ListenerThread(Socket socket) {
@@ -33,28 +36,32 @@ public class ListenerThread extends Thread{
         try{
             socket.getOutputStream().flush();
             out = new PrintWriter(socket.getOutputStream(), true);
+            out.flush();
+            outputStream = new ObjectOutputStream(socket.getOutputStream());
+            outputStream.flush();
             in = new BufferedReader(
                 new InputStreamReader(
                     socket.getInputStream()));
             inStream = new ObjectInputStream(socket.getInputStream());
-            outputStream = new ObjectOutputStream(socket.getOutputStream());
-            outputStream.flush();
         } catch(IOException e){
             e.printStackTrace();
             return;
         }
+        
     }
     
     public void run(){
         
         try{
             
+            Server.addLogEvent("\"" + connectionUser + "\" has connected to the server.");
+            System.out.println(Server.getLatestLogEvent());
+            
             Object input = null;
             
             //This next line of code takes an Object as input. The Object will
             //then be tested to see if it matches any of the known Object types.
             while((input = inStream.readObject()) != null){
-                
                 processInput(input);
                 
                 if(input.equals("[EXIT]")){
@@ -64,7 +71,9 @@ public class ListenerThread extends Thread{
                 //Processes the outgoing objects, if there are any.
                 if(outputQueue.size() > 0){
                     //Outputs whatever is on the top of the list
-                    outputStream.writeObject(outputQueue.remove(0));
+                    Object outputObject = outputQueue.remove(0);
+                    //System.out.println(outputObject);
+                    outputStream.writeObject(outputObject);
                 }
                 
             }
@@ -97,7 +106,7 @@ public class ListenerThread extends Thread{
         if(!input.substring(0,1).equals("[")){
             return;
         }
-        String alphaTag = input.substring(0,input.indexOf("]"));
+        String alphaTag = input.substring(0,input.indexOf("]") + 1);
         
         if(alphaTag.equals("[ORDER]")){
             String order = input.substring(alphaTag.length());
@@ -124,14 +133,23 @@ public class ListenerThread extends Thread{
             }
         }
         
+        
         if(alphaTag.equals("[CONNECT]")){
-            String name = input.substring(alphaTag.length());
+            connectionUser = input.substring(alphaTag.length());
             int size = 3;
-            if(size > name.length()){
-                size = name.length();
+            if(size > connectionUser.length()){
+                size = connectionUser.length();
             }
-            FactionList.addFaction(name.substring(0, size),name);
-            outputQueue.add(("[FACTIONID]" + FactionList.getFaction(name.substring(0, size)).getID()));
+            
+            String tag = (connectionUser.substring(0, size));
+            
+            FactionList.addFaction(tag);
+            
+            int assignedID = FactionList.getFaction(tag).getID();
+            
+            String idSent = ("[FACTIONID]" + assignedID);
+            
+            outputQueue.add(idSent);
         }
         
         if(alphaTag.equals("[EXIT]")){

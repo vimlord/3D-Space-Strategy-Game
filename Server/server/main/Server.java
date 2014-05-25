@@ -9,6 +9,8 @@ package server.main;
 import engine.main.*;
 import java.io.IOException;
 import java.net.*;
+import java.util.ArrayList;
+import server.threads.GameThread;
 import server.threads.ListenerThread;
 import server.tools.GameClock;
 
@@ -18,13 +20,17 @@ import server.tools.GameClock;
  */
 public class Server {
     
-    private static GameClock clock = new GameClock();
+    private static GameClock clock;
+    
+    private static final ArrayList<String> log = new ArrayList<>();
     
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         int portNumber;
+        
+        clock = new GameClock();
         
         //Attempts to set values for the host name and the port number
         try {
@@ -36,12 +42,16 @@ public class Server {
             
             portNumber = 25565;
             
-            System.out.println("The port number has been set to \"" + portNumber + "\"." + "\n");
+            addLogEvent("The port number has been set to \"" + portNumber + "\"." + "\n");
+            System.out.println(getLatestLogEvent());
         }
         
         boolean running = true;
         
         try(ServerSocket serverSocket = new ServerSocket(portNumber)){
+            
+            GameThread game = new GameThread();
+            game.start();
             
             while(running){
                 //Looks for a connection with a client and establishes it if possible
@@ -49,8 +59,6 @@ public class Server {
                 //Executes a cycle in the CycleRunner class. This will move Entities
                 //and execute collisions, Ship orders, and other necessary processes.
                 //For a broader list, look at CycleRunner.executeCycle()
-                CycleRunner.executeCycle();
-                clock.cycle();
             }
             
             
@@ -60,6 +68,26 @@ public class Server {
         }
         
         
+    }
+    
+    public static void addLogEvent(String event){
+        log.add(0,clock.toString(true) + " - "+ event);
+    }
+    
+    public static ArrayList<String> getLog(){
+        return log;
+    }
+    
+    public static String getLatestLogEvent(){
+        return log.get(0);
+    }
+
+    public static void cycleClock() {
+        clock.cycle();
+    }
+    
+    public static String getTime(boolean showTicks){
+        return clock.toString(showTicks);
     }
     
 }
