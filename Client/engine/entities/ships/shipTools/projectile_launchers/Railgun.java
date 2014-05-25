@@ -10,12 +10,13 @@ import engine.entities.projectiles.*;
 import engine.entities.ships.*;
 import engine.main.CycleRunner;
 import engine.main.EntityList;
+import java.io.Serializable;
 
 /**
  *
  * @author Christopher Hittner
  */
-public class Railgun implements ProjectileLauncher{
+public class Railgun implements ProjectileLauncher, Serializable{
     public final int cooldownTime = 60 * CycleRunner.cyclesPerSecond;
     private double cooldown = 0;
     private int ammo;

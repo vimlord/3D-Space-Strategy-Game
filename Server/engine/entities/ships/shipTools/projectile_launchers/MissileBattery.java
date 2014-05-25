@@ -9,12 +9,13 @@ import engine.entities.*;
 import engine.entities.projectiles.*;
 import engine.entities.ships.*;
 import engine.main.*;
+import java.io.Serializable;
 
 /**
  *
  * @author Christopher Hittner
  */
-public class MissileBattery implements ProjectileLauncher {
+public class MissileBattery implements ProjectileLauncher, Serializable {
     private final int magazineSize, startMagazines, reloadTime;
     private double wait = 0;
     private int shotsLeft, magazinesLeft;

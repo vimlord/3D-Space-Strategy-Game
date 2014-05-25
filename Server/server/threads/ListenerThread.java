@@ -5,6 +5,7 @@
 package server.threads;
 
 import engine.entities.Entity;
+import engine.entities.ships.*;
 import engine.gameMechanics.factions.FactionList;
 import engine.gameMechanics.gameModes.GameMode;
 import engine.main.CycleRunner;
@@ -51,7 +52,6 @@ public class ListenerThread extends Thread{
     }
     
     public void run(){
-        
         try{
             
             Server.addLogEvent("\"" + connectionUser + "\" has connected to the server.");

@@ -9,6 +9,7 @@ package client.threads;
 import client.main.Client;
 import client.object_wrappers.EntityListWrapper;
 import engine.entities.Entity;
+import engine.entities.ships.*;
 import engine.gameMechanics.gameModes.GameMode;
 import engine.main.CycleRunner;
 import engine.main.EntityList;
@@ -132,6 +133,7 @@ public class ConnectionThread extends Thread{
     }
     
     public void processInput(Object obj){
+        System.out.println(obj);
         if(obj instanceof EntityListWrapper){
             
             EntityListWrapper w = (EntityListWrapper) obj;

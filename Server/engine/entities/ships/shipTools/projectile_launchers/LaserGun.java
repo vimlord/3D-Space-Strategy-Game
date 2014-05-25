@@ -9,12 +9,13 @@ import engine.entities.*;
 import engine.entities.projectiles.*;
 import engine.entities.ships.*;
 import engine.main.*;
+import java.io.Serializable;
 
 /**
  *
  * @author Christopher Hittner
  */
-public class LaserGun implements ProjectileLauncher{
+public class LaserGun implements ProjectileLauncher, Serializable{
     private int temperature = 0;
     public final int maxTemp = 10 * CycleRunner.cyclesPerSecond, cooldownMinimum = 2 * CycleRunner.cyclesPerSecond;
     private boolean coolLock = false, firing = false;
