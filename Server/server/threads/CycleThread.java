@@ -15,10 +15,10 @@ import server.main.Server;
  *
  * @author Christopher Hittner
  */
-public class GameThread extends Thread{
+public class CycleThread extends Thread{
     
     
-    public GameThread() {
+    public CycleThread() {
         
     }
     

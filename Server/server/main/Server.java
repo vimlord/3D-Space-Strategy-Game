@@ -10,7 +10,7 @@ import engine.main.*;
 import java.io.IOException;
 import java.net.*;
 import java.util.ArrayList;
-import server.threads.GameThread;
+import server.threads.CycleThread;
 import server.threads.ListenerThread;
 import server.tools.GameClock;
 
@@ -50,7 +50,7 @@ public class Server {
         
         try(ServerSocket serverSocket = new ServerSocket(portNumber)){
             
-            GameThread game = new GameThread();
+            CycleThread game = new CycleThread();
             game.start();
             
             while(running){
