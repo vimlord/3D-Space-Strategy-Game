@@ -115,7 +115,7 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
         g.setFont(new Font("Courier New", Font.PLAIN, 12));
         ArrayList<String> theLog = Server.getLog();
         int entries = (frame.getHeight() - 200)/16;
-        System.out.println(theLog.size());
+        
         for(int i = 0; i < theLog.size(); i++){
             if(i >= entries){
                 break;

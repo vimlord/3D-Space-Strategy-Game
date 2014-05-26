@@ -68,12 +68,12 @@ public class GameClock {
         
         String timeElapsed = "";
         if(years > 0){
-            timeElapsed += getYear() + ":" + getDay();
+            timeElapsed += getYear() + ":" + getDay() + ":";
         } else if(days > 0){
-            timeElapsed += getDay();
+            timeElapsed += getDay() + ":";
         }
         
-        timeElapsed += ":" + getHour() + ":" + getMinute() + ":" + getSecond();
+        timeElapsed += getHour() + ":" + getMinute() + ":" + getSecond();
         
         if(showTick){
             timeElapsed += ":" + (int)(ticks);
