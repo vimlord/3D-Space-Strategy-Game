@@ -67,10 +67,13 @@ public class Server {
             
             
         } catch(IOException e){
-            System.out.println("Exception caught while trying to listen on port " + portNumber);
+            addLogEvent("Exception caught while trying to listen on port " + portNumber);
+            System.out.println(getLatestLogEvent());
             System.out.println(e.getMessage());
+            System.exit(1);
         }
         
+        System.exit(0);
         
     }
     

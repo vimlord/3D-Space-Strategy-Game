@@ -92,7 +92,6 @@ public class ConnectionThread extends Thread{
             outputStream.flush();
             
             inStream = new ObjectInputStream(socket.getInputStream());
-            outputStream.writeObject("[CONNECT]" + Client.getName());
         } catch (IOException e) {
             System.err.println("Couldn't get I/O for the connection to " + hostName);
             System.exit(1);
@@ -107,15 +106,15 @@ public class ConnectionThread extends Thread{
                     outputQueue.add("[CONNECT]" + Client.getName());
                 }
                 
-                Object input = inStream.readObject();
-                //System.out.println("Current input: " + input);
-                processInput(input);
-                
                 if(outputQueue.size() > 0){
                     Object outputObject = outputQueue.remove(0);
                     //System.out.println(outputObject);
                     outputStream.writeObject(outputObject);
                 }
+                
+                Object input = inStream.readObject();
+                //System.out.println("Current input: " + input);
+                processInput(input);
             }
             
         } catch (IOException e) {

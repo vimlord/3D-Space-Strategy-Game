@@ -54,8 +54,6 @@ public class ListenerThread extends Thread{
     public void run(){
         try{
             
-            Server.addLogEvent("\"" + connectionUser + "\" has connected to the server.");
-            System.out.println(Server.getLatestLogEvent());
             
             Object input = null;
             
@@ -78,6 +76,7 @@ public class ListenerThread extends Thread{
                 
             }
             
+            
             socket.close();
             
         } catch(IOException e){
@@ -86,6 +85,9 @@ public class ListenerThread extends Thread{
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             return;
+        } finally {
+            Server.addLogEvent("\"" + connectionUser + "\" has disconnected from the server.");
+            System.out.println(Server.getLatestLogEvent());
         }
         
     }
@@ -150,6 +152,10 @@ public class ListenerThread extends Thread{
             String idSent = ("[FACTIONID]" + assignedID);
             
             outputQueue.add(idSent);
+            
+            Server.addLogEvent("\"" + connectionUser + "\" has connected to the server.");
+            System.out.println(Server.getLatestLogEvent());
+            
         }
         
         if(alphaTag.equals("[EXIT]")){
