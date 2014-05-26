@@ -6,6 +6,8 @@
 
 package server.gui;
 
+import engine.gameMechanics.factions.FactionList;
+import engine.main.EntityList;
 import java.applet.Applet;
 import java.awt.Color;
 import java.awt.Font;
@@ -41,7 +43,7 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
         addMouseMotionListener(this);
         
         //Creates a JFrame with a title
-        frame = new JFrame("3D Viewer");
+        frame = new JFrame("SpaceCraft Gamma - Server");
         //Puts the Tester object into thhe JFrame
 	frame.add(this);
         //Sets the size of the applet to be 800 pixels wide  by 600 pixels high
@@ -104,6 +106,12 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
         g.drawString("Time Elapsed:", 15, 70);
         g.drawString(time, 15, 85);
         g.drawLine(0,100,200,100);
+        
+        int numPlayers = FactionList.getFactionList().size();
+        int numEntities = EntityList.getEntityList().size();
+        
+        g.drawString("Number of Factions: " + numPlayers, 15, 120);
+        g.drawString("Number of Entities: " + numEntities, 15, 135);
     }
     
     public void drawLog(Graphics2D g){

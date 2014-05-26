@@ -12,7 +12,7 @@ import engine.gameMechanics.gameModes.*;
  */
 public class CycleRunner {
     //The amount of cycles executed per secod
-    public static final int cyclesPerSecond = 30000;
+    public static final int cyclesPerSecond = 28636;
     //The factor by which all physics calculations are multipled; a higher number
     //represents a higher speed
     private static double timeWarp = 1;

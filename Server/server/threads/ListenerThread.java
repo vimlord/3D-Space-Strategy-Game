@@ -32,6 +32,8 @@ public class ListenerThread extends Thread{
     
     private ArrayList<Serializable> outputQueue = new ArrayList<>();
     
+    private boolean listening = true;
+    
     public ListenerThread(Socket socket) {
         this.socket = socket;
         try{
@@ -52,19 +54,23 @@ public class ListenerThread extends Thread{
     }
     
     public void run(){
+        
+        Object input = null;
+        
         try{
             
             
-            Object input = null;
-            
             //This next line of code takes an Object as input. The Object will
             //then be tested to see if it matches any of the known Object types.
-            while((input = inStream.readObject()) != null){
+            while(listening){
+                input = inStream.readObject();
+                
                 processInput(input);
                 
-                if(input.equals("[EXIT]")){
+                if(input.equals("[EXIT]") || input == null || input.equals("[INVALIDUSER]")){
                     break;
                 }
+                
                 
                 //Processes the outgoing objects, if there are any.
                 if(outputQueue.size() > 0){
@@ -77,6 +83,7 @@ public class ListenerThread extends Thread{
             }
             
             
+            
             socket.close();
             
         } catch(IOException e){
@@ -86,8 +93,15 @@ public class ListenerThread extends Thread{
             e.printStackTrace();
             return;
         } finally {
-            Server.addLogEvent("\"" + connectionUser + "\" has disconnected from the server.");
-            System.out.println(Server.getLatestLogEvent());
+            System.out.println(input);
+            if(input.equals("[EXIT]") || input.equals(null)){
+                Server.addLogEvent("\"" + connectionUser + "\" has disconnected from the server.");
+                System.out.println(Server.getLatestLogEvent());
+            } else {
+                Server.addLogEvent("A user posing as \"" + connectionUser + "\" has been removed from the server.");
+                System.out.println(Server.getLatestLogEvent());
+
+            }
         }
         
     }
@@ -145,16 +159,29 @@ public class ListenerThread extends Thread{
             
             String tag = (connectionUser.substring(0, size));
             
-            FactionList.addFaction(tag);
+            boolean allowConnection;
             
-            int assignedID = FactionList.getFaction(tag).getID();
+            if(FactionList.getFaction(tag) == null){
+                //The user is legitimate
+                allowConnection = true;
+                FactionList.addFaction(tag);
+            } else {
+                //The client is trying to pose as another person
+                allowConnection = false;
+                listening = false;
+            }
             
-            String idSent = ("[FACTIONID]" + assignedID);
-            
-            outputQueue.add(idSent);
-            
-            Server.addLogEvent("\"" + connectionUser + "\" has connected to the server.");
-            System.out.println(Server.getLatestLogEvent());
+            //Only connects if allowed
+            if(allowConnection){
+                int assignedID = FactionList.getFaction(tag).getID();
+
+                String idSent = ("[FACTIONID]" + assignedID);
+
+                outputQueue.add(idSent);
+
+                Server.addLogEvent("\"" + connectionUser + "\" has connected to the server.");
+                System.out.println(Server.getLatestLogEvent());
+            }
             
         }
         
