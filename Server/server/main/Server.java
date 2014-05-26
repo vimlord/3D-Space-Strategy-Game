@@ -10,6 +10,7 @@ import engine.main.*;
 import java.io.IOException;
 import java.net.*;
 import java.util.ArrayList;
+import server.gui.GUI;
 import server.threads.CycleThread;
 import server.threads.ListenerThread;
 import server.tools.GameClock;
@@ -24,6 +25,8 @@ public class Server {
     
     private static final ArrayList<String> log = new ArrayList<>();
     
+    private static GUI gui;
+    
     /**
      * @param args the command line arguments
      */
@@ -31,6 +34,7 @@ public class Server {
         int portNumber;
         
         clock = new GameClock();
+        gui = new GUI();
         
         //Attempts to set values for the host name and the port number
         try {
@@ -88,6 +92,10 @@ public class Server {
     
     public static String getTime(boolean showTicks){
         return clock.toString(showTicks);
+    }
+    
+    public static GUI getGUI(){
+        return gui;
     }
     
 }

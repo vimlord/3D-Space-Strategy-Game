@@ -36,6 +36,7 @@ public class CycleThread extends Thread{
                 e.printStackTrace();
             }
             Server.cycleClock();
+            Server.getGUI().redraw();
         }
     }
 }
