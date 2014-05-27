@@ -7,7 +7,7 @@ package engine.entities.celestialBodies;
  
 import engine.entities.Entity;
 import engine.entities.ships.*;
-import engine.main.*;
+import engine.main.CycleRunner;
  
 /**
  *

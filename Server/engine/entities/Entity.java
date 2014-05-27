@@ -80,11 +80,11 @@ public abstract class Entity implements PhysicsConstants, Serializable{
         double distance = Math.sqrt(Math.pow(distanceXZ,2) + Math.pow(distanceY,2));
          
         //Calculates force or gravity
-        double force = (double)(G*other.mass)/Math.pow(distance,2);
+        double force = (double)(G*other.getMass(false))/Math.pow(distance,2);
          
          
         //Modifies force value based on cycles per second
-        force *= (CycleRunner.getTimeWarp()/CycleRunner.cyclesPerSecond);
+        force *= (CycleRunner.getTimeWarp()/(CycleRunner.cyclesPerSecond));
         
         //If there's no distance on the XZ plane, it doesn't gravitate on that
         //axis.
@@ -141,39 +141,39 @@ public abstract class Entity implements PhysicsConstants, Serializable{
         
         
         //Calculates force or gravity
-        double force = (double)(G * other.mass * this.mass)/Math.pow(distance,2);
+        double force = (double)(G * other.getMass(false) * this.getMass(false))/Math.pow(distance,2);
          
          
         //Modifies force value based on cycles per second
-        force *= (CycleRunner.getTimeWarp()/CycleRunner.cyclesPerSecond);
+        force *= (CycleRunner.getTimeWarp()/(double)(CycleRunner.cyclesPerSecond));
         
         if(distanceXZ != 0){
-            velX -= (distanceX/distanceXZ) *(distanceXZ/distance) * (force)/this.mass;
-            velZ -= (distanceZ/distanceXZ) * (distanceXZ/distance) * (force)/this.mass;
+            velX -= (distanceX/distanceXZ) *(distanceXZ/distance) * (force)/this.getMass(false);
+            velZ -= (distanceZ/distanceXZ) * (distanceXZ/distance) * (force)/this.getMass(false);
         }
-        velY -= (distanceY/distance) * (force)/this.mass;
+        velY -= (distanceY/distance) * (force)/this.getMass(false);
         
         if(distanceXZ != 0){
-            other.velX += (distanceX/distanceXZ) *(distanceXZ/distance) * (force)/other.mass;
-            other.velZ += (distanceZ/distanceXZ) * (distanceXZ/distance) * (force)/other.mass;
+            other.velX += (distanceX/distanceXZ) *(distanceXZ/distance) * (force)/other.getMass(false);
+            other.velZ += (distanceZ/distanceXZ) * (distanceXZ/distance) * (force)/other.getMass(false);
         }
-        other.velY += (distanceY/distance) * (force)/other.mass;
+        other.velY += (distanceY/distance) * (force)/other.getMass(false);
         
         
         //The code below creates a system for perfectly inelastic collisions
 
-        double MomentumX = ((this.mass * this.velX) + (other.mass * other.velX));
-        double newVelX = MomentumX/(this.mass + other.mass);
+        double MomentumX = ((this.getMass(true) * this.velX) + (other.getMass(true) * other.velX));
+        double newVelX = MomentumX/(this.getMass(false) + other.getMass(false));
         this.velX = newVelX;
         other.velX = newVelX;
 
-        double MomentumY = ((this.mass * this.velY) + (other.mass * other.velY));
-        double newVelY = MomentumY/(this.mass + other.mass);
+        double MomentumY = ((this.getMass(true) * this.velY) + (other.getMass(true) * other.velY));
+        double newVelY = MomentumY/(this.getMass(true) + other.getMass(true));
         this.velY = newVelY;
         other.velY = newVelY;
 
-        double MomentumZ = ((this.mass * this.velZ) + (other.mass * other.velZ));
-        double newVelZ = MomentumZ/(this.mass + other.mass);
+        double MomentumZ = ((this.getMass(true) * this.velZ) + (other.getMass(true) * other.velZ));
+        double newVelZ = MomentumZ/(this.getMass(true) + other.getMass(true));
         this.velZ = newVelZ;
         other.velZ = newVelZ;
         
@@ -248,8 +248,12 @@ public abstract class Entity implements PhysicsConstants, Serializable{
     public double getRadius(){
         return radius;
     }
-    public double getMass(){
-        return mass;
+    public double getMass(boolean useRelativity){
+        if(useRelativity){
+            return (mass) / (1 - ((Math.pow(getSpeedX(),2) + Math.pow(getSpeedY(),2) + Math.pow(getSpeedZ(),2)) / Math.pow(c,2)));
+        } else {
+            return mass;
+        }
     }
     public long getID(){
         return IDCode;

@@ -60,7 +60,7 @@ public class WarpGate extends Structure{
     }
     
     public boolean warpAllowed(Ship other){
-        double energyRequired = other.getMass() * Math.pow(c,2);
+        double energyRequired = other.getMass(false) * Math.pow(c,2);
         if(energyRequired > energy || !super.testCollision(other)){
             return false;
         }
@@ -138,7 +138,7 @@ public class WarpGate extends Structure{
                 return;
         }
         
-        double energyRequired = s.getMass() * Math.pow(c,2);
+        double energyRequired = s.getMass(false) * Math.pow(c,2);
         
         if(testCollision(s) || energyRequired > energy){
             return;
@@ -164,7 +164,7 @@ public class WarpGate extends Structure{
             if(FactionList.getFaction(owner).getDiplomaticStatus(s.getFactionID()) > -1);
                 return;
         }
-        double energyRequired = s.getMass() * Math.pow(c,2);
+        double energyRequired = s.getMass(false) * Math.pow(c,2);
         if(energyRequired > energy){
             return;
         } else {

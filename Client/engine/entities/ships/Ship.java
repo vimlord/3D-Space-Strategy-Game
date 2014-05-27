@@ -650,7 +650,7 @@ public class Ship extends Entity implements ControlSystem, FactionTag{
         double relVelZ = this.velZ - other.getSpeedZ();
         double relVel = Math.sqrt(Math.pow(relVelX,2) + Math.pow(relVelY,2) + Math.pow(relVelY,2));
         
-        damage(Math.sqrt(other.getMass()/this.mass) * Math.pow(relVel,4) / this.mass);
+        damage(Math.sqrt(other.getMass(false)/this.mass) * Math.pow(relVel,4) / this.mass);
         
         super.collide(other);
     }

@@ -32,7 +32,7 @@ public class Orbit implements PhysicsConstants{
         inc = inclination;
         LAN = longitudeAscendingNode;
         MaE = meanAnomaly;
-        mass = entity.getMass();
+        mass = entity.getMass(false);
         ID = entity.getID();
         
         calculateData();

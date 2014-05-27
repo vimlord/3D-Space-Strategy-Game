@@ -5,10 +5,9 @@
  */
 
 package engine.entities.celestialBodies;
-
 import engine.entities.*;
 import engine.entities.ships.Ship;
-import engine.main.*;
+import engine.main.CycleRunner;
 
 /**
  *
@@ -123,9 +122,9 @@ public class Planet extends CelestialBody{
             double relVel = Math.sqrt(Math.pow(relVelX,2) + Math.pow(relVelY,2) + Math.pow(relVelZ,2));
 
             double dragForce = getDensity(other) * 0.47 * Math.pow(relVel,2) * Math.PI * Math.pow(other.getRadius(),2);
-            other.setSpeedX(other.getSpeedX() - ((relVelX/relVel) * dragForce/other.getMass()));
-            other.setSpeedY(other.getSpeedY() - ((relVelY/relVel) * dragForce/other.getMass()));
-            other.setSpeedZ(other.getSpeedZ() - ((relVelZ/relVel) * dragForce/other.getMass()));
+            other.setSpeedX(other.getSpeedX() - ((relVelX/relVel) * dragForce/other.getMass(true)));
+            other.setSpeedY(other.getSpeedY() - ((relVelY/relVel) * dragForce/other.getMass(true)));
+            other.setSpeedZ(other.getSpeedZ() - ((relVelZ/relVel) * dragForce/other.getMass(true)));
         }
         
     }
@@ -148,9 +147,9 @@ public class Planet extends CelestialBody{
             other.damage(getDensity(other) * (relVel - 120)/CycleRunner.cyclesPerSecond);
             
             double dragForce = getDensity(other) * 0.47 * Math.pow(relVel,2) * Math.PI * Math.pow(other.getRadius(),2);
-            other.setSpeedX(other.getSpeedX() - ((relVelX/relVel) * dragForce/other.getMass()));
-            other.setSpeedY(other.getSpeedY() - ((relVelY/relVel) * dragForce/other.getMass()));
-            other.setSpeedZ(other.getSpeedZ() - ((relVelZ/relVel) * dragForce/other.getMass()));
+            other.setSpeedX(other.getSpeedX() - ((relVelX/relVel) * dragForce/other.getMass(true)));
+            other.setSpeedY(other.getSpeedY() - ((relVelY/relVel) * dragForce/other.getMass(true)));
+            other.setSpeedZ(other.getSpeedZ() - ((relVelZ/relVel) * dragForce/other.getMass(true)));
 
             
         }

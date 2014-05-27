@@ -78,7 +78,7 @@ public class Missile extends Projectile implements ControlSystem{
         fuel--;
         
         
-        velX += (75.0/CycleRunner.cyclesPerSecond) * Math.cos(XZ_ROT) * Math.cos(Y_ROT);
+        velX += (getMass(true)/getMass(false)) * (75.0/CycleRunner.cyclesPerSecond) * Math.cos(XZ_ROT) * Math.cos(Y_ROT);
         velY += (75.0/CycleRunner.cyclesPerSecond) * Math.sin(Y_ROT);
         velZ += (75.0/CycleRunner.cyclesPerSecond) * Math.sin(XZ_ROT) * Math.cos(Y_ROT);
     }

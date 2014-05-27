@@ -80,7 +80,7 @@ public class OrderThread extends Thread{
             add.add(0, new Rotate(XZ,Y));
             
             
-            double accelerationTime = magnitude/(30 * 750000000.0 / s.getMass());
+            double accelerationTime = magnitude/(30 * 750000000.0 / s.getMass(false));
             
             add.add(1, new Accelerate(100,accelerationTime));
             

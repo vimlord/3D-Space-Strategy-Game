@@ -33,16 +33,16 @@ public class BlackHole extends CelestialBody{
     public void collide(Entity other){
         super.collide(other);
         
-        double Xratio = this.mass/other.getMass();
+        double Xratio = this.getMass(false) / other.getMass(false);
         x = (Xratio * x + other.getX())/(Xratio+1);
         
-        double Yratio = this.mass/other.getMass();
+        double Yratio = this.getMass(false) / other.getMass(false);
         y = (Yratio * x + other.getY())/(Yratio+1);
         
-        double Zratio = this.mass/other.getMass();
+        double Zratio = this.getMass(false) / other.getMass(false);
         z = (Zratio * y + other.getZ())/(Zratio+1);
         
-        mass += other.getMass();
+        mass += other.getMass(false);
         //The other object's mass is left unchanged because it will be destroyed anyway
     }
     
