@@ -545,9 +545,9 @@ public class Ship extends Entity implements ControlSystem, FactionTag{
      */
     public void accelerate() {
         double force = 30 * 750000000.0 * throttle/100;
-        velX += CycleRunner.getTimeWarp() * Math.cos(XZ_ROT) * Math.cos(Y_ROT) * (force/mass)/CycleRunner.cyclesPerSecond;
-        velZ += CycleRunner.getTimeWarp() * Math.sin(XZ_ROT) * Math.cos(Y_ROT) * (force/mass)/CycleRunner.cyclesPerSecond;
-        velY += CycleRunner.getTimeWarp() * Math.sin(Y_ROT) * (force/mass)/CycleRunner.cyclesPerSecond;
+        velX += CycleRunner.getTimeWarp() * Math.cos(XZ_ROT) * Math.cos(Y_ROT) * (force/getMass(true))/CycleRunner.cyclesPerSecond;
+        velZ += CycleRunner.getTimeWarp() * Math.sin(XZ_ROT) * Math.cos(Y_ROT) * (force/getMass(true))/CycleRunner.cyclesPerSecond;
+        velY += CycleRunner.getTimeWarp() * Math.sin(Y_ROT) * (force/getMass(true))/CycleRunner.cyclesPerSecond;
     }
     
     
@@ -652,7 +652,7 @@ public class Ship extends Entity implements ControlSystem, FactionTag{
         double relVelZ = this.velZ - other.getSpeedZ();
         double relVel = Math.sqrt(Math.pow(relVelX,2) + Math.pow(relVelY,2) + Math.pow(relVelY,2));
         
-        damage(Math.sqrt(other.getMass()/this.mass) * Math.pow(relVel,4) / this.mass);
+        damage(Math.sqrt(other.getMass(false)/this.getMass(false)) * Math.pow(relVel,4) / this.getMass(false));
         
         super.collide(other);
     }
