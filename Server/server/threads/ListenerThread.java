@@ -15,6 +15,8 @@ import java.net.*;
 import java.util.ArrayList;
 import server.main.Server;
 import server.object_wrappers.EntityListWrapper;
+import server.players.Player;
+import server.players.PlayerList;
 
 /**
  *
@@ -63,6 +65,7 @@ public class ListenerThread extends Thread{
             //This next line of code takes an Object as input. The Object will
             //then be tested to see if it matches any of the known Object types.
             while(listening){
+                input = null;
                 input = inStream.readObject();
                 
                 processInput(input);
@@ -86,21 +89,24 @@ public class ListenerThread extends Thread{
             
             socket.close();
             
-        } catch(IOException e){
+        } catch(Exception e){
             e.printStackTrace();
-            return;
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            return;
         } finally {
             System.out.println(input);
-            if(input.equals("[EXIT]") || input.equals(null)){
+            try{
+                if(input.equals("[EXIT]") || input == null){
+                    Server.addLogEvent("\"" + connectionUser + "\" has disconnected from the server.");
+                    System.out.println(Server.getLatestLogEvent());
+                    PlayerList.getPlayer(connectionUser).setActive(false);
+                } else {
+                    Server.addLogEvent("A user posing as \"" + connectionUser + "\" has been removed from the server.");
+                    System.out.println(Server.getLatestLogEvent());
+
+                }
+            } catch(NullPointerException e){
                 Server.addLogEvent("\"" + connectionUser + "\" has disconnected from the server.");
                 System.out.println(Server.getLatestLogEvent());
-            } else {
-                Server.addLogEvent("A user posing as \"" + connectionUser + "\" has been removed from the server.");
-                System.out.println(Server.getLatestLogEvent());
-
+                PlayerList.getPlayer(connectionUser).setActive(false);
             }
         }
         
@@ -161,6 +167,42 @@ public class ListenerThread extends Thread{
             
             boolean allowConnection;
             
+            listening = true;
+            
+            Player foundPlayer = PlayerList.getPlayer(connectionUser);
+            if(foundPlayer == null){
+                FactionList.addFaction(tag);
+                
+                int assignedID = FactionList.getFaction(tag).getID();
+
+                String idSent = ("[FACTIONID]" + assignedID);
+
+                outputQueue.add(idSent);
+                
+                PlayerList.addPlayer(new Player(connectionUser, assignedID));
+                PlayerList.getPlayer(connectionUser).setActive(true);
+                
+                Server.addLogEvent("\"" + connectionUser + "\" has connected to the server.");
+                System.out.println(Server.getLatestLogEvent());
+                
+            } else if(!foundPlayer.isActive()) {
+                int assignedID = FactionList.getFaction(tag).getID();
+
+                String idSent = ("[FACTIONID]" + assignedID);
+
+                outputQueue.add(idSent);
+
+                Server.addLogEvent("\"" + connectionUser + "\" has reconnected to the server.");
+                System.out.println(Server.getLatestLogEvent());
+                
+                PlayerList.getPlayer(connectionUser).setActive(true);
+                
+            } else {
+                listening = false;
+            }
+            
+            /*
+            
             if(FactionList.getFaction(tag) == null){
                 //The user is legitimate
                 allowConnection = true;
@@ -182,6 +224,7 @@ public class ListenerThread extends Thread{
                 Server.addLogEvent("\"" + connectionUser + "\" has connected to the server.");
                 System.out.println(Server.getLatestLogEvent());
             }
+                    */
             
         }
         
