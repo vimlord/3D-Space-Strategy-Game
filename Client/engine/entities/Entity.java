@@ -80,19 +80,20 @@ public abstract class Entity implements PhysicsConstants, Serializable{
         double distance = Math.sqrt(Math.pow(distanceXZ,2) + Math.pow(distanceY,2));
          
         //Calculates force or gravity
-        double force = (double)(G*other.getMass(false))/Math.pow(distance,2);
-         
+        double force = (double)(G*this.getMass(false)*other.getMass(false))/Math.pow(distance,2);
          
         //Modifies force value based on cycles per second
         force *= (CycleRunner.getTimeWarp()/(CycleRunner.cyclesPerSecond));
         
+        double acceleration = force/this.getMass(true); 
+        
         //If there's no distance on the XZ plane, it doesn't gravitate on that
         //axis.
         if(distanceXZ != 0){
-            velX += (distanceX/distanceXZ) * (distanceXZ/distance) * (force);
-            velZ += (distanceZ/distanceXZ) * (distanceXZ/distance) * (force);
+            velX += (distanceX/distanceXZ) * (distanceXZ/distance) * (acceleration);
+            velZ += (distanceZ/distanceXZ) * (distanceXZ/distance) * (acceleration);
         }
-        velY += (distanceY/distance) * (force);
+        velY += (distanceY/distance) * (acceleration);
         
         
          
