@@ -6,7 +6,7 @@
  *
  */
 
-package client.menu.buttons;
+package client.menu.gui.buttons;
 
 import java.awt.Color;
 import java.awt.Font;

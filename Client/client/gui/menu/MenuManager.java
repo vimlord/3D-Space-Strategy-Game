@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package client.menu;
+package client.gui.menu;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -56,7 +56,21 @@ public class MenuManager {
     public static Menu getMenu(int index){
         return menus.get(index);
     }
-
+    
+    /**
+     * Gets the Menu at a specific index
+     * @param index
+     * @return
+     */
+    public static Menu getMenu(String name){
+        for(Menu m : menus){
+            if(m.getName().equals(name)){
+                return m;
+            }
+        }
+        return null;
+    }
+    
     /**
      * Retrieves the currently active menu
      * @return
@@ -65,12 +79,23 @@ public class MenuManager {
         return menus.get(menuIndex);
     }
     
+    public static int getMenuIndex(Menu m){
+        for(int i = 0; i < menus.size(); i++){
+            if(m.equals(menus.get(i))){
+                return i;
+            }
+        }
+        
+        return -1;
+    }
+    
    /**
     * Draws the current menu
     */
     public static void drawCurrentMenu(Graphics g){
         Graphics2D g2 = (Graphics2D) g;
-        getMenu().drawButtons(g);
+        getMenu().cycle();
+        getMenu().drawMenu(g2);
     }
     
     /**
@@ -94,8 +119,9 @@ public class MenuManager {
             Client.getConnection().sendObject(order);
         }
         
-        
     }
+    
+    
     
     
 }

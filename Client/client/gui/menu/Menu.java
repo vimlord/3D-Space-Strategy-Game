@@ -3,18 +3,18 @@
  * a series of buttons.
  */
 
-package client.menu;
+package client.gui.menu;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
-import client.menu.buttons.Button;
+import client.menu.gui.buttons.Button;
 
 /**
  *
  * @author Christopher Hittner
  */
-public class Menu {
+public abstract class Menu {
     private boolean active = false;
     private ArrayList<Button> buttons;
     private final String name;
@@ -23,6 +23,10 @@ public class Menu {
         buttons = b;
         this.name = name;
     }
+    
+    
+    public abstract void cycle();
+    
     
     public void setStatus(boolean status){
         active = status;
@@ -57,4 +61,6 @@ public class Menu {
     public String getName(){
         return name;
     }
+
+    public abstract void drawMenu(Graphics g);
 }

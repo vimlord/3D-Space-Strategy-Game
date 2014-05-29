@@ -6,7 +6,9 @@
 
 package client.main;
 
+import client.gui.GUI;
 import client.threads.ConnectionThread;
+import client.threads.CycleThread;
 import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -18,10 +20,13 @@ import java.util.ArrayList;
  */
 public class Client {
     
+    private static GUI gui = new GUI();
+    
     private static int factionID = -1;
     private static String clientName = null;
     
     private static ConnectionThread connection;
+    private static CycleThread cycler;
     
     /**
      * @param args the command line arguments
@@ -29,6 +34,9 @@ public class Client {
     public static void main(String[] args) {
         connection = new ConnectionThread(args);
         connection.start();
+        cycler = new CycleThread();
+        cycler.start();
+        
         
         while(connection.listening()){
             
@@ -56,6 +64,9 @@ public class Client {
         return factionID;
     }
     
+    public static GUI getGUI(){
+        return gui;
+    }
     
     
 }
