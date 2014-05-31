@@ -7,11 +7,17 @@
 package client.gui;
 
 import client.gui.menu.MenuManager;
+import client.main.Client;
 import engine.entities.Entity;
 import engine.entities.celestialBodies.BlackHole;
 import engine.entities.celestialBodies.Planet;
+import engine.entities.ships.Corvette;
 import engine.entities.ships.Ship;
+import engine.entities.structures.Structure;
 import engine.entities.structures.WarpGate;
+import engine.gameMechanics.factions.Faction;
+import engine.gameMechanics.factions.FactionList;
+import engine.gameMechanics.factions.FactionTag;
 import engine.main.EntityList;
 import java.applet.Applet;
 import java.awt.Color;
@@ -134,17 +140,72 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
     }
     
     public void drawEntity(Graphics2D g2, Entity e){
+        if(e instanceof FactionTag){
+            int foundFacID = ((FactionTag) e).getFactionID();
+            
+            
+            
+            Faction thisFaction = FactionList.getFaction(Client.getID());
+            
+            Faction otherFaction = FactionList.getFaction(foundFacID);
+            if(thisFaction == null || otherFaction == null){
+                g2.setColor(Color.WHITE);
+            } if(foundFacID == Client.getID()){
+                //Your team
+                g2.setColor(Color.BLUE);
+            } else if(thisFaction.getDiplomaticStatus(otherFaction) == 1){
+                //Ally
+                g2.setColor(Color.GREEN);
+            } else if(thisFaction.getDiplomaticStatus(otherFaction) == -1){
+                //Enemy
+                g2.setColor(Color.RED);
+            } else if(thisFaction.getDiplomaticStatus(otherFaction) == 0){
+                //Neutral
+                g2.setColor(Color.YELLOW);
+            } 
+        } else {
+            g2.setColor(Color.WHITE);
+        }
+        
         if(e instanceof BlackHole){
+            
+            
             g2.setColor(Color.BLACK);
             fillSphere(g2, e.getX(), e.getY(), e.getZ(), 2.0 * e.getRadius());
+            
+            
         } else if(e instanceof Planet){
+            
+            
             Planet p = (Planet) e;
             drawSphere(g2, e.getX(), e.getY(), e.getZ(), e.getRadius());
             drawSphere(g2, e.getX(), e.getY(), e.getZ(), 2.0 * p.getAtmosphereHeight());
-        } else if(e instanceof WarpGate){
-            drawRing(g2, e.getX(), e.getY(), e.getZ(), e.getRadius());
+            
+            
+        } else if(e instanceof Structure){
+            
+            
+            if(e instanceof WarpGate)
+                drawRing(g2, e.getX(), e.getY(), e.getZ(), e.getRadius());
+            else
+                drawDiamond(g2, e.getX(), e.getY(), e.getZ(), e.getRadius());
+            
+            
         } else if(e instanceof Ship){
-            drawSphere(g2, e.getX(), e.getY(), e.getZ(), e.getRadius());
+            
+            
+            if(e instanceof Corvette)
+                drawTriangle(g2, e.getX(), e.getY(), e.getZ(), e.getRadius());
+            else if(e instanceof Corvette)
+                drawSquare(g2, e.getX(), e.getY(), e.getZ(), e.getRadius());
+            else if(e instanceof Corvette)
+                drawPentagon(g2, e.getX(), e.getY(), e.getZ(), e.getRadius());
+            else if(e instanceof Corvette)
+                drawHexagon(g2, e.getX(), e.getY(), e.getZ(), e.getRadius());
+            else
+                drawSphere(g2, e.getX(), e.getY(), e.getZ(), e.getRadius());
+            
+            
         } else {
             drawSphere(g2, e.getX(), e.getY(), e.getZ(), e.getRadius());
         }
