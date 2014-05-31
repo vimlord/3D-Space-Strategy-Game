@@ -151,6 +151,8 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
         
     }
     
+    //Tags
+    
     public void drawTag(Graphics2D g2, Entity e){
         String[] tag = e.getTag();
         drawTag(g2, e.getX(), e.getY(), e.getZ(), tag);
@@ -160,6 +162,7 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
         drawTagLines(g2, e.getX(), e.getY(), e.getZ(), tag);
     }
     
+    //Spheres
     
     public int[] buildSphere(double X, double Y, double Z){
         int[] values = new int[2];
@@ -242,6 +245,186 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
         
         g.fillOval(points[0] - points[2], points[1] - points[2], (int)(2 * points[2]), (int)(2 * points[2]));
     }
+    
+    //Triangles
+    
+    public void drawTriangle(Graphics2D g, double X, double Y, double Z, double R){
+        int[] points = buildSphere(X,Y,Z,R);
+        
+        if(points == null){
+            return;
+        }
+        
+        int x_ = points[0];
+        int y_ = points[1];
+        int rad = points[2];
+        int[] xPts = {(x_)      ,(int)(x_ + (rad * Math.acos(Math.toRadians(210)))), (int)(x_ + (rad * Math.acos(Math.toRadians(330))))};
+        int[] yPts = {(y_ - rad),(int)(y_ - (rad * Math.asin(Math.toRadians(210)))), (int)(y_ - (rad * Math.asin(Math.toRadians(210))))};
+        
+        g.drawPolygon(xPts, yPts, 3);
+        
+    }
+    
+    public void fillTriangle(Graphics2D g, double X, double Y, double Z, double R){
+        int[] points = buildSphere(X,Y,Z,R);
+        
+        if(points == null){
+            return;
+        }
+        
+        int x_ = points[0];
+        int y_ = points[1];
+        int rad = points[2];
+        int[] xPts = {(x_)      ,(int)(x_ + (rad * Math.acos(Math.toRadians(210)))), (int)(x_ + (rad * Math.acos(Math.toRadians(330))))};
+        int[] yPts = {(y_ - rad),(int)(y_ - (rad * Math.asin(Math.toRadians(210)))), (int)(y_ - (rad * Math.asin(Math.toRadians(210))))};
+        
+        g.fillPolygon(xPts, yPts, 3);
+        
+    }
+    
+    //Squares
+    
+    public void drawSquare(Graphics2D g, double X, double Y, double Z, double R){
+        int[] points = buildSphere(X,Y,Z,R);
+        
+        if(points == null){
+            return;
+        }
+        
+        int x_ = points[0];
+        int y_ = points[1];
+        int rad = points[2];
+        g.drawRect(x_ - rad, y_ - rad, 2 * rad, 2 * rad);
+        
+    }
+    
+    public void fillSquare(Graphics2D g, double X, double Y, double Z, double R){
+        int[] points = buildSphere(X,Y,Z,R);
+        
+        if(points == null){
+            return;
+        }
+        
+        int x_ = points[0];
+        int y_ = points[1];
+        int rad = points[2];
+        g.fillRect(x_ - rad, y_ - rad, 2 * rad, 2 * rad);
+        
+    }
+    
+    //Diamond
+    
+    public void drawDiamond(Graphics2D g, double X, double Y, double Z, double R){
+        int[] points = buildSphere(X,Y,Z,R);
+        
+        if(points == null){
+            return;
+        }
+        
+        int x_ = points[0];
+        int y_ = points[1];
+        int rad = points[2];
+        double arc = Math.acos(Math.toRadians(45));
+        int[] xPts = {x_                   , x_ + (int)(rad * arc), x_                    , x_ - (int)(rad * arc) };
+        int[] yPts = {y_ + (int)(rad * arc), y_                   , y_ - (int)(rad * arc) , y_                    };
+        
+        g.drawPolygon(xPts, yPts, 4);
+        
+    }
+    
+    public void fillDiamond(Graphics2D g, double X, double Y, double Z, double R){
+        int[] points = buildSphere(X,Y,Z,R);
+        
+        if(points == null){
+            return;
+        }
+        
+        int x_ = points[0];
+        int y_ = points[1];
+        int rad = points[2];
+        double arc = Math.acos(Math.toRadians(45));
+        int[] xPts = {x_                   , x_ + (int)(rad * arc), x_                    , x_ - (int)(rad * arc) };
+        int[] yPts = {y_ + (int)(rad * arc), y_                   , y_ - (int)(rad * arc) , y_                    };
+        
+        g.fillPolygon(xPts, yPts, 4);
+        
+    }
+    
+    //Pentagon
+    
+    public void drawPentagon(Graphics2D g, double X, double Y, double Z, double R){
+        int[] points = buildSphere(X,Y,Z,R);
+        
+        if(points == null){
+            return;
+        }
+        
+        int x_ = points[0];
+        int y_ = points[1];
+        int rad = points[2];
+        int[] xPts = {(x_)      ,(int)(x_ + (rad * Math.acos(Math.toRadians(162)))), (int)(x_ + (rad * Math.acos(Math.toRadians(234)))),(int)(x_ + (rad * Math.acos(Math.toRadians(306)))), (int)(x_ + (rad * Math.acos(Math.toRadians(18))))};
+        int[] yPts = {(y_ - rad),(int)(y_ - (rad * Math.asin(Math.toRadians(162)))), (int)(y_ - (rad * Math.asin(Math.toRadians(234)))),(int)(y_ - (rad * Math.asin(Math.toRadians(306)))), (int)(y_ - (rad * Math.asin(Math.toRadians(18))))};
+        
+        g.drawPolygon(xPts, yPts, 5);
+        
+    }
+    
+    public void fillPentagon(Graphics2D g, double X, double Y, double Z, double R){
+        int[] points = buildSphere(X,Y,Z,R);
+        
+        if(points == null){
+            return;
+        }
+        
+        int x_ = points[0];
+        int y_ = points[1];
+        int rad = points[2];
+        int[] xPts = {(x_)      ,(int)(x_ + (rad * Math.acos(Math.toRadians(162)))), (int)(x_ + (rad * Math.acos(Math.toRadians(234)))),(int)(x_ + (rad * Math.acos(Math.toRadians(306)))), (int)(x_ + (rad * Math.acos(Math.toRadians(18))))};
+        int[] yPts = {(y_ - rad),(int)(y_ - (rad * Math.asin(Math.toRadians(162)))), (int)(y_ - (rad * Math.asin(Math.toRadians(234)))),(int)(y_ - (rad * Math.asin(Math.toRadians(306)))), (int)(y_ - (rad * Math.asin(Math.toRadians(18))))};
+        
+        g.fillPolygon(xPts, yPts, 5);
+        
+    }
+    
+    //Hexagon
+    
+    public void drawHexagon(Graphics2D g, double X, double Y, double Z, double R){
+        int[] points = buildSphere(X,Y,Z,R);
+        
+        if(points == null){
+            return;
+        }
+        
+        int x_ = points[0];
+        int y_ = points[1];
+        int rad = points[2];
+        double sin = Math.asin(Math.toRadians(60));
+        int[] xPts = {x_ + (rad/2),x_ + (rad/-2),(x_ - rad),x_ + (rad/-2),(int)(x_ + (rad/2)),x_ + rad};
+        int[] yPts = {y_ - (int)(rad * sin), y_ - (int)(rad * sin), y_, y_ - (int)(rad * -sin), y_ - (int)(rad * -sin), y_};
+        
+        g.drawPolygon(xPts, yPts, 6);
+        
+    }
+    
+    public void fillHexagon(Graphics2D g, double X, double Y, double Z, double R){
+        int[] points = buildSphere(X,Y,Z,R);
+        
+        if(points == null){
+            return;
+        }
+        
+        int x_ = points[0];
+        int y_ = points[1];
+        int rad = points[2];
+        double sin = Math.asin(Math.toRadians(60));
+        int[] xPts = {x_ + (rad/2),x_ + (rad/-2),(x_ - rad),x_ + (rad/-2),(int)(x_ + (rad/2)),x_ + rad};
+        int[] yPts = {y_ - (int)(rad * sin), y_ - (int)(rad * sin), y_, y_ - (int)(rad * -sin), y_ - (int)(rad * -sin), y_};
+        
+        g.fillPolygon(xPts, yPts, 6);
+        
+    }
+    
+    //Rings
     
     public void drawRing(Graphics2D g, double X, double Y, double Z, double R){
         int[] points = buildSphere(X,Y,Z,R);
