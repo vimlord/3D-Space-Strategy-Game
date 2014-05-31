@@ -39,4 +39,17 @@ public abstract class SplashScreen extends Menu {
     @Override
     public abstract void drawMenu(Graphics g);
     
+    
+    public double getCompletionStatus(){
+        return ((double) cycle) / numCycles;
+    }
+    
+    public int getNumCycles(){
+        return numCycles;
+    }
+    
+    public int getCycle(){
+        return cycle;
+    }
+    
 }

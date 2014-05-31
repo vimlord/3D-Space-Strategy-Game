@@ -32,11 +32,14 @@ public class MenuManager {
      */
     public static void removeMenu(int index){
         menus.remove(index);
+        
         if(index < menuIndex){ //The index removed was below that of the current menu
             menuIndex--;
         }
-        if(menus.size() == 0 || index == menuIndex) //The current menu is gone!
+        
+        if((menus.isEmpty() || index == menuIndex) && menuIndex >= 0) //The current menu is gone!
             menuIndex = -1;
+        
     }
     
     /**
@@ -89,10 +92,19 @@ public class MenuManager {
         return -1;
     }
     
+    public static int getMenuIndex(){
+        return menuIndex;
+    }
+    
    /**
     * Draws the current menu
     */
     public static void drawCurrentMenu(Graphics g){
+        
+        if(menuIndex < 0){
+            return;
+        }
+        
         Graphics2D g2 = (Graphics2D) g;
         getMenu().cycle();
         getMenu().drawMenu(g2);
