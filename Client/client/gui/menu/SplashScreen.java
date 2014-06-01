@@ -6,7 +6,7 @@
 
 package client.gui.menu;
 
-import client.menu.gui.buttons.Button;
+import client.gui.menu.buttons.Button;
 import java.awt.Graphics;
 import java.util.ArrayList;
 

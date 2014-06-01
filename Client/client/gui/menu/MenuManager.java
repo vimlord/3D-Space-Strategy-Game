@@ -79,7 +79,11 @@ public class MenuManager {
      * @return
      */
     public static Menu getMenu(){
-        return menus.get(menuIndex);
+        try {
+            return menus.get(menuIndex);
+        } catch(ArrayIndexOutOfBoundsException e){
+            return null;
+        }
     }
     
     public static int getMenuIndex(Menu m){
@@ -129,6 +133,8 @@ public class MenuManager {
             setMenu(Integer.parseInt(footer.substring(1,footer.length()-1))); //The program will attempt to set the menu to the parameter provided
         } else if(header.equals("[ORDER]")){
             Client.getConnection().sendObject(order);
+        } else if(header.equals("[END]")){
+            System.exit(0);
         }
         
     }

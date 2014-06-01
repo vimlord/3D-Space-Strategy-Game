@@ -8,7 +8,7 @@ package client.gui.menu;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
-import client.menu.gui.buttons.Button;
+import client.gui.menu.buttons.Button;
 
 /**
  *

@@ -6,7 +6,7 @@
  *
  */
 
-package client.menu.gui.buttons;
+package client.gui.menu.buttons;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -46,8 +46,9 @@ public class Button {
     }
     
     public boolean testHit(int x, int y){
+        
         if(x > x1 && x <= x2){ //Tests the x value
-            if(x > y1 && y <= y2){ //Tests the y value
+            if(y > y1 && y <= y2){ //Tests the y value
                 return true;
             }
             
@@ -65,12 +66,12 @@ public class Button {
         g2.setColor(Color.BLACK);
         g2.drawRect(x1, y1, x2 - x1, y2 - y1);
         
-        g2.setFont(new Font("Courier New", Font.BOLD, 24));
+        g2.setFont(new Font("Courier New", Font.BOLD, 20));
         
         int centX = (x1 + x2)/2;
         int centY = (y1 + y2)/2;
         
-        g2.drawString(text,centX - (8 * text.length()),centY);
+        g2.drawString(text,centX - (6 * text.length()),centY + 5);
         
     }
     

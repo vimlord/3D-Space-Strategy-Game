@@ -74,7 +74,7 @@ public class ConnectionThread extends Thread{
             stdIn = new BufferedReader(new InputStreamReader(System.in));
         } catch (IOException e) {
             System.err.println("Couldn't get I/O for the connection to " + hostName);
-            System.exit(1);
+            
         }
         
         

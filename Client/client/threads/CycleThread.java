@@ -23,7 +23,11 @@ public class CycleThread extends Thread{
         
         while(true){
             Client.getGUI().redraw();
-            MenuManager.getMenu().cycle();
+            try{
+                MenuManager.getMenu().cycle();
+            } catch(NullPointerException e){
+                
+            }
         }
         
     }

@@ -548,7 +548,7 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
 
     @Override
     public void mouseClicked(MouseEvent e) {
-    
+        MenuManager.executeButtons(e.getX(), e.getY());
     }
 
     @Override

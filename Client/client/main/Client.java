@@ -7,6 +7,8 @@
 package client.main;
 
 import client.gui.GUI;
+import client.gui.menu.MainMenu;
+import client.gui.menu.MenuManager;
 import client.threads.ConnectionThread;
 import client.threads.CycleThread;
 import java.io.*;
@@ -28,17 +30,31 @@ public class Client {
     private static ConnectionThread connection;
     private static CycleThread cycler;
     
+    private static boolean lookingForConnection = true;
+    
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        connection = new ConnectionThread(args);
-        connection.start();
         cycler = new CycleThread();
         cycler.start();
         
+        MenuManager.addMenu(new MainMenu());
+        MenuManager.setMenu(0);
         
-        while(connection.listening()){
+        while(true){
+            lookingForConnection = (MenuManager.getMenuIndex() == -2);
+            
+            while(lookingForConnection){
+                connection = new ConnectionThread(args);
+                connection.start();
+
+
+
+                while(connection.listening()){
+
+                }
+            }
             
         }
         
