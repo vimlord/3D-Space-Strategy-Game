@@ -50,6 +50,10 @@ public class MenuManager {
         if(index > -1 && index < menus.size())
             menuIndex = index;
     }
+    
+    public static void setMenu(String name){
+        menuIndex = getMenuIndex(getMenu(name));
+    }
 
     /**
      * Gets the Menu at a specific index
@@ -127,10 +131,14 @@ public class MenuManager {
             return;
         
         String header = order.substring(0,order.indexOf("]") + 1);
-        String footer = order.substring(order.indexOf("]"));
+        String footer = order.substring(order.indexOf("]") + 1);
         
         if(header.equals("[SETMENU]")){ //A menu change request has been made
-            setMenu(Integer.parseInt(footer.substring(1,footer.length()-1))); //The program will attempt to set the menu to the parameter provided
+            try{
+                setMenu(Integer.parseInt(footer.substring(1,footer.length()-1))); //The program will attempt to set the menu to the parameter provided
+            } catch(NumberFormatException e){
+                setMenu(footer.substring(1,footer.length()-1));
+            }
         } else if(header.equals("[ORDER]")){
             Client.getConnection().sendObject(order);
         } else if(header.equals("[END]")){

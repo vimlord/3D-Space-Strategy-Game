@@ -29,13 +29,13 @@ public class MainMenu extends Menu{
         int yGUI = Client.getGUI().getHeight();
         
         //A button for the Host/join match menu
-        buttons.add(new Button((xGUI/2) - 60, 200, 120, 30, "[SETMENU]" + MenuManager.getMenuIndex(MenuManager.getMenu("hostORjoin")), "Play Game"));
+        buttons.add(new Button((xGUI/2) - 60, 200, 120, 30, "[SETMENU]hostORjoin", "Play Game"));
         
         //For when I add an Options menu
-        //buttons.add(new Button((xGUI/2) - 50, 250, 100, 30, "[SETMENU]" + MenuManager.getMenuIndex(MenuManager.getMenu("optionsMain")), "Options"));
+        buttons.add(new Button((xGUI/2) - 60, 250, 120, 30, "[SETMENU]optionsMain", "Options"));
         
         //Credits menu when implemented
-        //buttons.add(new Button((xGUI/2) - 50, 300, 100, 30, "[SETMENU]" + MenuManager.getMenuIndex(MenuManager.getMenu("credits")), "Credits"));
+        buttons.add(new Button((xGUI/2) - 60, 300, 120, 30, "[SETMENU]credits", "Credits"));
         
         //Quit button
         buttons.add(new Button((xGUI/2) - 60, 350, 120, 30, "[END]", "Exit"));
