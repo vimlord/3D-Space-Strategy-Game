@@ -18,10 +18,10 @@ import java.util.ArrayList;
 public class MainMenu extends Menu{
 
     public MainMenu() {
-        super(initButtons(), "mainMenu");
+        super("mainMenu");
     }
     
-    private static ArrayList<Button> initButtons(){
+    protected ArrayList<Button> initButtons(){
         
         ArrayList<Button> buttons = new ArrayList<>();
         

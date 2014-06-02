@@ -7,6 +7,7 @@
 package client.main;
 
 import client.gui.GUI;
+import client.gui.menu.HostOrJoinMenu;
 import client.gui.menu.MainMenu;
 import client.gui.menu.MenuManager;
 import client.threads.ConnectionThread;
@@ -40,6 +41,7 @@ public class Client {
         cycler.start();
         
         MenuManager.addMenu(new MainMenu());
+        MenuManager.addMenu(new HostOrJoinMenu());
         MenuManager.setMenu(0);
         
         while(true){

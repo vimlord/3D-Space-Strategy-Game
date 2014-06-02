@@ -52,7 +52,12 @@ public class MenuManager {
     }
     
     public static void setMenu(String name){
-        menuIndex = getMenuIndex(getMenu(name));
+        for(int i = 0; i < menus.size(); i++){
+            if(menus.get(i).getName().equals(name)){
+                setMenu(i);
+                return;
+            }
+        }
     }
 
     /**
@@ -137,7 +142,7 @@ public class MenuManager {
             try{
                 setMenu(Integer.parseInt(footer.substring(1,footer.length()-1))); //The program will attempt to set the menu to the parameter provided
             } catch(NumberFormatException e){
-                setMenu(footer.substring(1,footer.length()-1));
+                setMenu(footer.substring(0,footer.length()));
             }
         } else if(header.equals("[ORDER]")){
             Client.getConnection().sendObject(order);

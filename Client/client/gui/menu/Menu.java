@@ -24,9 +24,15 @@ public abstract class Menu {
         this.name = name;
     }
     
+    public Menu(String name){
+        buttons = initButtons();
+        this.name = name;
+    }
+    
     
     public abstract void cycle();
     
+    protected abstract ArrayList<Button> initButtons();
     
     public void setStatus(boolean status){
         active = status;

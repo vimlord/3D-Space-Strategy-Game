@@ -55,7 +55,7 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
     private JFrame frame;
     
     public GUI(){
-        this(600,700);
+        this(800,600);
     }
     
     public GUI(int width, int height){

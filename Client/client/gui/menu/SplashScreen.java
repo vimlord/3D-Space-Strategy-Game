@@ -20,7 +20,7 @@ public abstract class SplashScreen extends Menu {
     private final String nextMenu;
     
     public SplashScreen(String endMenu, String name, int numCycles) {
-        super(new ArrayList<Button>(), name);
+        super(name);
         this.numCycles = numCycles;
         nextMenu = endMenu;
     }
