@@ -48,6 +48,7 @@ public class Client {
             
             
             while(lookingForConnection){
+                
                 connection = new ConnectionThread(args);
                 connection.start();
                 

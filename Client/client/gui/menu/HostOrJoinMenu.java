@@ -33,7 +33,8 @@ public class HostOrJoinMenu extends Menu{
         int xGUI = Client.getGUI().getWidth();
         int yGUI = Client.getGUI().getHeight();
         
-        buttons.add(new Button((xGUI/2) - 200, yGUI - 100, 120, 30, "[SETMENU]preGame", "Join Game"));
+        buttons.add(new Button((xGUI/2) - 200, yGUI - 100, 120, 30, "[SETMENU]mainMenu", "Back"));
+        buttons.add(new Button((xGUI/2) - 60, yGUI - 100, 120, 30, "[SETMENU]preGame", "Join Game"));
         buttons.add(new Button((xGUI/2) + 80, yGUI - 100, 120, 30, "[SETMENU]hostGame", "Host Game"));
         
         return buttons;
