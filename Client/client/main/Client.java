@@ -31,7 +31,7 @@ public class Client {
     private static ConnectionThread connection;
     private static CycleThread cycler;
     
-    private static boolean lookingForConnection = true;
+    private static boolean lookingForConnection = false;
     
     /**
      * @param args the command line arguments
@@ -45,16 +45,15 @@ public class Client {
         MenuManager.setMenu(0);
         
         while(true){
-            lookingForConnection = (MenuManager.getMenuIndex() == -2);
+            
             
             while(lookingForConnection){
                 connection = new ConnectionThread(args);
                 connection.start();
-
-
-
+                
+                
                 while(connection.listening()){
-
+                
                 }
             }
             
@@ -84,6 +83,14 @@ public class Client {
     
     public static GUI getGUI(){
         return gui;
+    }
+    
+    public static boolean isLookingForConnection(){
+        return lookingForConnection;
+    }
+    
+    public static void setLookingForConnection(boolean isListening){
+        lookingForConnection = isListening;
     }
     
     

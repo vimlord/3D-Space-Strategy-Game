@@ -20,13 +20,15 @@ public abstract class SplashScreen extends Menu {
     private final String nextMenu;
     
     public SplashScreen(String endMenu, String name, int numCycles) {
-        super(name);
+        super(name, false);
         this.numCycles = numCycles;
         nextMenu = endMenu;
     }
 
     @Override
     public void cycle() {
+        super.cycle();
+        
         cycle++;
         
         if(cycle > numCycles){

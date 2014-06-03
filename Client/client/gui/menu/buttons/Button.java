@@ -17,7 +17,7 @@ import java.awt.Graphics2D;
  * @author Christopher Hittner
  */
 public class Button {
-    private boolean active = false;
+    private boolean active = true;
     private int x1, x2, y1, y2;
     private String command, text;
     
@@ -49,7 +49,7 @@ public class Button {
         
         if(x > x1 && x <= x2){ //Tests the x value
             if(y > y1 && y <= y2){ //Tests the y value
-                return true;
+                return active;
             }
             
         }

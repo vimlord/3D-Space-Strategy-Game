@@ -13,41 +13,33 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Christopher Hittner
+ * @author Christopher
  */
-public class MainMenu extends Menu{
-
-    public MainMenu() {
-        super("mainMenu", false);
+public class PregameMenu extends Menu{
+    
+    public PregameMenu(){
+        super("preGame", true);
     }
     
     protected ArrayList<Button> initButtons(){
-        
         ArrayList<Button> buttons = new ArrayList<>();
         
         int xGUI = Client.getGUI().getWidth();
         int yGUI = Client.getGUI().getHeight();
         
-        //A button for the Host/join match menu
-        buttons.add(new Button((xGUI/2) - 60, 200, 120, 30, "[SETMENU]hostORjoin", "Play Game"));
-        
-        //For when I add an Options menu
-        buttons.add(new Button((xGUI/2) - 60, 250, 120, 30, "[SETMENU]optionsMain", "Options"));
-        
-        //Credits menu when implemented
-        buttons.add(new Button((xGUI/2) - 60, 300, 120, 30, "[SETMENU]credits", "Credits"));
-        
-        //Quit button
-        buttons.add(new Button((xGUI/2) - 60, 350, 120, 30, "[END]", "Exit"));
+        buttons.add(new Button((xGUI/2) + 80, yGUI - 100, 120, 30, "[SETMENU]hostORjoin", "Leave Game"));
         
         return buttons;
-        
     }
-    
+
+    @Override
+    public void cycle() {
+        super.cycle();
+    }
 
     @Override
     public void drawMenu(Graphics g) {
         drawButtons(g);
     }
-
+    
 }

@@ -9,6 +9,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import client.gui.menu.buttons.Button;
+import client.main.Client;
 
 /**
  *
@@ -16,21 +17,30 @@ import client.gui.menu.buttons.Button;
  */
 public abstract class Menu {
     private boolean active = false;
+    protected final boolean usesConnection;
     private ArrayList<Button> buttons;
     private final String name;
     
-    public Menu(ArrayList<Button> b, String name){
+    public Menu(ArrayList<Button> b, String name, boolean connects){
         buttons = b;
         this.name = name;
+        usesConnection = connects;
     }
     
-    public Menu(String name){
+    public Menu(String name, boolean connects){
         buttons = initButtons();
         this.name = name;
+        usesConnection = connects;
     }
     
     
-    public abstract void cycle();
+    public void cycle(){
+        if(!Client.isLookingForConnection() && usesConnection){
+            Client.setLookingForConnection(true);
+        } else if(Client.isLookingForConnection()){
+            Client.setLookingForConnection(false);
+        }
+    }
     
     protected abstract ArrayList<Button> initButtons();
     

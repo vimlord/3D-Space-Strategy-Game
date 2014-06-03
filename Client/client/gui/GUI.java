@@ -99,9 +99,9 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
     public void paint(Graphics g){
         Graphics2D g2 = (Graphics2D) g;
         
-        if(MenuManager.getMenuIndex() >= -1)
-            MenuManager.drawCurrentMenu(g);
-        else
+        
+        MenuManager.drawCurrentMenu(g);
+        if(MenuManager.getMenuIndex() < -1)
             drawBattlefield(g);
         
     }
