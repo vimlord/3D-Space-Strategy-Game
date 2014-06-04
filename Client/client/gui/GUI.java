@@ -4,6 +4,7 @@
 
 package client.gui;
 
+import client.game.GameControlSettings;
 import client.gui.menu.GameMenu;
 import client.gui.menu.MenuManager;
 import client.main.Client;
@@ -56,6 +57,10 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
     private Graphics graphics;
     private JFrame frame;
     private double mouseSensitivity = 1, movementSensitivity = 1;
+    
+    
+    private boolean Ctrl_Held = false;
+    
     
     public GUI(){
         this(800,600);
@@ -134,9 +139,26 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
             drawEntity(g2, e);
             drawTagLines(g2,e);
         }
+        
+        ArrayList<Integer[]> circles = new ArrayList<>();
+        ArrayList<Long> IDs = new ArrayList<>();
         for(Entity e : list){
+            int[] circle = buildSphere(e.getX(), e.getY(), e.getZ(), e.getRadius());
+            if(circle != null){
+                Integer[] arr = new Integer[3];
+                for(int i = 0; i < circle.length; i++){
+                    arr[i] = circle[i];
+                }
+                circles.add(arr);
+                IDs.add(e.getID());
+                
             //drawTag(g2, e);
+                
+            }
+            
         }
+        //Sets the new click detector circles up circles
+        GameControlSettings.setCircles(circles, IDs);
         
         
         
@@ -569,16 +591,44 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
                 break;
             
         }
+        
+        
+        
+        
+        
+        if(e.getKeyCode() == KeyEvent.VK_CONTROL){
+            Ctrl_Held = true;
+        }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-    
+        
+        
+        
+        
+        if(e.getKeyCode() == KeyEvent.VK_CONTROL){
+            Ctrl_Held = false;
+        }
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
         MenuManager.executeButtons(e.getX(), e.getY());
+        
+        long clickedID = GameControlSettings.getClickedEntityID(e.getX(), e.getY());
+        
+        //This should allow Entity objects to be selected
+        if(MenuManager.getMenu() instanceof GameMenu){
+            if(Ctrl_Held){
+                GameControlSettings.addSelectedID(clickedID);
+            } else {
+                GameControlSettings.setSelectedID(clickedID);
+            }
+        } else {
+            GameControlSettings.setSelectedID(-1);
+        }
+        
     }
 
     @Override
