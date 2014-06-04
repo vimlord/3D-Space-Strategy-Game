@@ -1,13 +1,13 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * The GUI class is designed to output data onto the game's applet.
  */
 
 package client.gui;
 
+import client.gui.menu.GameMenu;
 import client.gui.menu.MenuManager;
 import client.main.Client;
+import client.settings.Options;
 import engine.entities.Entity;
 import engine.entities.celestialBodies.BlackHole;
 import engine.entities.celestialBodies.Planet;
@@ -45,7 +45,9 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
     private static int WIDTH = 800, HEIGHT = 600;
     private static boolean debug = true;
     private static double XZ_ROT = Math.toRadians(30), Y_ROT = Math.toRadians(30);
+    private static double oldXZ = XZ_ROT,              oldY = Y_ROT;
     private static double x = 0, y = 0, z = 0;
+    private static double pressMouseX = 0, pressMouseY = 0;
     
     //For value n, one pixel will represent n meters
     private static double pixelMeterRatio = 5;
@@ -53,6 +55,7 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
     
     private Graphics graphics;
     private JFrame frame;
+    private double mouseSensitivity = 1, movementSensitivity = 1;
     
     public GUI(){
         this(800,600);
@@ -538,7 +541,34 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
 
     @Override
     public void keyPressed(KeyEvent e) {
-    
+        String bindingName = Options.getOption(e.getKeyCode()).name;
+        if(MenuManager.getMenu() instanceof GameMenu)
+        switch (bindingName) {
+            //Movement
+            case "MOVE_FORWARD":
+                x += Math.cos(XZ_ROT) * movementSensitivity;
+                z += Math.sin(XZ_ROT) * movementSensitivity;
+                break;
+            case "MOVE_BACKWARD":
+                x -= Math.cos(XZ_ROT) * movementSensitivity;
+                z -= Math.sin(XZ_ROT) * movementSensitivity;
+                break;
+            case "MOVE_LEFT":
+                x += Math.cos(XZ_ROT + 90) * movementSensitivity;
+                z += Math.sin(XZ_ROT + 90) * movementSensitivity;
+                break;
+            case "MOVE_RIGHT":
+                x -= Math.cos(XZ_ROT + 90) * movementSensitivity;
+                z -= Math.sin(XZ_ROT + 90) * movementSensitivity;
+                break;
+            case "MOVE_UP":
+                y += movementSensitivity;
+                break;
+            case "MOVE_DOWN":
+                y -= movementSensitivity;
+                break;
+            
+        }
     }
 
     @Override
@@ -553,12 +583,16 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
 
     @Override
     public void mousePressed(MouseEvent e) {
-    
+        pressMouseX = e.getX();
+        pressMouseY = e.getY();
+        oldXZ = XZ_ROT;
+        oldY = Y_ROT;
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-    
+        oldXZ = XZ_ROT;
+        oldY = Y_ROT;
     }
 
     @Override
@@ -573,7 +607,9 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
 
     @Override
     public void mouseDragged(MouseEvent e) {
-    
+        XZ_ROT = oldXZ + (e.getX() - pressMouseX) * Math.toRadians(mouseSensitivity);
+        Y_ROT = oldY + (e.getY() - pressMouseY) * Math.toRadians(mouseSensitivity);
+        System.out.println((int)Math.toDegrees(Y_ROT));
     }
 
     @Override
