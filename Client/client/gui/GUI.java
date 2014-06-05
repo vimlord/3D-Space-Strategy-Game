@@ -4,33 +4,20 @@
 
 package client.gui;
 
-import client.game.GameControlSettings;
-import client.gui.menu.GameMenu;
-import client.gui.menu.MenuManager;
+import client.game.*;
+import client.gui.menu.*;
 import client.main.Client;
 import client.settings.Options;
 import engine.entities.Entity;
-import engine.entities.celestialBodies.BlackHole;
-import engine.entities.celestialBodies.Planet;
-import engine.entities.ships.Corvette;
-import engine.entities.ships.Ship;
-import engine.entities.structures.Structure;
-import engine.entities.structures.WarpGate;
-import engine.gameMechanics.factions.Faction;
-import engine.gameMechanics.factions.FactionList;
-import engine.gameMechanics.factions.FactionTag;
+import engine.entities.celestialBodies.*;
+import engine.entities.projectiles.*;
+import engine.entities.ships.*;
+import engine.entities.structures.*;
+import engine.gameMechanics.factions.*;
 import engine.main.EntityList;
 import java.applet.Applet;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.*;
+import java.awt.event.*;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 
@@ -58,6 +45,11 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
     private JFrame frame;
     private double mouseSensitivity = 1, movementSensitivity = 1;
     
+    //These will hold the values for how thick the interface will be in pixels
+    private int topThickness = 0, 
+                bottomThickness = 0,
+                leftThickness = 0,
+                rightThickness = 0;
     
     private boolean Ctrl_Held = false;
     
@@ -110,12 +102,19 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
         
         MenuManager.drawCurrentMenu(g);
         if(MenuManager.getMenuIndex() < -1)
-            drawBattlefield(g);
+            drawGameInterface(g);
         
     }
     
-    public void drawBattlefield(Graphics g){
+    public void drawGameInterface(Graphics g){
         Graphics2D g2 = (Graphics2D) g;
+        
+        ////////////////////////////////////////////////////
+        //The first thing that is drawn is the map itself.//
+        ////////////////////////////////////////////////////
+        
+        g2.setColor(Color.BLACK);
+        g2.fillRect(0,0,frame.getWidth(), frame.getHeight());
         
         //Debug mode that draws the origin
         if(debug){
@@ -160,6 +159,112 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
         //Sets the new click detector circles up circles
         GameControlSettings.setCircles(circles, IDs);
         
+        //////////////////////////////////////////////////
+        //The next thing that is drawn is the interface.//
+        //////////////////////////////////////////////////
+        
+        
+        //g2.setColor(Color.GRAY);
+        //g2.fillRect(0, 0, frame.getWidth(), topThickness);
+        //g2.fillRect(0, frame.getHeight() - bottomThickness, frame.getWidth(), bottomThickness);
+        //g2.fillRect(0, 0, leftThickness, frame.getHeight());
+        //g2.fillRect(frame.getWidth() - rightThickness, 0, rightThickness, getHeight());
+        
+        //g2.setColor(new Color(192,192,255,127));
+        //g2.fillRect(frame.getWidth() - 250,25,240,300);
+        
+        //g2.setColor(Color.WHITE);
+        //g2.setFont(new Font("Courier New", Font.PLAIN, 16));
+        //g2.drawString("USS Valkyrie", frame.getWidth() - 245, 40);
+        
+        
+        ArrayList<Long> ids = GameControlSettings.getSelectedIDs();
+        if(ids.size() == 1){
+            
+            Entity selected = EntityList.getEntity(ids.get(0));
+            
+            g2.setColor(new Color(192,192,255,127));
+            g2.fillRect(frame.getWidth() - 250,25,240,300);
+            
+            g2.setColor(Color.WHITE);
+            g2.setFont(new Font("Courier New", Font.PLAIN, 20));
+            
+            //Outputs the name of the Entity
+            g2.drawString(selected.getName(), frame.getWidth() - 245, 40);
+            
+            //Finds the type of Entity
+            String type = "Entity";
+            if(selected instanceof Corvette)
+                type = "Corvette";
+            else if(selected instanceof Frigate)
+                type = "Frigate";
+            else if(selected instanceof Destroyer)
+                type = "Destroyer";
+            else if(selected instanceof Cruiser)
+                type = "Cruiser";
+            else if(selected instanceof Ship)
+                type = "Ship";
+            else if(selected instanceof Missile)
+                type = "Missile";
+            else if(selected instanceof Slug)
+                type = "Railgun Slug";
+            else if(selected instanceof Projectile)
+                type = "Missile";
+            else if(selected instanceof BlackHole)
+                type = "Black Hole";
+            else if(selected instanceof Planet)
+                type = "Planet";
+            else if(selected instanceof Star)
+                type = "Star";
+            else if(selected instanceof CelestialBody)
+                type = "Celestial Body";
+            else if(selected instanceof WarpGate)
+                type = "Warp Gate";
+            else if(selected instanceof Structure)
+                type = "Structure";
+            
+            //The type of Entity selected
+            g2.drawString(selected.getName(), frame.getWidth() - 245, 60);
+            
+            //The velocity is described
+            double velXZ = Math.sqrt(Math.pow(selected.getSpeedX(),2) + Math.pow(selected.getSpeedZ(),2));
+            double velocity = Math.sqrt(Math.pow(velXZ,2) + Math.pow(selected.getSpeedZ(),2));
+            double XZ = Math.atan(selected.getSpeedZ()/velXZ);
+            if(selected.getSpeedZ() < 0)
+                XZ *= -1;
+            double Y = Math.asin(selected.getSpeedY()/velocity);
+            if(velocity != 0){
+                g2.drawString(((int)(100 * velocity))/100.0 + " m/s", frame.getWidth() - 245, 80);
+                g2.drawString(((int)(100 * Math.toDegrees(XZ)))/100.0 + " degrees", frame.getWidth() - 245, 100);
+                g2.drawString(((int)(100 * Math.toDegrees(Y)))/100.0 + " degrees", frame.getWidth() - 245, 120);
+            }else
+                g2.drawString(((int)(100 * velocity))/100.0 + " m/s", frame.getWidth() - 245, 80);
+            
+            if(selected instanceof Ship){
+                Ship s = (Ship) selected;
+                g2.drawString("Integrity: " + s.getHealth() + "/" + s.getMaxHealth(), frame.getWidth() - 245, 140);
+                g2.drawString("Shields:   " + s.getShields() + "/" + s.getMaxShields(), frame.getWidth() - 245, 160);
+            } else if(selected instanceof CelestialBody){
+                g2.drawString("Mass:   " + selected.getMass(false) + " kg", frame.getWidth() - 245, 140);
+                g2.drawString("Radius: " + selected.getRadius() + " m", frame.getWidth() - 245, 160);
+                if(selected instanceof Planet){
+                    g2.drawString("Atmosphere Height: " + ((Planet) selected).getAtmosphereHeight() + " m", frame.getWidth() - 245, 180);
+                } else {
+                    g2.drawString("No Atmosphere Present", frame.getWidth() - 245, 180);
+                }
+                
+                
+            }
+            
+        } else {
+            
+        }
+        
+        //Draws the frame for the displayer for the selected Entity
+        g2.setColor(new Color(36,36,180,255));
+        g2.fillRect(frame.getWidth() - 250, 0, 250, 25);
+        g2.setColor(new Color(36,36,180,255));
+        g2.fillOval(frame.getWidth() - 70, -50, 120, 120);
         
         
     }
@@ -563,35 +668,38 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
 
     @Override
     public void keyPressed(KeyEvent e) {
-        String bindingName = Options.getOption(e.getKeyCode()).name;
-        if(MenuManager.getMenu() instanceof GameMenu)
-        switch (bindingName) {
-            //Movement
-            case "MOVE_FORWARD":
-                x += Math.cos(XZ_ROT) * movementSensitivity;
-                z += Math.sin(XZ_ROT) * movementSensitivity;
-                break;
-            case "MOVE_BACKWARD":
-                x -= Math.cos(XZ_ROT) * movementSensitivity;
-                z -= Math.sin(XZ_ROT) * movementSensitivity;
-                break;
-            case "MOVE_LEFT":
-                x += Math.cos(XZ_ROT + 90) * movementSensitivity;
-                z += Math.sin(XZ_ROT + 90) * movementSensitivity;
-                break;
-            case "MOVE_RIGHT":
-                x -= Math.cos(XZ_ROT + 90) * movementSensitivity;
-                z -= Math.sin(XZ_ROT + 90) * movementSensitivity;
-                break;
-            case "MOVE_UP":
-                y += movementSensitivity;
-                break;
-            case "MOVE_DOWN":
-                y -= movementSensitivity;
-                break;
+        try{
+            String bindingName = Options.getOption(e.getKeyCode()).name;
+            if(MenuManager.getMenu() instanceof GameMenu)
+            switch (bindingName) {
+                //Movement
+                case "MOVE_FORWARD":
+                    x += Math.cos(XZ_ROT) * movementSensitivity;
+                    z += Math.sin(XZ_ROT) * movementSensitivity;
+                    break;
+                case "MOVE_BACKWARD":
+                    x -= Math.cos(XZ_ROT) * movementSensitivity;
+                    z -= Math.sin(XZ_ROT) * movementSensitivity;
+                    break;
+                case "MOVE_LEFT":
+                    x += Math.cos(XZ_ROT + 90) * movementSensitivity;
+                    z += Math.sin(XZ_ROT + 90) * movementSensitivity;
+                    break;
+                case "MOVE_RIGHT":
+                    x -= Math.cos(XZ_ROT + 90) * movementSensitivity;
+                    z -= Math.sin(XZ_ROT + 90) * movementSensitivity;
+                    break;
+                case "MOVE_UP":
+                    y += movementSensitivity;
+                    break;
+                case "MOVE_DOWN":
+                    y -= movementSensitivity;
+                    break;
+
+            }
+        } catch(NullPointerException npe){
             
         }
-        
         
         
         

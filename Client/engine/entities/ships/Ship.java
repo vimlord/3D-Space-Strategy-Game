@@ -763,6 +763,30 @@ public class Ship extends Entity implements ControlSystem, FactionTag{
     }
     
     /**
+     * Returns the ship's maximum health
+     * @return The Ship's maximum health
+     */
+    public double getMaxHealth(){
+        return maxHealth;
+    }
+    
+    /**
+     * Returns the ship's shields
+     * @return The Ship's shields
+     */
+    public double getShields(){
+        return shields;
+    }
+    
+    /**
+     * Returns the ship's maximum shields
+     * @return The Ship's maximum shields
+     */
+    public double getMaxShields(){
+        return maxShields;
+    }
+    
+    /**
      * Returns the rotation on the XZ plane
      * @return The XZ Rotation
      */

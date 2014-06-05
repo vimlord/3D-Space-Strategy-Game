@@ -32,7 +32,7 @@ public class GameMenu extends Menu{
 
     @Override
     public void drawMenu(Graphics g) {
-        Client.getGUI().drawBattlefield(g);
+        Client.getGUI().drawGameInterface(g);
         drawButtons(g);
         
     }
