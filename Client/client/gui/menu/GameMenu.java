@@ -25,7 +25,27 @@ public class GameMenu extends Menu{
     protected ArrayList<Button> initButtons() {
         ArrayList<Button> buttons = new ArrayList<>();
         
+        int xGUI = Client.getGUI().getWidth();
+        int yGUI = Client.getGUI().getHeight();
         
+        //Specific direction buttons
+        buttons.add(new Button(xGUI - 200, yGUI - 120, 40, 40,"[INTERFACE]Prograde",""));
+        buttons.add(new Button(xGUI - 160, yGUI - 120, 40, 40,"[INTERFACE]Retrograde",""));
+        buttons.add(new Button(xGUI - 200, yGUI - 80, 40, 40,"[INTERFACE]Normal",""));
+        buttons.add(new Button(xGUI - 160, yGUI - 80, 40, 40,"[INTERFACE]Antinormal",""));
+        buttons.add(new Button(xGUI - 200, yGUI - 120, 40, 40,"[INTERFACE]RadialIn",""));
+        buttons.add(new Button(xGUI - 160, yGUI - 120, 40, 40,"[INTERFACE]RadialOut",""));
+        
+        //Direction adjustment buttons
+        buttons.add(new Button(xGUI - 80, yGUI - 120, 40, 40,"[INTERFACE]PointUp",""));
+        buttons.add(new Button(xGUI - 80, yGUI - 40, 40, 40,"[INTERFACE]PointDown",""));
+        buttons.add(new Button(xGUI - 120, yGUI - 80, 40, 40,"[INTERFACE]PointLeft",""));
+        buttons.add(new Button(xGUI - 40, yGUI - 80, 40, 40,"[INTERFACE]PointRight",""));
+        buttons.add(new Button(xGUI - 80, yGUI - 80, 40, 40,"[INTERFACE]ExecuteRotation",""));
+        
+        for(Button b : buttons){
+            b.setStatus(false);
+        }
         
         return buttons;
     }

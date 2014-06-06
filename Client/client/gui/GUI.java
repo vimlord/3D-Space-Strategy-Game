@@ -15,6 +15,7 @@ import engine.entities.ships.*;
 import engine.entities.structures.*;
 import engine.gameMechanics.factions.*;
 import engine.main.EntityList;
+import client.gui.menu.buttons.Button;
 import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.*;
@@ -179,6 +180,12 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
         
         
         ArrayList<Long> ids = GameControlSettings.getSelectedIDs();
+        
+        for(Button b : (MenuManager.getMenu("gameInterface")).getButtons()){
+            if(b.getCommand().substring(0,b.getCommand().indexOf("]")).equals("[INTERFACE]"))
+                b.setStatus(ids.size() == 1);
+        }
+        
         if(ids.size() == 1){
             
             Entity selected = EntityList.getEntity(ids.get(0));
@@ -697,6 +704,7 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
                     break;
 
             }
+            
         } catch(NullPointerException npe){
             
         }

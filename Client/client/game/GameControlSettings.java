@@ -6,7 +6,10 @@
 
 package client.game;
 
+import client.main.Client;
 import engine.entities.Entity;
+import engine.entities.ships.Ship;
+import engine.entities.ships.shipTools.orders.Rotate;
 import engine.main.EntityList;
 import java.util.ArrayList;
 
@@ -24,6 +27,7 @@ public class GameControlSettings {
     private static ArrayList<Integer[]> circles = new ArrayList<>();
     private static ArrayList<Long> reciprocalIDs = new ArrayList<>();
     
+    private static double ROT_Targ_XZ = 0, ROT_Targ_Y = 0;
     
     public static boolean autoAttackAlowed(){
         return autoAttackAlowed;
@@ -102,6 +106,54 @@ public class GameControlSettings {
         }
         
         return -1;
+    }
+
+    public static void processButtonCommand(String command) {
+        if(command == "" || command == null)
+            return;
+            
+        switch(command){
+            case "Prograde":
+                
+                break;
+            case "Retrograde":
+                
+                break;
+            case "Normal":
+                
+                break;
+            case "Antinormal":
+                
+                break;
+            case "RadialIn":
+                
+                break;
+            case "RadialOut":
+                
+                break;
+            case "[INTERFACE]PointUp":
+                ROT_Targ_Y++;
+                break;
+            case "[INTERFACE]PointDown":
+                ROT_Targ_Y--;
+                break;
+            case "[INTERFACE]PointLeft":
+                ROT_Targ_XZ--;
+                break;
+            case "[INTERFACE]PointRight":
+                ROT_Targ_XZ++;
+                break;
+            case "[INTERFACE]ExecuteRotation":
+                if(SELECTED_ID.size() == 1){
+                    Entity ship = EntityList.getEntity(SELECTED_ID.get(0));
+                    if(ship instanceof Ship){
+                        Client.getConnection().sendObject("[ORDER][(" + Client.getID() + ")(" + ship.getID() + ")]"+ (new Rotate(ROT_Targ_XZ,ROT_Targ_Y)).getOrder());
+                    }
+                }
+                break;
+                
+        }
+        
     }
     
     

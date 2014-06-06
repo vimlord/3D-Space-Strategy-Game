@@ -6,10 +6,11 @@
 
 package client.gui.menu;
 
+import client.game.GameControlSettings;
+import client.main.Client;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
-import client.main.Client;
 
 /**
  *
@@ -148,6 +149,8 @@ public class MenuManager {
             Client.getConnection().sendObject(order);
         } else if(header.equals("[END]")){
             System.exit(0);
+        } else if(header.equals("[INTERFACE]")) {
+            GameControlSettings.processButtonCommand(footer);
         }
         
     }
