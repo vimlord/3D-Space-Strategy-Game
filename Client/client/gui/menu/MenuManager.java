@@ -143,13 +143,14 @@ public class MenuManager {
             try{
                 setMenu(Integer.parseInt(footer.substring(1,footer.length()-1))); //The program will attempt to set the menu to the parameter provided
             } catch(NumberFormatException e){
-                setMenu(footer.substring(0,footer.length()));
+                String name = footer.substring(0,footer.length());
+                setMenu(name);
             }
         } else if(header.equals("[ORDER]")){
             Client.getConnection().sendObject(order);
         } else if(header.equals("[END]")){
             System.exit(0);
-        } else if(header.equals("[INTERFACE]")) {
+        } else if(header.equals("[SHIP_ORDER]")) {
             GameControlSettings.processButtonCommand(footer);
         }
         

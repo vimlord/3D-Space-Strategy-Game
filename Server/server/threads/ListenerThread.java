@@ -34,7 +34,7 @@ public class ListenerThread extends Thread{
     
     private ArrayList<Serializable> outputQueue = new ArrayList<>();
     
-    private boolean listening = true;
+    private boolean listening = true, inGame = false;
     
     public ListenerThread(Socket socket) {
         this.socket = socket;
@@ -65,6 +65,10 @@ public class ListenerThread extends Thread{
             //This next line of code takes an Object as input. The Object will
             //then be tested to see if it matches any of the known Object types.
             while(listening){
+                if(inGame != CycleRunner.getGamemode().getStatus()){
+                    inGame = !inGame;
+                    outputQueue.add("[GAMESTATUS]STARTING");
+                }
                 input = null;
                 input = inStream.readObject();
                 

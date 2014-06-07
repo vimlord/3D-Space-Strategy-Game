@@ -151,5 +151,9 @@ public abstract class GameMode  implements Serializable{
             }
         }
     }
+    
+    public int[][] getFactions(){
+        return involvedFactions;
+    }
             
 }

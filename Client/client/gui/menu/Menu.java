@@ -37,7 +37,7 @@ public abstract class Menu {
     public void cycle(){
         if(!Client.isLookingForConnection() && usesConnection){
             Client.setLookingForConnection(true);
-        } else if(Client.isLookingForConnection()){
+        } else if(Client.isLookingForConnection() && !usesConnection){
             Client.setLookingForConnection(false);
         }
     }

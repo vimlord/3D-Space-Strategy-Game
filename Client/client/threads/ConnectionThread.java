@@ -6,6 +6,9 @@
 
 package client.threads;
 
+import client.gui.menu.GameMenu;
+import client.gui.menu.MenuManager;
+import client.gui.menu.PregameMenu;
 import client.main.Client;
 import client.object_wrappers.EntityListWrapper;
 import engine.entities.Entity;
@@ -156,6 +159,15 @@ public class ConnectionThread extends Thread{
             //Sets the Faction ID number
             Client.setID(Integer.parseInt(input.substring(alphaTag.length())));
             System.out.println("Faction ID established for \"" + Client.getName() + "\": " + Client.getID());
+        } else if(alphaTag.equals("[GAMESTATUS]")){
+            //Something about the game is changing
+            String status = input.substring(alphaTag.length());
+            if(status.equals("STARTING")){
+                //The match is beginning
+                if((MenuManager.getMenu() instanceof PregameMenu)){
+                    MenuManager.setMenu("gameInterface");
+                }
+            }
         }
         
     }

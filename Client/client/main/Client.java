@@ -7,11 +7,15 @@
 package client.main;
 
 import client.gui.GUI;
+import client.gui.menu.GameMenu;
 import client.gui.menu.HostOrJoinMenu;
 import client.gui.menu.MainMenu;
 import client.gui.menu.MenuManager;
+import client.gui.menu.PregameMenu;
 import client.threads.ConnectionThread;
 import client.threads.CycleThread;
+import engine.gameMechanics.gameModes.FreeForAll;
+import engine.main.CycleRunner;
 import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -42,6 +46,8 @@ public class Client {
         
         MenuManager.addMenu(new MainMenu());
         MenuManager.addMenu(new HostOrJoinMenu());
+        MenuManager.addMenu(new PregameMenu());
+        MenuManager.addMenu(new GameMenu());
         MenuManager.setMenu(0);
         
         while(true){

@@ -17,7 +17,7 @@ import java.util.ArrayList;
  */
 public class GameMenu extends Menu{
 
-    public GameMenu(boolean connects) {
+    public GameMenu() {
         super("gameInterface", true);
     }
 
@@ -29,19 +29,19 @@ public class GameMenu extends Menu{
         int yGUI = Client.getGUI().getHeight();
         
         //Specific direction buttons
-        buttons.add(new Button(xGUI - 200, yGUI - 120, 40, 40,"[INTERFACE]Prograde",""));
-        buttons.add(new Button(xGUI - 160, yGUI - 120, 40, 40,"[INTERFACE]Retrograde",""));
-        buttons.add(new Button(xGUI - 200, yGUI - 80, 40, 40,"[INTERFACE]Normal",""));
-        buttons.add(new Button(xGUI - 160, yGUI - 80, 40, 40,"[INTERFACE]Antinormal",""));
-        buttons.add(new Button(xGUI - 200, yGUI - 120, 40, 40,"[INTERFACE]RadialIn",""));
-        buttons.add(new Button(xGUI - 160, yGUI - 120, 40, 40,"[INTERFACE]RadialOut",""));
+        buttons.add(new Button(xGUI - 200, yGUI - 120, 40, 40,"[SHIP_ORDER]Prograde",""));
+        buttons.add(new Button(xGUI - 160, yGUI - 120, 40, 40,"[SHIP_ORDER]Retrograde",""));
+        buttons.add(new Button(xGUI - 200, yGUI - 80, 40, 40,"[SHIP_ORDER]Normal",""));
+        buttons.add(new Button(xGUI - 160, yGUI - 80, 40, 40,"[SHIP_ORDER]Antinormal",""));
+        buttons.add(new Button(xGUI - 200, yGUI - 120, 40, 40,"[SHIP_ORDER]RadialIn",""));
+        buttons.add(new Button(xGUI - 160, yGUI - 120, 40, 40,"[SHIP_ORDER]RadialOut",""));
         
         //Direction adjustment buttons
-        buttons.add(new Button(xGUI - 80, yGUI - 120, 40, 40,"[INTERFACE]PointUp",""));
-        buttons.add(new Button(xGUI - 80, yGUI - 40, 40, 40,"[INTERFACE]PointDown",""));
-        buttons.add(new Button(xGUI - 120, yGUI - 80, 40, 40,"[INTERFACE]PointLeft",""));
-        buttons.add(new Button(xGUI - 40, yGUI - 80, 40, 40,"[INTERFACE]PointRight",""));
-        buttons.add(new Button(xGUI - 80, yGUI - 80, 40, 40,"[INTERFACE]ExecuteRotation",""));
+        buttons.add(new Button(xGUI - 80, yGUI - 120, 40, 40,"[SHIP_ORDER]PointUp",""));
+        buttons.add(new Button(xGUI - 80, yGUI - 40, 40, 40,"[SHIP_ORDER]PointDown",""));
+        buttons.add(new Button(xGUI - 120, yGUI - 80, 40, 40,"[SHIP_ORDER]PointLeft",""));
+        buttons.add(new Button(xGUI - 40, yGUI - 80, 40, 40,"[SHIP_ORDER]PointRight",""));
+        buttons.add(new Button(xGUI - 80, yGUI - 80, 40, 40,"[SHIP_ORDER]ExecuteRotation",""));
         
         for(Button b : buttons){
             b.setStatus(false);

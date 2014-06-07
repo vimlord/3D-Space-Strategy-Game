@@ -757,8 +757,10 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        oldXZ = XZ_ROT;
-        oldY = Y_ROT;
+        if(MenuManager.getMenu() instanceof GameMenu){
+            oldXZ = XZ_ROT;
+            oldY = Y_ROT;
+        }
     }
 
     @Override
@@ -773,9 +775,10 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        XZ_ROT = oldXZ + (e.getX() - pressMouseX) * Math.toRadians(mouseSensitivity);
-        Y_ROT = oldY + (e.getY() - pressMouseY) * Math.toRadians(mouseSensitivity);
-        System.out.println((int)Math.toDegrees(Y_ROT));
+        if(MenuManager.getMenu() instanceof GameMenu){
+            XZ_ROT = oldXZ + (e.getX() - pressMouseX) * Math.toRadians(mouseSensitivity);
+            Y_ROT = oldY + (e.getY() - pressMouseY) * Math.toRadians(mouseSensitivity);
+        }
     }
 
     @Override
