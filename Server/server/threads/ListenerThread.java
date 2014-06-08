@@ -68,11 +68,16 @@ public class ListenerThread extends Thread{
                 if(inGame != CycleRunner.getGamemode().getStatus()){
                     inGame = !inGame;
                     outputQueue.add("[GAMESTATUS]STARTING");
+                } else if(PlayerList.getPlayerList().size() >= Server.getPlayerLimit() && Server.getPlayerLimit() > 0){
+                    break;
                 }
+                
                 input = null;
                 input = inStream.readObject();
                 
                 processInput(input);
+                
+                System.out.println(input);
                 
                 if(input.equals("[EXIT]") || input == null || input.equals("[INVALIDUSER]")){
                     break;
@@ -102,6 +107,7 @@ public class ListenerThread extends Thread{
                     Server.addLogEvent("\"" + connectionUser + "\" has disconnected from the server.");
                     System.out.println(Server.getLatestLogEvent());
                     PlayerList.getPlayer(connectionUser).setActive(false);
+                    PlayerList.getPlayer(connectionUser).setReadiness(false);
                 } else {
                     Server.addLogEvent("A user posing as \"" + connectionUser + "\" has been removed from the server.");
                     System.out.println(Server.getLatestLogEvent());
@@ -111,8 +117,15 @@ public class ListenerThread extends Thread{
                 Server.addLogEvent("\"" + connectionUser + "\" has disconnected from the server.");
                 System.out.println(Server.getLatestLogEvent());
                 PlayerList.getPlayer(connectionUser).setActive(false);
+                PlayerList.getPlayer(connectionUser).setReadiness(false);
             }
         }
+        
+        //If the game isn't running, removes the player from the list.
+        if(!CycleRunner.getGamemode().getStatus())
+            PlayerList.getPlayerList().remove(PlayerList.getPlayer(connectionUser));
+        
+        Server.getConnections().remove(this);
         
     }
     
@@ -157,10 +170,7 @@ public class ListenerThread extends Thread{
             if(betaTag.equals("[GAMEMODE]")){
                 outputQueue.add(CycleRunner.getGamemode());
             }
-        }
-        
-        
-        if(alphaTag.equals("[CONNECT]")){
+        } else if(alphaTag.equals("[CONNECT]")){
             connectionUser = input.substring(alphaTag.length());
             int size = 3;
             if(size > connectionUser.length()){
@@ -169,7 +179,6 @@ public class ListenerThread extends Thread{
             
             String tag = (connectionUser.substring(0, size));
             
-            boolean allowConnection;
             
             listening = true;
             
@@ -189,11 +198,11 @@ public class ListenerThread extends Thread{
                 Server.addLogEvent("\"" + connectionUser + "\" has connected to the server.");
                 System.out.println(Server.getLatestLogEvent());
                 
-            } else if(!foundPlayer.isActive()) {
+            }  else if(!foundPlayer.isActive()) {
                 int assignedID = FactionList.getFaction(tag).getID();
 
                 String idSent = ("[FACTIONID]" + assignedID);
-
+                
                 outputQueue.add(idSent);
 
                 Server.addLogEvent("\"" + connectionUser + "\" has reconnected to the server.");
@@ -229,6 +238,12 @@ public class ListenerThread extends Thread{
                 System.out.println(Server.getLatestLogEvent());
             }
                     */
+            
+        } else if(alphaTag.equals("[SERVERMESSAGE]")){
+            String message = input.substring(alphaTag.length());
+            if(message.equals("Ready")){
+                PlayerList.getPlayer(connectionUser).setReadiness(true);
+            }
             
         }
         

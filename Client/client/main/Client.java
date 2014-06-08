@@ -40,9 +40,15 @@ public class Client {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         cycler = new CycleThread();
         cycler.start();
+        
+        try{
+           setName(args[2]); 
+        } catch (Exception e){
+            setName("Guest");
+        }
         
         MenuManager.addMenu(new MainMenu());
         MenuManager.addMenu(new HostOrJoinMenu());
@@ -52,16 +58,26 @@ public class Client {
         
         while(true){
             
+            Thread.sleep(1);
             
-            while(lookingForConnection){
+            if(lookingForConnection){
                 
-                connection = new ConnectionThread(args);
+                
+                connection = new ConnectionThread(args, true);
                 connection.start();
                 
-                
                 while(connection.listening()){
-                
+                    
+                    Thread.sleep(1);
+                    
+                    if(!(MenuManager.getMenu() instanceof PregameMenu || MenuManager.getMenu() instanceof GameMenu)){
+                        connection.sendObject("[EXIT]");
+                        break;
+                    }
+                    
+                    
                 }
+                
             }
             
         }

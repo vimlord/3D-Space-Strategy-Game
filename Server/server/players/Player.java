@@ -13,7 +13,7 @@ package server.players;
 public class Player {
     private final String username;
     private final int factionID;
-    private boolean isActive = false;
+    private boolean isActive = false, ready = false;
     
     public Player(String name, int id){
         username = name;
@@ -34,6 +34,14 @@ public class Player {
     
     public int getFactionID(){
         return factionID;
+    }
+    
+    public void setReadiness(boolean ready){
+        this.ready = ready;
+    }
+    
+    public boolean getReadiness(){
+        return ready;
     }
     
     public boolean equals(Player other){

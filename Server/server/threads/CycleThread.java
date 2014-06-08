@@ -6,10 +6,12 @@
 
 package server.threads;
 
+import engine.gameMechanics.gameModes.FreeForAll;
 import engine.main.CycleRunner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.ArrayList;
 import server.main.Server;
+import server.players.Player;
+import server.players.PlayerList;
 
 /**
  *
@@ -25,18 +27,61 @@ public class CycleThread extends Thread{
     public void run(){
         int count = 0;
         while(true){
-            CycleRunner.executeCycle();
-            count++;
-            try{
-                if(count%32 == 0){
-                    Thread.sleep(0,1);
-                    count = count%32;
-                }
-            } catch(InterruptedException e){
-                e.printStackTrace();
+            
+            if(CycleRunner.getGamemode() == null){
+                resetGame();
             }
-            Server.cycleClock();
+            
+            
+            
+            
+            if(CycleRunner.getGamemode().getStatus()){
+                CycleRunner.executeCycle();
+                count++;
+                try{
+                    if(count%32 == 0){
+                        Thread.sleep(0,1);
+                        count = count%32;
+                    }
+                } catch(InterruptedException e){
+                    e.printStackTrace();
+                }
+                Server.cycleClock();
+            } else {
+                ArrayList<Player> players = PlayerList.getPlayerList();
+                boolean allReady = true;
+                for(Player p : players){
+                    if(!p.getReadiness())
+                        allReady = false;
+                }
+                if(allReady && players.size() > 1){
+                    resetGame();
+                    CycleRunner.getGamemode().startGame();
+                }
+                
+            }
+            
+            if(CycleRunner.getGamemode().getStatus()){
+                //Starts the game
+                
+                
+                
+            }
+            
             Server.getGUI().redraw();
+            
         }
     }
+    
+    public void resetGame(){
+        ArrayList<Player> players = PlayerList.getPlayerList();
+        int[] factions = new int[players.size()];
+
+        for(int i = 0; i < factions.length; i++)
+            factions[i] = players.get(i).getFactionID();
+
+
+        CycleRunner.setGamemode(new FreeForAll(factions));
+    }
+    
 }

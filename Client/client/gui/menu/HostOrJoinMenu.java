@@ -22,7 +22,7 @@ public class HostOrJoinMenu extends Menu{
     private ArrayList<String> connectionNames = new ArrayList<>();
     
     public HostOrJoinMenu() {
-        super("hostORjoin", true);
+        super("hostORjoin", false);
     }
     
     

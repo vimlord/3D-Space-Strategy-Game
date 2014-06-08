@@ -33,6 +33,8 @@ public class PregameMenu extends Menu{
         
         buttons.add(new Button((xGUI) - 160, yGUI - 60, 120, 30, "[SETMENU]hostORjoin", "Leave Game"));
         
+        buttons.add(new Button((xGUI) - 300, yGUI - 60, 120, 30, "[TELLSERVER]Ready", "Ready"));
+        
         return buttons;
     }
 
@@ -94,7 +96,7 @@ public class PregameMenu extends Menu{
         } catch(NullPointerException npe){
             numTeams = 0;
         }
-            
+        
         g2.drawString("Number of Players: " + numPlayers, xGUI - 320, 58);
         g2.drawString("Number of Teams: " + numTeams, xGUI - 320, 72);
         

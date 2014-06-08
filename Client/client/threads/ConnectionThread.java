@@ -46,15 +46,15 @@ public class ConnectionThread extends Thread{
     private int portNumber;
     
     
-    public ConnectionThread(String[] args){
+    public ConnectionThread(String[] args, boolean running){
         
+        listening = running;
         
         
         //Attempts to set values for the host name and the port number
         try {
             hostName = args[0];
             portNumber = Integer.parseInt(args[1]);
-            Client.setName(args[2]);
         } catch(Exception e){
             System.out.println("An error occured while reading from console:");
             System.err.println(e.toString());
@@ -62,7 +62,6 @@ public class ConnectionThread extends Thread{
             
             hostName = "localhost";
             portNumber = 25565;
-            Client.setName("Guest");
             
             System.out.println("The host name has been set to \"" + hostName + "\".");
             System.out.println("The port number has been set to \"" + portNumber + "\"." + "\n");
@@ -87,7 +86,6 @@ public class ConnectionThread extends Thread{
     
     @Override
     public void run(){
-        
         listening = true;
         
         try{
@@ -97,13 +95,15 @@ public class ConnectionThread extends Thread{
             inStream = new ObjectInputStream(socket.getInputStream());
         } catch (IOException e) {
             System.err.println("Couldn't get I/O for the connection to " + hostName);
-            System.exit(1);
+        } catch(NullPointerException n){
+            listening = false;
         }
         
         
         
         try {
-            
+            System.out.println("Name: " + Client.getName());
+            System.out.println(listening);
             while(listening){
                 if(Client.getID() == -1){
                     outputQueue.add("[CONNECT]" + Client.getName());
@@ -121,16 +121,18 @@ public class ConnectionThread extends Thread{
             }
             
         } catch (IOException e) {
-            
             System.err.println("Couldn't get I/O for the connection to " + hostName);
-            System.exit(1);
             
         } catch(ClassNotFoundException e){
             
             System.err.println("Couldn't interpret the read object.");
-            System.exit(1);
             
         }
+        
+        Client.setID(-1);
+        listening = false;
+        MenuManager.setMenu("hostORjoin");
+        
         
     }
     
@@ -172,8 +174,12 @@ public class ConnectionThread extends Thread{
         
     }
     
-    public void sendObject(Object obj){
-        outputQueue.add(obj);
+    public void sendObject(Object obj) {
+        try{
+            outputStream.writeObject(obj);
+        } catch (Exception e){
+            
+        }
     }
     
     public boolean listening(){

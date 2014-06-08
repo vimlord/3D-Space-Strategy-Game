@@ -27,6 +27,10 @@ public class Server {
     
     private static GUI gui;
     
+    private static int playerLimit = 0;
+    
+    private static ArrayList<ListenerThread> connections = new ArrayList<>();
+    
     /**
      * @param args the command line arguments
      */
@@ -59,7 +63,8 @@ public class Server {
             
             while(running){
                 //Looks for a connection with a client and establishes it if possible
-                (new ListenerThread(serverSocket.accept())).start();
+                connections.add(new ListenerThread(serverSocket.accept()));
+                connections.get(connections.size() - 1).start();
                 //Executes a cycle in the CycleRunner class. This will move Entities
                 //and execute collisions, Ship orders, and other necessary processes.
                 //For a broader list, look at CycleRunner.executeCycle()
@@ -99,6 +104,18 @@ public class Server {
     
     public static GUI getGUI(){
         return gui;
+    }
+    
+    public static int getPlayerLimit(){
+        return playerLimit;
+    }
+    
+    public static void setPlayerLimit(int limit){
+        playerLimit = limit;
+    }
+    
+    public static ArrayList<ListenerThread> getConnections(){
+        return connections;
     }
     
 }
