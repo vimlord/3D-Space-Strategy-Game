@@ -122,6 +122,7 @@ public class MenuManager {
         Graphics2D g2 = (Graphics2D) g;
         getMenu().cycle();
         getMenu().drawMenu(g2);
+        //getMenu(3).drawMenu(g2);
     }
     
     /**

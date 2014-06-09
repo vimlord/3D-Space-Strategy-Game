@@ -14,12 +14,6 @@ import client.gui.menu.MenuManager;
 import client.gui.menu.PregameMenu;
 import client.threads.ConnectionThread;
 import client.threads.CycleThread;
-import engine.gameMechanics.gameModes.FreeForAll;
-import engine.main.CycleRunner;
-import java.io.*;
-import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
 
 /**
  *
@@ -30,7 +24,7 @@ public class Client {
     private static GUI gui = new GUI();
     
     private static int factionID = -1;
-    private static String clientName = null;
+    private static String clientName = "Guest";
     
     private static ConnectionThread connection;
     private static CycleThread cycler;

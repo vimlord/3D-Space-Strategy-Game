@@ -50,7 +50,7 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
     private int topThickness = 0, 
                 bottomThickness = 0,
                 leftThickness = 0,
-                rightThickness = 0;
+                rightThickness = 200;
     
     private boolean Ctrl_Held = false;
     
@@ -70,6 +70,8 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
 	frame.add(this);
         //Sets the size of the applet to be 800 pixels wide  by 600 pixels high
 	frame.setSize(width, height);
+        WIDTH = 800;
+        HEIGHT = 600;
         //Makes the applet visible
 	frame.setVisible(true);
         //Sets the applet so that it can't be resized
@@ -121,15 +123,15 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
         if(debug){
             //X Axis
             g2.setColor(Color.red);
-            g2.drawLine(frame.getWidth()/2 - (int)(Math.cos(XZ_ROT) * 200),  (frame.getHeight()/2 - 18) + (int)(Math.sin(XZ_ROT) * 200 * Math.sin(Y_ROT)), frame.getWidth()/2 + (int)(Math.cos(XZ_ROT) * 200), (frame.getHeight()/2 - 18) - (int)(Math.sin(XZ_ROT) * 200 * Math.sin(Y_ROT)));
+            g2.drawLine(frame.getWidth()/2 - (int)(Math.cos(XZ_ROT) * 200) + (leftThickness - rightThickness)/2,  (frame.getHeight()/2 - 18) + (int)(Math.sin(XZ_ROT) * 200 * Math.sin(Y_ROT)), frame.getWidth()/2 + (int)(Math.cos(XZ_ROT) * 200) + (leftThickness - rightThickness)/2, (frame.getHeight()/2 - 18) - (int)(Math.sin(XZ_ROT) * 200 * Math.sin(Y_ROT)));
 
             //Y Axis
             g2.setColor(Color.blue);
-            g2.drawLine(frame.getWidth()/2 - (int)(Math.sin(XZ_ROT) * 200),  (frame.getHeight()/2 - 18) - (int)(Math.cos(XZ_ROT) * 200 * Math.sin(Y_ROT)), frame.getWidth()/2 + (int)(Math.sin(XZ_ROT) * 200), (frame.getHeight()/2 - 18) + (int)(Math.cos(XZ_ROT) * 200 * Math.sin(Y_ROT)));
+            g2.drawLine(frame.getWidth()/2 - (int)(Math.sin(XZ_ROT) * 200) + (leftThickness - rightThickness)/2,  (frame.getHeight()/2 - 18) - (int)(Math.cos(XZ_ROT) * 200 * Math.sin(Y_ROT)), frame.getWidth()/2 + (int)(Math.sin(XZ_ROT) * 200) + (leftThickness - rightThickness)/2, (frame.getHeight()/2 - 18) + (int)(Math.cos(XZ_ROT) * 200 * Math.sin(Y_ROT)));
 
             //Z Axis
             g2.setColor(Color.green);
-            g2.drawLine(frame.getWidth()/2, (frame.getHeight()/2 - 18) + (int)(200 * Math.cos(Y_ROT)), frame.getWidth()/2, (frame.getHeight()/2 - 18) - (int)(200 * Math.cos(Y_ROT)));
+            g2.drawLine(frame.getWidth()/2 + (leftThickness - rightThickness)/2, (frame.getHeight()/2 - 18) + (int)(200 * Math.cos(Y_ROT)), frame.getWidth()/2 + (leftThickness - rightThickness)/2, (frame.getHeight()/2 - 18) - (int)(200 * Math.cos(Y_ROT)));
             
             g2.setColor(Color.black);
         }
@@ -165,11 +167,11 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
         //////////////////////////////////////////////////
         
         
-        //g2.setColor(Color.GRAY);
-        //g2.fillRect(0, 0, frame.getWidth(), topThickness);
-        //g2.fillRect(0, frame.getHeight() - bottomThickness, frame.getWidth(), bottomThickness);
-        //g2.fillRect(0, 0, leftThickness, frame.getHeight());
-        //g2.fillRect(frame.getWidth() - rightThickness, 0, rightThickness, getHeight());
+        g2.setColor(Color.GRAY);
+        g2.fillRect(0, 0, frame.getWidth(), topThickness);
+        g2.fillRect(0, getAppletHeight() - bottomThickness, frame.getWidth(), bottomThickness);
+        g2.fillRect(0, 0, leftThickness, frame.getHeight());
+        g2.fillRect(getAppletWidth() - rightThickness, 0, rightThickness, frame.getHeight());
         
         //g2.setColor(new Color(192,192,255,127));
         //g2.fillRect(frame.getWidth() - 250,25,240,300);
@@ -191,7 +193,7 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
             Entity selected = EntityList.getEntity(ids.get(0));
             
             g2.setColor(new Color(192,192,255,127));
-            g2.fillRect(frame.getWidth() - 250,25,240,300);
+            g2.fillRect(frame.getWidth() - 240,25,240,300);
             
             g2.setColor(Color.WHITE);
             g2.setFont(new Font("Courier New", Font.PLAIN, 20));
@@ -269,9 +271,9 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
         
         //Draws the frame for the displayer for the selected Entity
         g2.setColor(new Color(36,36,180,255));
-        g2.fillRect(frame.getWidth() - 250, 0, 250, 25);
+        g2.fillRect(frame.getWidth() - 240, 0, 250, 25);
         g2.setColor(new Color(36,36,180,255));
-        g2.fillOval(frame.getWidth() - 70, -50, 120, 120);
+        g2.fillOval(frame.getWidth() - 60, -50, 120, 120);
         
         
     }
@@ -381,6 +383,8 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
         
         values[0] = (int)(frame.getWidth()/2 + (Math.cos(angleXZ + XZ_ROT) * magnitudeXZ / pixelMeterRatio));
         values[1] = (int)((frame.getHeight()/2 - 18) - (Math.sin(angleXZ + XZ_ROT) * magnitudeXZ * Math.sin(Y_ROT) / pixelMeterRatio) - (magnitudeY * Math.cos(Y_ROT) / pixelMeterRatio));
+        
+        values[0] += (leftThickness - rightThickness)/2;
         
         return values;
         
@@ -806,6 +810,14 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
             HEIGHT = height;
             frame.setSize(WIDTH, HEIGHT);
         }
+    }
+    
+    public int getAppletWidth(){
+        return frame.getWidth() - 6;
+    }
+    
+    public int getAppletHeight(){
+        return frame.getHeight() - 28;
     }
     
     /**

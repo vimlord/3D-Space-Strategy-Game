@@ -18,7 +18,7 @@ import java.awt.Graphics2D;
  */
 public class Button {
     private boolean active = true;
-    private int x1, x2, y1, y2;
+    private int x, y, width, height;
     private String command, text;
     
     /**
@@ -30,10 +30,10 @@ public class Button {
      * @param command The command issued when the button is pressed
      */
     public Button(int x1, int y1, int width, int height, String command, String text){
-        this.x1 = x1;
-        this.y1 = y1;
-        this.x2 = x1 + width;
-        this.y2 = y1 + height;
+        this.x = x1;
+        this.y = y1;
+        this.width = width;
+        this.height = height;
         this.command = command;
         this.text = text;
     }
@@ -45,10 +45,10 @@ public class Button {
         return active;
     }
     
-    public boolean testHit(int x, int y){
+    public boolean testHit(int x_, int y_){
         
-        if(x > x1 && x <= x2){ //Tests the x value
-            if(y > y1 && y <= y2){ //Tests the y value
+        if(x > x && x <= x + width){ //Tests the x value
+            if(y_ > y && y_ <= y + height){ //Tests the y value
                 return active;
             }
             
@@ -61,16 +61,18 @@ public class Button {
     }
 
     public void drawButton(Graphics2D g2) {
+        //if(!active) return;
         g2.setColor(Color.GRAY);
-        g2.fillRect(x1, y1, x2 - x1, y2 - y1);
+        g2.fillRect(x, y, width, height);
         g2.setColor(Color.BLACK);
-        g2.drawRect(x1, y1, x2 - x1, y2 - y1);
+        g2.drawRect(x, y, width, height);
         
         g2.setFont(new Font("Courier New", Font.BOLD, 20));
         
-        int centX = (x1 + x2)/2;
-        int centY = (y1 + y2)/2;
+        int centX = x + (width)/2;
+        int centY = y + (height)/2;
         
+        g2.setColor(Color.BLACK);
         g2.drawString(text,centX - (6 * text.length()),centY + 5);
         
     }

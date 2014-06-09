@@ -25,16 +25,16 @@ public class GameMenu extends Menu{
     protected ArrayList<Button> initButtons() {
         ArrayList<Button> buttons = new ArrayList<>();
         
-        int xGUI = Client.getGUI().getWidth();
-        int yGUI = Client.getGUI().getHeight();
+        int xGUI = Client.getGUI().getAppletWidth();
+        int yGUI = Client.getGUI().getAppletHeight();
         
         //Specific direction buttons
         buttons.add(new Button(xGUI - 200, yGUI - 120, 40, 40,"[SHIP_ORDER]Prograde",""));
         buttons.add(new Button(xGUI - 160, yGUI - 120, 40, 40,"[SHIP_ORDER]Retrograde",""));
         buttons.add(new Button(xGUI - 200, yGUI - 80, 40, 40,"[SHIP_ORDER]Normal",""));
         buttons.add(new Button(xGUI - 160, yGUI - 80, 40, 40,"[SHIP_ORDER]Antinormal",""));
-        buttons.add(new Button(xGUI - 200, yGUI - 120, 40, 40,"[SHIP_ORDER]RadialIn",""));
-        buttons.add(new Button(xGUI - 160, yGUI - 120, 40, 40,"[SHIP_ORDER]RadialOut",""));
+        buttons.add(new Button(xGUI - 200, yGUI - 40, 40, 40,"[SHIP_ORDER]RadialIn",""));
+        buttons.add(new Button(xGUI - 160, yGUI - 40, 40, 40,"[SHIP_ORDER]RadialOut",""));
         
         //Direction adjustment buttons
         buttons.add(new Button(xGUI - 80, yGUI - 120, 40, 40,"[SHIP_ORDER]PointUp",""));
@@ -43,8 +43,12 @@ public class GameMenu extends Menu{
         buttons.add(new Button(xGUI - 40, yGUI - 80, 40, 40,"[SHIP_ORDER]PointRight",""));
         buttons.add(new Button(xGUI - 80, yGUI - 80, 40, 40,"[SHIP_ORDER]ExecuteRotation",""));
         
+        //Weapon Controls
+        
         for(Button b : buttons){
-            b.setStatus(false);
+            if(b.getCommand().substring(0,b.getCommand().indexOf("]")).equals("[SHIP_ORDER]")){
+                b.setStatus(false);
+            }
         }
         
         return buttons;
