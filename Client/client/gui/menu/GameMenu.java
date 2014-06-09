@@ -7,6 +7,7 @@
 package client.gui.menu;
 
 import client.gui.menu.buttons.Button;
+import client.gui.menu.buttons.ToggleButton;
 import client.main.Client;
 import java.awt.Graphics;
 import java.util.ArrayList;
@@ -44,6 +45,12 @@ public class GameMenu extends Menu{
         buttons.add(new Button(xGUI - 80, yGUI - 80, 40, 40,"[SHIP_ORDER]ExecuteRotation",""));
         
         //Weapon Controls
+        buttons.add(new ToggleButton(xGUI - 160, yGUI - 200, 40, 40,"[SHIP_ORDER]AttackON","[SHIP_ORDER]AttackOFF","ARM"));
+        buttons.add(new ToggleButton(xGUI - 160, yGUI - 240, 40, 40,"[SHIP_ORDER]AutoFireON","[SHIP_ORDER]AutoFireOFF","AUTO"));
+        buttons.add(new Button(xGUI - 160, yGUI - 280, 40, 40,"[SHIP_ORDER]FireMissiles","MSSL"));
+        buttons.add(new Button(xGUI - 160, yGUI - 320, 40, 40,"[SHIP_ORDER]FireRailgun","RLGN"));
+        
+        
         
         for(Button b : buttons){
             if(b.getCommand().substring(0,b.getCommand().indexOf("]")).equals("[SHIP_ORDER]")){

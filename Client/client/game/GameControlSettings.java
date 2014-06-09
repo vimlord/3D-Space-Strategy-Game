@@ -29,6 +29,8 @@ public class GameControlSettings {
     
     private static double ROT_Targ_XZ = 0, ROT_Targ_Y = 0;
     
+    private static boolean autofire = false, weaponsActive = false;
+    
     public static boolean autoAttackAlowed(){
         return autoAttackAlowed;
     }
@@ -131,19 +133,19 @@ public class GameControlSettings {
             case "RadialOut":
                 
                 break;
-            case "[INTERFACE]PointUp":
+            case "PointUp":
                 ROT_Targ_Y++;
                 break;
-            case "[INTERFACE]PointDown":
+            case "PointDown":
                 ROT_Targ_Y--;
                 break;
-            case "[INTERFACE]PointLeft":
+            case "PointLeft":
                 ROT_Targ_XZ--;
                 break;
-            case "[INTERFACE]PointRight":
+            case "PointRight":
                 ROT_Targ_XZ++;
                 break;
-            case "[INTERFACE]ExecuteRotation":
+            case "ExecuteRotation":
                 if(SELECTED_ID.size() == 1){
                     Entity ship = EntityList.getEntity(SELECTED_ID.get(0));
                     if(ship instanceof Ship){
@@ -151,13 +153,31 @@ public class GameControlSettings {
                     }
                 }
                 break;
-                
+            case "AttackON":  
+                weaponsActive = true;
+                break;
+            case "AttackOFF":  
+                weaponsActive = false;
+                break;
+            case "AutoFireON":  
+                autofire = true;
+                break;
+            case "AutoFireOFF":  
+                autofire = false;
+                break;
+            
         }
         
     }
     
     
+    public boolean autoFireAllowed(){
+        return autofire;
+    }
     
+    public boolean weaponsActive(){
+        return weaponsActive;
+    }
     
     
     

@@ -154,7 +154,7 @@ public class MenuManager {
         } else if(header.equals("[SHIP_ORDER]")) {
             GameControlSettings.processButtonCommand(footer);
         } else if(header.equals("[TELLSERVER]")){
-            Client.getConnection().sendObject("[SERVERMESSAGE]" + order.substring(12));
+            Client.getConnection().sendObject("[SERVERMESSAGE]" + footer);
         }
         
     }

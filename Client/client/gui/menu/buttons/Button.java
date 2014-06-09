@@ -59,6 +59,10 @@ public class Button {
     public String getCommand(){
         return command;
     }
+    
+    public String pushButton(){
+        return getCommand();
+    }
 
     public void drawButton(Graphics2D g2) {
         //if(!active) return;

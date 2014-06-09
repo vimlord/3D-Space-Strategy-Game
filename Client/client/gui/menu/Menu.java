@@ -65,7 +65,7 @@ public abstract class Menu {
         String order = null;
         for(Button b : buttons){
             if(b.testHit(x, y)){
-                order = b.getCommand();
+                order = b.pushButton();
                 break;
             }
         }
