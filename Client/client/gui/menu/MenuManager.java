@@ -122,6 +122,7 @@ public class MenuManager {
         Graphics2D g2 = (Graphics2D) g;
         getMenu().cycle();
         getMenu().drawMenu(g2);
+        //For bug fixing situations
         //getMenu(3).drawMenu(g2);
     }
     
@@ -151,7 +152,7 @@ public class MenuManager {
             Client.getConnection().sendObject(order);
         } else if(header.equals("[END]")){
             System.exit(0);
-        } else if(header.equals("[SHIP_ORDER]")) {
+        } else if(header.equals("[SHIP_ORDER]") || header.equals("[PLAYER_CONTROL]")) {
             GameControlSettings.processButtonCommand(footer);
         } else if(header.equals("[TELLSERVER]")){
             Client.getConnection().sendObject("[SERVERMESSAGE]" + footer);

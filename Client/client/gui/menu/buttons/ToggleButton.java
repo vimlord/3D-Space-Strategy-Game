@@ -51,7 +51,7 @@ public class ToggleButton extends Button{
     }
     
     public void drawButton(Graphics2D g2){
-        if(mode) super.drawButton(g2, onColor);
+        if(mode && active) super.drawButton(g2, onColor);
         else super.drawButton(g2);
     }
     

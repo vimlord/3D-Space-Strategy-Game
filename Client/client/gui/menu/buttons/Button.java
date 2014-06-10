@@ -17,7 +17,7 @@ import java.awt.Graphics2D;
  * @author Christopher Hittner
  */
 public class Button {
-    private boolean active = true;
+    protected boolean active = true;
     private final int x, y, width, height;
     private String command, text;
     
@@ -76,7 +76,8 @@ public class Button {
         int centY = y + (height)/2;
         
         g2.setColor(Color.BLACK);
-        g2.drawString(text,centX - (5 * text.length()),centY + 5);
+        if(active)
+            g2.drawString(text,centX - (5 * text.length()),centY + 5);
         
     }
     

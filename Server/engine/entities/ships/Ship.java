@@ -389,6 +389,13 @@ public class Ship extends Entity implements ControlSystem, FactionTag{
             order = "(   )";
         }
         
+        if(orders.size() > 0){
+            for(int i = orders.size() - 1; i >= 1; i--){
+                if(orders.get(0).getClass().equals(orders.get(i).getClass())){
+                    orders.remove(i);
+                }
+            }
+        }
         
         //This will make sure that if a Ship doesn't have rotation orders or
         //acceleration orders, it won't accelerate

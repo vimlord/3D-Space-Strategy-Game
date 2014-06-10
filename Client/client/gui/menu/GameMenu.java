@@ -45,8 +45,8 @@ public class GameMenu extends Menu{
         buttons.add(new Button(xGUI - 80, yGUI - 80, 40, 40,"[SHIP_ORDER]ExecuteRotation","EXEC"));
         
         //Weapon Controls
-        buttons.add(new ToggleButton(xGUI - 200, yGUI - 200, 40, 40,"[SHIP_ORDER]AttackON","[SHIP_ORDER]AttackOFF","ARM"));
-        buttons.add(new ToggleButton(xGUI - 200, yGUI - 240, 40, 40,"[SHIP_ORDER]AutoFireON","[SHIP_ORDER]AutoFireOFF","AUTO"));
+        buttons.add(new ToggleButton(xGUI - 200, yGUI - 200, 40, 40,"[PLAYER_CONTROL]AttackON","[PLAYER_CONTROL]AttackOFF","ARM"));
+        buttons.add(new ToggleButton(xGUI - 200, yGUI - 240, 40, 40,"[PLAYER_CONTROL]AutoFireON","[PLAYER_CONTROL]AutoFireOFF","AUTO"));
         buttons.add(new Button(xGUI - 200, yGUI - 280, 40, 40,"[SHIP_ORDER]FireMissiles","MSSL"));
         buttons.add(new Button(xGUI - 200, yGUI - 320, 40, 40,"[SHIP_ORDER]FireRailgun","RLGN"));
         
