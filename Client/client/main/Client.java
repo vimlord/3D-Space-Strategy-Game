@@ -21,7 +21,7 @@ import client.threads.CycleThread;
  */
 public class Client {
     
-    private static GUI gui = new GUI();
+    private static GUI gui = new GUI(800,600);
     
     private static int factionID = -1;
     private static String clientName = "Guest";

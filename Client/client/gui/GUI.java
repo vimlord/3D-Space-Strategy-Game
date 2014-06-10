@@ -68,10 +68,10 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
         frame = new JFrame("SpaceCraft Gamma - Client");
         //Puts the Tester object into thhe JFrame
 	frame.add(this);
-        //Sets the size of the applet to be 800 pixels wide  by 600 pixels high
+        //Sets the size of the applet
 	frame.setSize(width, height);
-        WIDTH = 800;
-        HEIGHT = 600;
+        WIDTH = width;
+        HEIGHT = height;
         //Makes the applet visible
 	frame.setVisible(true);
         //Sets the applet so that it can't be resized
@@ -79,7 +79,6 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
         //This will make the program close when the red X in the top right is
         //clicked on
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
     }
     
     public void redraw(){
@@ -117,7 +116,7 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
         ////////////////////////////////////////////////////
         
         g2.setColor(Color.BLACK);
-        g2.fillRect(0,0,frame.getWidth(), frame.getHeight());
+        g2.fillRect(0,0,getAppletWidth(), getAppletHeight());
         
         //Debug mode that draws the origin
         if(debug){
@@ -168,10 +167,10 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
         
         
         g2.setColor(Color.GRAY);
-        g2.fillRect(0, 0, frame.getWidth(), topThickness);
-        g2.fillRect(0, getAppletHeight() - bottomThickness, frame.getWidth(), bottomThickness);
+        g2.fillRect(0, 0, getAppletWidth(), topThickness);
+        g2.fillRect(0, getAppletHeight() - bottomThickness, getAppletWidth(), bottomThickness);
         g2.fillRect(0, 0, leftThickness, frame.getHeight());
-        g2.fillRect(getAppletWidth() - rightThickness, 0, rightThickness, frame.getHeight());
+        g2.fillRect(getAppletWidth() - rightThickness - 9, 0, rightThickness, getAppletHeight());
         
         //g2.setColor(new Color(192,192,255,127));
         //g2.fillRect(frame.getWidth() - 250,25,240,300);
@@ -813,11 +812,11 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
     }
     
     public int getAppletWidth(){
-        return frame.getWidth() - 6;
+        return frame.getContentPane().getWidth() + 9;
     }
     
     public int getAppletHeight(){
-        return frame.getHeight() - 28;
+        return frame.getContentPane().getHeight() + 9;
     }
     
     /**

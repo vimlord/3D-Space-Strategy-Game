@@ -63,21 +63,25 @@ public class Button {
         return getCommand();
     }
 
-    public void drawButton(Graphics2D g2) {
+    public void drawButton(Graphics2D g2, Color c) {
         //if(!active) return;
-        g2.setColor(Color.GRAY);
+        g2.setColor(c);
         g2.fillRect(x, y, width, height);
         g2.setColor(Color.BLACK);
         g2.drawRect(x, y, width, height);
         
-        g2.setFont(new Font("Courier New", Font.BOLD, 20));
+        g2.setFont(new Font("Courier New", Font.BOLD, 16));
         
         int centX = x + (width)/2;
         int centY = y + (height)/2;
         
         g2.setColor(Color.BLACK);
-        g2.drawString(text,centX - (6 * text.length()),centY + 5);
+        g2.drawString(text,centX - (5 * text.length()),centY + 5);
         
+    }
+    
+    public void drawButton(Graphics2D g2){
+        drawButton(g2, Color.GRAY);
     }
     
 }

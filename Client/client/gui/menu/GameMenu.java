@@ -30,25 +30,25 @@ public class GameMenu extends Menu{
         int yGUI = Client.getGUI().getAppletHeight();
         
         //Specific direction buttons
-        buttons.add(new Button(xGUI - 200, yGUI - 120, 40, 40,"[SHIP_ORDER]Prograde",""));
-        buttons.add(new Button(xGUI - 160, yGUI - 120, 40, 40,"[SHIP_ORDER]Retrograde",""));
-        buttons.add(new Button(xGUI - 200, yGUI - 80, 40, 40,"[SHIP_ORDER]Normal",""));
-        buttons.add(new Button(xGUI - 160, yGUI - 80, 40, 40,"[SHIP_ORDER]Antinormal",""));
-        buttons.add(new Button(xGUI - 200, yGUI - 40, 40, 40,"[SHIP_ORDER]RadialIn",""));
-        buttons.add(new Button(xGUI - 160, yGUI - 40, 40, 40,"[SHIP_ORDER]RadialOut",""));
+        buttons.add(new Button(xGUI - 200, yGUI - 120, 40, 40,"[SHIP_ORDER]Prograde","PG"));
+        buttons.add(new Button(xGUI - 160, yGUI - 120, 40, 40,"[SHIP_ORDER]Retrograde","RG"));
+        buttons.add(new Button(xGUI - 200, yGUI - 80, 40, 40,"[SHIP_ORDER]Normal","N"));
+        buttons.add(new Button(xGUI - 160, yGUI - 80, 40, 40,"[SHIP_ORDER]Antinormal","AN"));
+        buttons.add(new Button(xGUI - 200, yGUI - 40, 40, 40,"[SHIP_ORDER]RadialIn","RIN"));
+        buttons.add(new Button(xGUI - 160, yGUI - 40, 40, 40,"[SHIP_ORDER]RadialOut","ROUT"));
         
         //Direction adjustment buttons
         buttons.add(new Button(xGUI - 80, yGUI - 120, 40, 40,"[SHIP_ORDER]PointUp",""));
         buttons.add(new Button(xGUI - 80, yGUI - 40, 40, 40,"[SHIP_ORDER]PointDown",""));
         buttons.add(new Button(xGUI - 120, yGUI - 80, 40, 40,"[SHIP_ORDER]PointLeft",""));
         buttons.add(new Button(xGUI - 40, yGUI - 80, 40, 40,"[SHIP_ORDER]PointRight",""));
-        buttons.add(new Button(xGUI - 80, yGUI - 80, 40, 40,"[SHIP_ORDER]ExecuteRotation",""));
+        buttons.add(new Button(xGUI - 80, yGUI - 80, 40, 40,"[SHIP_ORDER]ExecuteRotation","EXEC"));
         
         //Weapon Controls
-        buttons.add(new ToggleButton(xGUI - 160, yGUI - 200, 40, 40,"[SHIP_ORDER]AttackON","[SHIP_ORDER]AttackOFF","ARM"));
-        buttons.add(new ToggleButton(xGUI - 160, yGUI - 240, 40, 40,"[SHIP_ORDER]AutoFireON","[SHIP_ORDER]AutoFireOFF","AUTO"));
-        buttons.add(new Button(xGUI - 160, yGUI - 280, 40, 40,"[SHIP_ORDER]FireMissiles","MSSL"));
-        buttons.add(new Button(xGUI - 160, yGUI - 320, 40, 40,"[SHIP_ORDER]FireRailgun","RLGN"));
+        buttons.add(new ToggleButton(xGUI - 200, yGUI - 200, 40, 40,"[SHIP_ORDER]AttackON","[SHIP_ORDER]AttackOFF","ARM"));
+        buttons.add(new ToggleButton(xGUI - 200, yGUI - 240, 40, 40,"[SHIP_ORDER]AutoFireON","[SHIP_ORDER]AutoFireOFF","AUTO"));
+        buttons.add(new Button(xGUI - 200, yGUI - 280, 40, 40,"[SHIP_ORDER]FireMissiles","MSSL"));
+        buttons.add(new Button(xGUI - 200, yGUI - 320, 40, 40,"[SHIP_ORDER]FireRailgun","RLGN"));
         
         
         
