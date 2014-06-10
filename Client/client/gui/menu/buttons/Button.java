@@ -18,15 +18,15 @@ import java.awt.Graphics2D;
  */
 public class Button {
     private boolean active = true;
-    private int x, y, width, height;
+    private final int x, y, width, height;
     private String command, text;
     
     /**
      *
-     * @param x1 Upper left x coordinate
-     * @param y1 Upper left y coordinate
-     * @param x2 Lower right x coordinate
-     * @param y2 Lower right y coordinate
+     * @param x Upper left x coordinate
+     * @param y Upper left y coordinate
+     * @param width The width
+     * @param height The height
      * @param command The command issued when the button is pressed
      */
     public Button(int x1, int y1, int width, int height, String command, String text){
@@ -46,9 +46,8 @@ public class Button {
     }
     
     public boolean testHit(int x_, int y_){
-        
-        if(x > x && x <= x + width){ //Tests the x value
-            if(y_ > y && y_ <= y + height){ //Tests the y value
+        if(x_ > x && x_ <= (x + width)){ //Tests the x value
+            if(y_ > y && y_ <= (y + height)){ //Tests the y value
                 return active;
             }
             
