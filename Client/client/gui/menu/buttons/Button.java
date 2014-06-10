@@ -28,10 +28,11 @@ public class Button {
      * @param width The width
      * @param height The height
      * @param command The command issued when the button is pressed
+     * @param text The text written on the button
      */
-    public Button(int x1, int y1, int width, int height, String command, String text){
-        this.x = x1;
-        this.y = y1;
+    public Button(int x, int y, int width, int height, String command, String text){
+        this.x = x;
+        this.y = y;
         this.width = width;
         this.height = height;
         this.command = command;
