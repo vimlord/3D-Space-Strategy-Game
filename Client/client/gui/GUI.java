@@ -138,7 +138,7 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
         ArrayList<Entity> list = EntityList.getEntityList();
         for(Entity e : list){
             drawEntity(g2, e);
-            drawTagLines(g2,e);
+            //drawTagLines(g2,e);
         }
         
         ArrayList<Integer[]> circles = new ArrayList<>();
@@ -198,7 +198,7 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
             g2.setFont(new Font("Courier New", Font.PLAIN, 20));
             
             //Outputs the name of the Entity
-            g2.drawString(selected.getName(), frame.getWidth() - 245, 40);
+            g2.drawString(selected.getName(), frame.getWidth() - 235, 40);
             
             //Finds the type of Entity
             String type = "Entity";
@@ -232,7 +232,7 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
                 type = "Structure";
             
             //The type of Entity selected
-            g2.drawString(selected.getName(), frame.getWidth() - 245, 60);
+            g2.drawString(type, frame.getWidth() - 235, 60);
             
             //The velocity is described
             double velXZ = Math.sqrt(Math.pow(selected.getSpeedX(),2) + Math.pow(selected.getSpeedZ(),2));
@@ -242,23 +242,23 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
                 XZ *= -1;
             double Y = Math.asin(selected.getSpeedY()/velocity);
             if(velocity != 0){
-                g2.drawString(((int)(100 * velocity))/100.0 + " m/s", frame.getWidth() - 245, 80);
-                g2.drawString(((int)(100 * Math.toDegrees(XZ)))/100.0 + " degrees", frame.getWidth() - 245, 100);
-                g2.drawString(((int)(100 * Math.toDegrees(Y)))/100.0 + " degrees", frame.getWidth() - 245, 120);
+                g2.drawString(((int)(100 * velocity))/100.0 + " m/s", frame.getWidth() - 235, 80);
+                g2.drawString(((int)(100 * Math.toDegrees(XZ)))/100.0 + " degrees", frame.getWidth() - 235, 100);
+                g2.drawString(((int)(100 * Math.toDegrees(Y)))/100.0 + " degrees", frame.getWidth() - 235, 120);
             }else
-                g2.drawString(((int)(100 * velocity))/100.0 + " m/s", frame.getWidth() - 245, 80);
+                g2.drawString(((int)(100 * velocity))/100.0 + " m/s", frame.getWidth() - 235, 80);
             
             if(selected instanceof Ship){
                 Ship s = (Ship) selected;
-                g2.drawString("Integrity: " + s.getHealth() + "/" + s.getMaxHealth(), frame.getWidth() - 245, 140);
-                g2.drawString("Shields:   " + s.getShields() + "/" + s.getMaxShields(), frame.getWidth() - 245, 160);
+                g2.drawString("Integrity: " + s.getHealth() + "/" + s.getMaxHealth(), frame.getWidth() - 235, 140);
+                g2.drawString("Shields:   " + s.getShields() + "/" + s.getMaxShields(), frame.getWidth() - 235, 160);
             } else if(selected instanceof CelestialBody){
-                g2.drawString("Mass:   " + selected.getMass(false) + " kg", frame.getWidth() - 245, 140);
-                g2.drawString("Radius: " + selected.getRadius() + " m", frame.getWidth() - 245, 160);
+                g2.drawString("Mass:   " + selected.getMass(false) + " kg", frame.getWidth() - 235, 140);
+                g2.drawString("Radius: " + selected.getRadius() + " m", frame.getWidth() - 235, 160);
                 if(selected instanceof Planet){
-                    g2.drawString("Atmosphere Height: " + ((Planet) selected).getAtmosphereHeight() + " m", frame.getWidth() - 245, 180);
+                    g2.drawString("Atmosphere Height: " + ((Planet) selected).getAtmosphereHeight() + " m", frame.getWidth() - 235, 180);
                 } else {
-                    g2.drawString("No Atmosphere Present", frame.getWidth() - 245, 180);
+                    g2.drawString("No Atmosphere Present", frame.getWidth() - 235, 180);
                 }
                 
                 
@@ -278,29 +278,57 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
     }
     
     public void drawEntity(Graphics2D g2, Entity e){
-        if(e instanceof FactionTag){
-            int foundFacID = ((FactionTag) e).getFactionID();
-            
-            
+        if(e instanceof Ship){
+            int foundFacID = ((Ship) e).getFactionID();
             
             Faction thisFaction = FactionList.getFaction(Client.getID());
-            
-            Faction otherFaction = FactionList.getFaction(foundFacID);
-            if(thisFaction == null || otherFaction == null){
+            if(thisFaction == null || foundFacID < 0){
+                //Not in a faction
                 g2.setColor(Color.WHITE);
-            } if(foundFacID == Client.getID()){
+            }if(foundFacID == Client.getID()){
                 //Your team
                 g2.setColor(Color.BLUE);
-            } else if(thisFaction.getDiplomaticStatus(otherFaction) == 1){
+            } else try{
+                if(thisFaction.getDiplomaticStatus(foundFacID) == 1){
+                    //Ally
+                    g2.setColor(Color.GREEN);
+                } else if(thisFaction.getDiplomaticStatus(foundFacID) == -1){
+                    //Enemy
+                    g2.setColor(Color.RED);
+                } else if(thisFaction.getDiplomaticStatus(foundFacID) == 0){
+                    //Neutral
+                    g2.setColor(Color.YELLOW);
+                } else {
+                    //Unpredicated instance
+                    g2.setColor(Color.WHITE);
+                }
+            } catch(Exception ex){
+                g2.setColor(Color.WHITE);
+            }
+            
+        } else if(e instanceof Structure){
+            int foundFacID = ((Ship) e).getFactionID();
+            
+            Faction thisFaction = FactionList.getFaction(Client.getID());
+            if(thisFaction == null || foundFacID < 0){
+                //Not in a faction
+                g2.setColor(Color.WHITE);
+            }if(foundFacID == Client.getID()){
+                //Your team
+                g2.setColor(Color.BLUE);
+            } else if(thisFaction.getDiplomaticStatus(foundFacID) == 1){
                 //Ally
                 g2.setColor(Color.GREEN);
-            } else if(thisFaction.getDiplomaticStatus(otherFaction) == -1){
+            } else if(thisFaction.getDiplomaticStatus(foundFacID) == -1){
                 //Enemy
                 g2.setColor(Color.RED);
-            } else if(thisFaction.getDiplomaticStatus(otherFaction) == 0){
+            } else if(thisFaction.getDiplomaticStatus(foundFacID) == 0){
                 //Neutral
                 g2.setColor(Color.YELLOW);
-            } 
+            } else {
+                //Unpredicated instance
+                g2.setColor(Color.WHITE);
+            }
         } else {
             g2.setColor(Color.WHITE);
         }
@@ -325,14 +353,14 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
             
             if(e instanceof WarpGate)
                 drawRing(g2, e.getX(), e.getY(), e.getZ(), e.getRadius());
-            else
-                drawDiamond(g2, e.getX(), e.getY(), e.getZ(), e.getRadius());
+            /*else
+                drawDiamond(g2, e.getX(), e.getY(), e.getZ(), e.getRadius());*/
             
             
         } else if(e instanceof Ship){
             
             
-            if(e instanceof Corvette)
+            /*if(e instanceof Corvette)
                 drawTriangle(g2, e.getX(), e.getY(), e.getZ(), e.getRadius());
             else if(e instanceof Corvette)
                 drawSquare(g2, e.getX(), e.getY(), e.getZ(), e.getRadius());
@@ -344,7 +372,7 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
                 drawSphere(g2, e.getX(), e.getY(), e.getZ(), e.getRadius());
             
             
-        } else {
+        } else { */
             drawSphere(g2, e.getX(), e.getY(), e.getZ(), e.getRadius());
         }
         
@@ -384,6 +412,7 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
         values[1] = (int)((frame.getHeight()/2 - 18) - (Math.sin(angleXZ + XZ_ROT) * magnitudeXZ * Math.sin(Y_ROT) / pixelMeterRatio) - (magnitudeY * Math.cos(Y_ROT) / pixelMeterRatio));
         
         values[0] += (leftThickness - rightThickness)/2;
+        values[1] += (topThickness - bottomThickness)/2;
         
         return values;
         
@@ -421,6 +450,10 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
         if(radius < 0.5){
             return null;
         }
+        
+        
+        values[0] += (leftThickness - rightThickness)/2;
+        values[1] += (topThickness - bottomThickness)/2;
         
         return values;
         
@@ -462,7 +495,7 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
         int[] xPts = {(x_)      ,(int)(x_ + (rad * Math.acos(Math.toRadians(210)))), (int)(x_ + (rad * Math.acos(Math.toRadians(330))))};
         int[] yPts = {(y_ - rad),(int)(y_ - (rad * Math.asin(Math.toRadians(210)))), (int)(y_ - (rad * Math.asin(Math.toRadians(210))))};
         
-        g.drawPolygon(xPts, yPts, 3);
+        g.drawPolygon(xPts, yPts, 2);
         
     }
     
@@ -735,19 +768,22 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
     public void mouseClicked(MouseEvent e) {
         MenuManager.executeButtons(e.getX(), e.getY());
         
-        long clickedID = GameControlSettings.getClickedEntityID(e.getX(), e.getY());
-        
-        //This should allow Entity objects to be selected
-        if(MenuManager.getMenu() instanceof GameMenu){
-            if(Ctrl_Held){
-                GameControlSettings.addSelectedID(clickedID);
+        //Allows for Entity objects to be selected only if clicking inside the battlefield display.
+        if(MenuManager.getMenu() instanceof GameMenu && x < getAppletWidth() - 200){
+
+            long clickedID = GameControlSettings.getClickedEntityID(e.getX(), e.getY());
+
+            //This should allow Entity objects to be selected
+            if(MenuManager.getMenu() instanceof GameMenu){
+                if(Ctrl_Held){
+                    GameControlSettings.addSelectedID(clickedID);
+                } else {
+                    GameControlSettings.setSelectedID(clickedID);
+                }
             } else {
-                GameControlSettings.setSelectedID(clickedID);
+                GameControlSettings.setSelectedID(-1);
             }
-        } else {
-            GameControlSettings.setSelectedID(-1);
         }
-        
     }
 
     @Override

@@ -113,25 +113,43 @@ public class GameControlSettings {
     public static void processButtonCommand(String command) {
         if(command == "" || command == null)
             return;
-            
+        
+        
+        Ship commanded;
+        try{                commanded = EntityList.getShip(reciprocalIDs.get(0));}
+        catch(Exception e){ commanded = null;}
+        
+        double XZ = Math.atan(commanded.getSpeedZ()/commanded.getSpeedX());
+        if(commanded.getSpeedX() < 0){
+            XZ += Math.PI;
+        }
+        double velXZ = Math.sqrt(Math.pow(commanded.getSpeedX(),2) + Math.pow(commanded.getSpeedZ(),2));
+        double Y = Math.atan(commanded.getSpeedY()/velXZ);
+        
         switch(command){
             case "Prograde":
-                
+                ROT_Targ_XZ = XZ;
+                ROT_Targ_Y = Y;
                 break;
             case "Retrograde":
-                
+                ROT_Targ_XZ = (XZ - Math.PI);
+                ROT_Targ_Y = -Y;
                 break;
             case "Normal":
-                
+                ROT_Targ_XZ = XZ;
+                ROT_Targ_Y = Y + Math.PI/2.0;
                 break;
             case "Antinormal":
-                
+                ROT_Targ_XZ = XZ;
+                ROT_Targ_Y = Y - Math.PI/2.0;
                 break;
             case "RadialIn":
-                
+                ROT_Targ_XZ = (XZ + Math.PI/2.0);
+                ROT_Targ_Y = Y;
                 break;
             case "RadialOut":
-                
+                ROT_Targ_XZ = (XZ - Math.PI/2.0);
+                ROT_Targ_Y = Y;
                 break;
             case "PointUp":
                 ROT_Targ_Y++;
