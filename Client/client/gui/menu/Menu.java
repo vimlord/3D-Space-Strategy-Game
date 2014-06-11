@@ -16,7 +16,6 @@ import client.main.Client;
  * @author Christopher Hittner
  */
 public abstract class Menu {
-    private boolean active = false;
     protected final boolean usesConnection;
     private ArrayList<Button> buttons;
     private final String name;
@@ -44,12 +43,6 @@ public abstract class Menu {
     
     protected abstract ArrayList<Button> initButtons();
     
-    public void setStatus(boolean status){
-        active = status;
-    }
-    public boolean getStatus(){
-        return active;
-    }
     public ArrayList<Button> getButtons(){
         return buttons;
     }
