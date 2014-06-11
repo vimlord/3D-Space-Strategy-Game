@@ -41,7 +41,7 @@ public class Client {
         try{
            setName(args[2]); 
         } catch (Exception e){
-            setName("Guest");
+            
         }
         
         MenuManager.addMenu(new MainMenu());

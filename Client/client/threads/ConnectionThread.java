@@ -102,6 +102,8 @@ public class ConnectionThread extends Thread{
         
         
         try {
+            System.out.println("Name: " + Client.getName());
+            System.out.println(listening);
             while(listening){
                 if(Client.getID() == -1){
                     outputQueue.add("[CONNECT]" + Client.getName());
