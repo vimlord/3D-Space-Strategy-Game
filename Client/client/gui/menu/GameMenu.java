@@ -7,6 +7,7 @@
 package client.gui.menu;
 
 import client.gui.menu.buttons.Button;
+import client.gui.menu.buttons.Slider;
 import client.gui.menu.buttons.ToggleButton;
 import client.main.Client;
 import java.awt.Graphics;
@@ -49,6 +50,10 @@ public class GameMenu extends Menu{
         buttons.add(new ToggleButton(xGUI - 200, yGUI - 240, 40, 40,"[PLAYER_CONTROL]AutoFireON","[PLAYER_CONTROL]AutoFireOFF","AUTO"));
         buttons.add(new Button(xGUI - 200, yGUI - 280, 40, 40,"[SHIP_ORDER]FireMissiles","MSSL"));
         buttons.add(new Button(xGUI - 200, yGUI - 320, 40, 40,"[SHIP_ORDER]FireRailgun","RLGN"));
+        
+        //Throttle Controls
+        buttons.add(new Slider(xGUI - 120, yGUI - 320, 40, 120,"[SHIP_ORDER]SetThrottle",true, true));
+        buttons.add(new Slider(xGUI - 80, yGUI - 320, 40, 120,"[SHIP_ORDER]SetWarp",true, true));
         
         
         

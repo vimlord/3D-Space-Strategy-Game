@@ -7,6 +7,8 @@
 package client.gui.menu;
 
 import client.game.GameControlSettings;
+import client.gui.menu.buttons.Button;
+import client.gui.menu.buttons.Slider;
 import client.main.Client;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -133,7 +135,28 @@ public class MenuManager {
      */
     public static void executeButtons(int x, int y){
         //Gets the menu's order
-        String order = getMenu().clickButtons(x,y);
+        buttonCommand(getMenu().clickButtons(x,y));
+        
+        
+    }
+    
+    public static void executeSliders(int x, int y){
+        String order = null;
+        
+        for(Button b : getMenu().getButtons()){
+            if(b instanceof Slider){
+                Slider s = (Slider) b;
+                if(s.testHit(x, y)){
+                    order = s.getCommand();
+                    break;
+                }
+            }
+        }
+        
+        buttonCommand(order);
+    }
+    
+    public static void buttonCommand(String order){
         
         if(order == null) //This should save a LOT of processing time
             return;
@@ -157,7 +180,6 @@ public class MenuManager {
         } else if(header.equals("[TELLSERVER]")){
             Client.getConnection().sendObject("[SERVERMESSAGE]" + footer);
         }
-        
     }
     
     

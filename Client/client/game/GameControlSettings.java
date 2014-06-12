@@ -6,10 +6,15 @@
 
 package client.game;
 
+import client.gui.menu.MenuManager;
+import client.gui.menu.buttons.Button;
+import client.gui.menu.buttons.Slider;
 import client.main.Client;
 import engine.entities.Entity;
 import engine.entities.ships.Ship;
+import engine.entities.ships.shipTools.orders.Accelerate;
 import engine.entities.ships.shipTools.orders.Rotate;
+import engine.entities.ships.shipTools.orders.Warp;
 import engine.main.EntityList;
 import java.util.ArrayList;
 
@@ -53,24 +58,31 @@ public class GameControlSettings {
     
     public static void setSelectedID(long l){
         SELECTED_ID = new ArrayList<>();
-        if(l >= 0)
-            SELECTED_ID.add(l);
+        addSelectedID(l);
     }
     
     public static void setSelectedID(Entity e){
         SELECTED_ID = new ArrayList<>();
-        if(e.getID() >= 0)
-            SELECTED_ID.add(e.getID());
+        addSelectedID(e);
     }
     
     public static void addSelectedID(long l){
         if(l >= 0)
             SELECTED_ID.add(l);
+        if(EntityList.getEntity(l) instanceof Ship){
+            Ship s = (Ship) (EntityList.getEntity(l));
+            ArrayList<Button> buttons = MenuManager.getMenu("gameInterface").getButtons();
+            for(Button b : buttons){
+                if(b instanceof Slider){
+                    Slider sl = (Slider) b;
+                    sl.setValue(0);
+                }
+            }
+        }
     }
     
     public static void addSelectedID(Entity e){
-        if(e.getID() >= 0)
-            SELECTED_ID.add(e.getID());
+        addSelectedID(e.getID());
     }
     
     public static void removeSelectedID(long l){
@@ -110,10 +122,14 @@ public class GameControlSettings {
         return -1;
     }
 
-    public static void processButtonCommand(String command) {
-        if(command == "" || command == null)
+    public static void processButtonCommand(String cmd) {
+        if(cmd == "" || cmd == null)
             return;
         
+        String command = cmd;
+        
+        String parameter = command.substring(command.indexOf("(") + 1);
+        command = command.substring(0,command.indexOf("("));
         
         Ship commanded;
         try{                commanded = EntityList.getShip(reciprocalIDs.get(0));}
@@ -168,6 +184,22 @@ public class GameControlSettings {
                     Entity ship = EntityList.getEntity(SELECTED_ID.get(0));
                     if(ship instanceof Ship){
                         Client.getConnection().sendObject("[ORDER][(" + Client.getID() + ")(" + ship.getID() + ")]"+ (new Rotate(ROT_Targ_XZ,ROT_Targ_Y)).getOrder());
+                    }
+                }
+                break;
+            case "SetThrottle":
+                if(SELECTED_ID.size() == 1){
+                    Entity ship = EntityList.getEntity(SELECTED_ID.get(0));
+                    if(ship instanceof Ship){
+                        Client.getConnection().sendObject("[ORDER][(" + Client.getID() + ")(" + ship.getID() + ")]"+ (new Accelerate(Double.parseDouble(parameter),Double.MAX_VALUE)).getOrder());
+                    }
+                }
+                break;
+            case "SetWarp":
+                if(SELECTED_ID.size() == 1){
+                    Entity ship = EntityList.getEntity(SELECTED_ID.get(0));
+                    if(ship instanceof Ship){
+                        Client.getConnection().sendObject("[ORDER][(" + Client.getID() + ")(" + ship.getID() + ")]"+ (new Warp(Double.parseDouble(parameter),Double.MAX_VALUE)).getOrder());
                     }
                 }
                 break;

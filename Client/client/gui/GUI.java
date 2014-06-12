@@ -35,7 +35,8 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
     private static boolean debug = true;
     private static double XZ_ROT = Math.toRadians(30), Y_ROT = Math.toRadians(30);
     private static double oldXZ = XZ_ROT,              oldY = Y_ROT;
-    private static double x = 0, y = 0, z = 0;
+    private static double x = 0, y = 0, z = 0,
+                          X = 0, Y = 0, Z = 0;
     private static double pressMouseX = 0, pressMouseY = 0;
     
     //For value n, one pixel will represent n meters
@@ -53,6 +54,8 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
                 rightThickness = 200;
     
     private boolean Ctrl_Held = false;
+    
+    private int viewNumber = 0;
     
     
     public GUI(){
@@ -110,6 +113,33 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
     
     public void drawGameInterface(Graphics g){
         Graphics2D g2 = (Graphics2D) g;
+        
+        if(viewNumber == 0 || GameControlSettings.getSelectedIDs().size() <= 0){
+            x = X;
+            y = Y;
+            z = Z;
+        } else if(viewNumber == 1){
+            ArrayList<Entity> e = new ArrayList<Entity>();
+            for(long l : GameControlSettings.getSelectedIDs()){
+                e.add(EntityList.getEntity(l));
+            }
+            
+            x = 0;
+            y = 0;
+            z = 0;
+            
+            for(Entity ent : e){
+                x += ent.getX();
+                y += ent.getY();
+                z += ent.getZ();
+            }
+            
+            x /= e.size();
+            y /= e.size();
+            z /= e.size();
+        }
+        
+        
         
         ////////////////////////////////////////////////////
         //The first thing that is drawn is the map itself.//
@@ -717,26 +747,36 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
             switch (bindingName) {
                 //Movement
                 case "MOVE_FORWARD":
-                    x += Math.cos(XZ_ROT) * movementSensitivity;
-                    z += Math.sin(XZ_ROT) * movementSensitivity;
+                    X += Math.cos(XZ_ROT) * movementSensitivity;
+                    Z += Math.sin(XZ_ROT) * movementSensitivity;
+                    viewNumber = 0;
                     break;
                 case "MOVE_BACKWARD":
-                    x -= Math.cos(XZ_ROT) * movementSensitivity;
-                    z -= Math.sin(XZ_ROT) * movementSensitivity;
+                    X -= Math.cos(XZ_ROT) * movementSensitivity;
+                    Z -= Math.sin(XZ_ROT) * movementSensitivity;
+                    viewNumber = 0;
                     break;
                 case "MOVE_LEFT":
-                    x += Math.cos(XZ_ROT + 90) * movementSensitivity;
-                    z += Math.sin(XZ_ROT + 90) * movementSensitivity;
+                    X += Math.cos(XZ_ROT + 90) * movementSensitivity;
+                    Z += Math.sin(XZ_ROT + 90) * movementSensitivity;
+                    viewNumber = 0;
                     break;
                 case "MOVE_RIGHT":
-                    x -= Math.cos(XZ_ROT + 90) * movementSensitivity;
-                    z -= Math.sin(XZ_ROT + 90) * movementSensitivity;
+                    X -= Math.cos(XZ_ROT + 90) * movementSensitivity;
+                    Z -= Math.sin(XZ_ROT + 90) * movementSensitivity;
+                    viewNumber = 0;
                     break;
                 case "MOVE_UP":
-                    y += movementSensitivity;
+                    Y += movementSensitivity;
+                    viewNumber = 0;
                     break;
                 case "MOVE_DOWN":
-                    y -= movementSensitivity;
+                    Y -= movementSensitivity;
+                    viewNumber = 0;
+                    break;
+                case "CHANGE_VIEW":
+                    viewNumber++;
+                    viewNumber %= 2;
                     break;
 
             }
@@ -818,6 +858,8 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
             XZ_ROT = oldXZ + (e.getX() - pressMouseX) * Math.toRadians(mouseSensitivity);
             Y_ROT = oldY + (e.getY() - pressMouseY) * Math.toRadians(mouseSensitivity);
         }
+        
+        MenuManager.executeSliders(e.getX(), e.getY());
     }
 
     @Override

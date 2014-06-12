@@ -67,7 +67,7 @@ public class ListenerThread extends Thread{
             while(listening){
                 if(inGame != CycleRunner.getGamemode().getStatus()){
                     inGame = !inGame;
-                    outputQueue.add("[GAMESTATUS]STARTING");
+                    sendObject("[GAMESTATUS]STARTING");
                 } else if(PlayerList.getPlayerList().size() >= Server.getPlayerLimit() && Server.getPlayerLimit() > 0){
                     break;
                 }
@@ -249,6 +249,17 @@ public class ListenerThread extends Thread{
         
         if(alphaTag.equals("[EXIT]")){
             return;
+        }
+    }
+    
+    public void sendObject(Object obj) {
+        if(obj.equals("[GAMESTATUS]STARTING"))
+            inGame = true;
+        
+        try{
+            outputStream.writeObject(obj);
+        } catch (Exception e){
+            
         }
     }
     

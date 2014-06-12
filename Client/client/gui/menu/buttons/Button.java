@@ -18,7 +18,7 @@ import java.awt.Graphics2D;
  */
 public class Button {
     protected boolean active = true;
-    private final int x, y, width, height;
+    protected final int x, y, width, height;
     private String command, text;
     
     /**

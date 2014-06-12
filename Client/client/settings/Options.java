@@ -84,6 +84,8 @@ public class Options {
         addOption("ZOOM_OUT", KeyEvent.VK_Q);
         */
         
+        addOption("CHANGE_VIEW", KeyEvent.VK_V);
+        
     }
     
 }
