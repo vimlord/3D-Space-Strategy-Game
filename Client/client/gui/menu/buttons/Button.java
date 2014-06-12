@@ -65,7 +65,7 @@ public class Button {
     }
 
     public void drawButton(Graphics2D g2, Color c) {
-        //if(!active) return;
+        if(!active) return;
         g2.setColor(c);
         g2.fillRect(x, y, width, height);
         g2.setColor(Color.BLACK);

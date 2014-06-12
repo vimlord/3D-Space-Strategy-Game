@@ -6,10 +6,12 @@
 
 package client.gui.menu;
 
+import client.game.GameControlSettings;
 import client.gui.menu.buttons.Button;
 import client.gui.menu.buttons.Slider;
 import client.gui.menu.buttons.ToggleButton;
 import client.main.Client;
+import engine.entities.ships.Ship;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
@@ -66,6 +68,18 @@ public class GameMenu extends Menu{
         return buttons;
     }
 
+    public void cycle(){
+        super.cycle();
+        
+        for(Button b : this.getButtons()){
+            if(b.getCommand().substring(0,b.getCommand().indexOf("]")).equals("[SHIP_ORDER]")){
+                //If only one Entity is selected and it's a Ship, show the Ship controls.
+                b.setStatus(GameControlSettings.getSelectedIDs().size() == 1 && GameControlSettings.getSelectedEntities().get(0) instanceof Ship);
+            
+            }
+        }
+    }
+    
     @Override
     public void drawMenu(Graphics g) {
         Client.getGUI().drawGameInterface(g);
