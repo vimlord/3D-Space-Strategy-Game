@@ -166,9 +166,8 @@ public class ConnectionThread extends Thread{
             String status = input.substring(alphaTag.length());
             if(status.equals("STARTING")){
                 //The match is beginning
-                if((MenuManager.getMenu() instanceof PregameMenu)){
-                    MenuManager.setMenu("gameInterface");
-                }
+                MenuManager.setMenu("gameInterface");
+                
             }
         }
         

@@ -218,6 +218,8 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
         }
         
         if(ids.size() == 1){
+            //Things to display: Name and Type, Velocity.
+            //If it's a Ship, show the vitals and Rotation.
             
             Entity selected = EntityList.getEntity(ids.get(0));
             
