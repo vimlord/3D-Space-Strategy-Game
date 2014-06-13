@@ -90,6 +90,8 @@ public class Slider extends Button{
     
     public void drawButton(Graphics2D g2){
         super.drawButton(g2);
+        if(!active) return;
+        
         if(vertical){
             if(bottomOrLeft){
                 g2.drawRect(x,y + maxValue - value,width,20);

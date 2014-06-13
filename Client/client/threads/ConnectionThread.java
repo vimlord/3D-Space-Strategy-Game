@@ -22,6 +22,7 @@ import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -173,7 +174,7 @@ public class ConnectionThread extends Thread{
         
     }
     
-    public void sendObject(Object obj) {
+    public void sendObject(Serializable obj) {
         try{
             outputStream.writeObject(obj);
         } catch (Exception e){

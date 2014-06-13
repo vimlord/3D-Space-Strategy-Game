@@ -77,6 +77,8 @@ public class ToggleButton extends Button{
     }
     
     public void drawButton(Graphics2D g2){
+        if(!active) return;
+        
         if(state && active) super.drawButton(g2, onColor);
         else super.drawButton(g2);
     }

@@ -21,6 +21,8 @@ public class CycleThread extends Thread{
     @Override
     public void run(){
         
+        int tick = 0;
+        
         while(true){
             Client.getGUI().redraw();
             try{
@@ -28,6 +30,22 @@ public class CycleThread extends Thread{
             } catch(NullPointerException e){
                 
             }
+            
+            if(tick >= 1000){
+                
+                try{
+                    if(Client.getConnection().listening()){
+                        Client.getConnection().sendObject("[SEND][STATUS]");
+                    }
+                } catch(Exception e){
+                    
+                }
+                
+                tick = 0;
+            }
+            
+            tick++;
+            
         }
         
     }

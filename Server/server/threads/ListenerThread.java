@@ -77,7 +77,6 @@ public class ListenerThread extends Thread{
                 
                 processInput(input);
                 
-                System.out.println(input);
                 
                 if(input.equals("[EXIT]") || input == null || input.equals("[INVALIDUSER]")){
                     break;
@@ -147,6 +146,8 @@ public class ListenerThread extends Thread{
         }
         String alphaTag = input.substring(0,input.indexOf("]") + 1);
         
+        System.out.println(alphaTag);
+        
         if(alphaTag.equals("[ORDER]")){
             String order = input.substring(alphaTag.length());
             String betaTag = order.substring(0,order.indexOf("]"));
@@ -169,6 +170,14 @@ public class ListenerThread extends Thread{
             }
             if(betaTag.equals("[GAMEMODE]")){
                 outputQueue.add(CycleRunner.getGamemode());
+            }
+            if(betaTag.equals("[STATUS]")){
+                
+                if(inGame != CycleRunner.getGamemode().getStatus()){
+                    inGame = !inGame;
+                    sendObject("[GAMESTATUS]STARTING");
+                
+                }
             }
         } else if(alphaTag.equals("[CONNECT]")){
             connectionUser = input.substring(alphaTag.length());
