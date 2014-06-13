@@ -72,7 +72,7 @@ public class GameMenu extends Menu{
         super.cycle();
         
         for(Button b : this.getButtons()){
-            if(b.getCommand().substring(0,b.getCommand().indexOf("]")).equals("[SHIP_ORDER]")){
+            if(b.getCommand().substring(0,b.getCommand().indexOf("]") + 1).equals("[SHIP_ORDER]")){
                 //If only one Entity is selected and it's a Ship, show the Ship controls.
                 b.setStatus(GameControlSettings.getSelectedIDs().size() == 1 && GameControlSettings.getSelectedEntities().get(0) instanceof Ship);
             

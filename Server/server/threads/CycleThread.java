@@ -63,7 +63,8 @@ public class CycleThread extends Thread{
             
             if(CycleRunner.getGamemode().getStatus()){
                 //Starts the game
-                for(ListenerThread l : Server.getConnections()){
+                ArrayList<ListenerThread> listeners = Server.getConnections();
+                for(ListenerThread l : listeners){
                     l.sendObject("[GAMESTATUS]STARTING");
                 }
                 

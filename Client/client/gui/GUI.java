@@ -213,7 +213,7 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
         ArrayList<Long> ids = GameControlSettings.getSelectedIDs();
         
         for(Button b : (MenuManager.getMenu("gameInterface")).getButtons()){
-            if(b.getCommand().substring(0,b.getCommand().indexOf("]")).equals("[INTERFACE]"))
+            if(b.getCommand().substring(0,b.getCommand().indexOf("]") + 1).equals("[INTERFACE]"))
                 b.setStatus(ids.size() == 1);
         }
         
