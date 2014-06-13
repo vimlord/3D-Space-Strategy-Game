@@ -261,14 +261,14 @@ public class ListenerThread extends Thread{
         }
     }
     
-    public void sendObject(Object obj) {
+    public void sendObject(Serializable obj) {
         if(obj.equals("[GAMESTATUS]STARTING"))
             inGame = true;
         
         try{
             outputStream.writeObject(obj);
         } catch (Exception e){
-            
+            outputQueue.add(obj);
         }
     }
     
