@@ -12,6 +12,7 @@ import client.gui.menu.HostOrJoinMenu;
 import client.gui.menu.MainMenu;
 import client.gui.menu.MenuManager;
 import client.gui.menu.PregameMenu;
+import client.settings.Options;
 import client.threads.ConnectionThread;
 import client.threads.CycleThread;
 
@@ -24,7 +25,7 @@ public class Client {
     private static GUI gui = new GUI(800,600);
     
     private static int factionID = -1;
-    private static String clientName = "Guest";
+    private static String clientName = "Guest2";
     
     private static ConnectionThread connection;
     private static CycleThread cycler;
@@ -37,6 +38,8 @@ public class Client {
     public static void main(String[] args) throws InterruptedException {
         cycler = new CycleThread();
         cycler.start();
+        
+        Options.loadPredeterminedOptions();
         
         try{
            setName(args[2]); 

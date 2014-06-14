@@ -52,9 +52,9 @@ public class CycleThread extends Thread{
                 
                 try {
                     
-                    /*if(MenuManager.getMenu() instanceof GameMenu){
+                    if(MenuManager.getMenu() instanceof GameMenu){
                         Client.getConnection().sendObject("[SEND][ENTITY_LIST]");
-                    } else */ if(MenuManager.getMenu() instanceof PregameMenu){
+                    } else if(MenuManager.getMenu() instanceof PregameMenu){
                         Client.getConnection().sendObject(new String("[SEND][GAMEMODE]"));
                     }
                     

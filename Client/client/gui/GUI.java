@@ -6,7 +6,9 @@ package client.gui;
 
 import client.game.*;
 import client.gui.menu.*;
+import client.gui.menu.buttons.Button;
 import client.main.Client;
+import client.settings.Option;
 import client.settings.Options;
 import engine.entities.Entity;
 import engine.entities.celestialBodies.*;
@@ -15,7 +17,6 @@ import engine.entities.ships.*;
 import engine.entities.structures.*;
 import engine.gameMechanics.factions.*;
 import engine.main.EntityList;
-import client.gui.menu.buttons.Button;
 import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.*;
@@ -115,6 +116,7 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
         Graphics2D g2 = (Graphics2D) g;
         
         if(viewNumber == 0 || GameControlSettings.getSelectedIDs().size() <= 0){
+            
             x = X;
             y = Y;
             z = Z;
@@ -137,9 +139,40 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
             x /= e.size();
             y /= e.size();
             z /= e.size();
+        } else {
+            
+            ArrayList<Entity> e = new ArrayList<Entity>();
+            
+            for(Entity ent : EntityList.getEntityList()){
+                if(ent instanceof Ship && ((Ship) ent).getFactionID() == Client.getID()){
+                    e.add(ent);
+                }
+            }
+            
+            if(e.size() > 0){
+                x = 0;
+                y = 0;
+                z = 0;
+                
+                for(Entity ent : e){
+                    x += ent.getX();
+                    y += ent.getY();
+                    z += ent.getZ();
+                }
+
+                x /= e.size();
+                y /= e.size();
+                z /= e.size();
+            } else {
+                x = X;
+                y = Y;
+                z = Z;
+            }
         }
         
-        
+        X = x;
+        Y = y;
+        Z = z;
         
         ////////////////////////////////////////////////////
         //The first thing that is drawn is the map itself.//
@@ -738,13 +771,22 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
     
     @Override
     public void keyTyped(KeyEvent e) {
-    
+        
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
+        
+        
+        int keyID = e.getKeyCode();
+        
+        if(keyID == 0){
+            return;
+        }
+        
         try{
             String bindingName = Options.getOption(e.getKeyCode()).name;
+            
             if(MenuManager.getMenu() instanceof GameMenu)
             switch (bindingName) {
                 //Movement
@@ -778,7 +820,7 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
                     break;
                 case "CHANGE_VIEW":
                     viewNumber++;
-                    viewNumber %= 2;
+                    viewNumber %= 3;
                     break;
 
             }

@@ -47,6 +47,14 @@ public class Options {
         
     }
     
+    public static String getOptionName(int code){
+        System.out.println(code);
+        String result = getOption(code).name;
+        System.out.println("The result is: " + result);
+        return result;
+    }
+
+    
     public static void useOption(int code){
         
     }
