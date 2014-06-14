@@ -28,9 +28,13 @@ public class CycleThread extends Thread{
         int count = 0;
         while(true){
             
-            
+            try{
+                if(!CycleRunner.getGamemode().getStatus() || CycleRunner.getGamemode() == null){
+                    resetGame();
+                }
+            } catch(NullPointerException n){
                 resetGame();
-            
+            }
             
             
             
@@ -61,7 +65,7 @@ public class CycleThread extends Thread{
                 
             }
             
-            if(CycleRunner.getGamemode().getStatus()){
+            /*if(CycleRunner.getGamemode().getStatus()){
                 //Starts the game
                 ArrayList<ListenerThread> listeners = Server.getConnections();
                 for(ListenerThread l : listeners){
@@ -69,7 +73,7 @@ public class CycleThread extends Thread{
                 }
                 
                 
-            }
+            }*/
             
             Server.getGUI().redraw();
             

@@ -128,6 +128,8 @@ public class GameControlSettings {
         
         String command = cmd;
         
+        System.out.println(command);
+        
         String parameter = command.substring(command.indexOf("(") + 1);
         command = command.substring(0,command.indexOf("("));
         

@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package client.object_wrappers;
+package engine.object_wrappers;
 
 import engine.entities.Entity;
 import java.io.Serializable;

@@ -10,7 +10,7 @@ import client.gui.menu.GameMenu;
 import client.gui.menu.MenuManager;
 import client.gui.menu.PregameMenu;
 import client.main.Client;
-import client.object_wrappers.EntityListWrapper;
+import engine.object_wrappers.EntityListWrapper;
 import engine.entities.Entity;
 import engine.entities.ships.*;
 import engine.gameMechanics.gameModes.GameMode;
@@ -115,18 +115,20 @@ public class ConnectionThread extends Thread{
                     //System.out.println(outputObject);
                     outputStream.writeObject(outputObject);
                 }
-                
-                Object input = inStream.readObject();
+                Object input = null;
+                try {
+                    input = inStream.readObject();
+                } catch (NullPointerException n){
+                    listening = false;
+                } catch(Exception e){
+                    
+                }
                 //System.out.println("Current input: " + input);
                 processInput(input);
             }
             
         } catch (IOException e) {
             System.err.println("Couldn't get I/O for the connection to " + hostName);
-            
-        } catch(ClassNotFoundException e){
-            
-            System.err.println("Couldn't interpret the read object.");
             
         }
         
@@ -139,7 +141,9 @@ public class ConnectionThread extends Thread{
     
     public void processInput(Object obj){
         
-        if(obj instanceof EntityListWrapper){
+        if(obj instanceof String){
+            processInput((String) obj);
+        } else if(obj instanceof EntityListWrapper){
             
             EntityListWrapper w = (EntityListWrapper) obj;
             EntityList.setList(w.getContents());
@@ -148,8 +152,6 @@ public class ConnectionThread extends Thread{
             
             CycleRunner.setGamemode((GameMode) obj);
             
-        } else if(obj instanceof String){
-            processInput((String) obj);
         }
     }
     

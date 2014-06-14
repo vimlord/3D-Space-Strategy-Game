@@ -34,7 +34,7 @@ public class FactionList {
     }
     public static Faction getFaction(String tag){
         for(Faction f : factions){
-            if(f.getTag() == tag){
+            if(f.getTag().equals(tag)){
                 return f;
             }
         }

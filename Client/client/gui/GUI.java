@@ -516,9 +516,9 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
             return null;
         }
         
-        
-        values[0] += (leftThickness - rightThickness)/2;
-        values[1] += (topThickness - bottomThickness)/2;
+        //I think these two lines of code were wrong
+        //values[0] += (leftThickness - rightThickness)/2;
+        //values[1] += (topThickness - bottomThickness)/2;
         
         return values;
         
@@ -791,31 +791,31 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
             switch (bindingName) {
                 //Movement
                 case "MOVE_FORWARD":
-                    X += Math.cos(XZ_ROT) * movementSensitivity;
-                    Z += Math.sin(XZ_ROT) * movementSensitivity;
+                    X += Math.cos(XZ_ROT) * movementSensitivity * pixelMeterRatio;
+                    Z += Math.sin(XZ_ROT) * movementSensitivity * pixelMeterRatio;
                     viewNumber = 0;
                     break;
                 case "MOVE_BACKWARD":
-                    X -= Math.cos(XZ_ROT) * movementSensitivity;
-                    Z -= Math.sin(XZ_ROT) * movementSensitivity;
+                    X -= Math.cos(XZ_ROT) * movementSensitivity * pixelMeterRatio;
+                    Z -= Math.sin(XZ_ROT) * movementSensitivity * pixelMeterRatio;
                     viewNumber = 0;
                     break;
                 case "MOVE_LEFT":
-                    X += Math.cos(XZ_ROT + 90) * movementSensitivity;
-                    Z += Math.sin(XZ_ROT + 90) * movementSensitivity;
+                    X += Math.cos(XZ_ROT + 90) * movementSensitivity * pixelMeterRatio;
+                    Z += Math.sin(XZ_ROT + 90) * movementSensitivity * pixelMeterRatio;
                     viewNumber = 0;
                     break;
                 case "MOVE_RIGHT":
-                    X -= Math.cos(XZ_ROT + 90) * movementSensitivity;
-                    Z -= Math.sin(XZ_ROT + 90) * movementSensitivity;
+                    X -= Math.cos(XZ_ROT + 90) * movementSensitivity * pixelMeterRatio;
+                    Z -= Math.sin(XZ_ROT + 90) * movementSensitivity * pixelMeterRatio;
                     viewNumber = 0;
                     break;
                 case "MOVE_UP":
-                    Y += movementSensitivity;
+                    Y += movementSensitivity * movementSensitivity * pixelMeterRatio;
                     viewNumber = 0;
                     break;
                 case "MOVE_DOWN":
-                    Y -= movementSensitivity;
+                    Y -= movementSensitivity * movementSensitivity * pixelMeterRatio;
                     viewNumber = 0;
                     break;
                 case "CHANGE_VIEW":
@@ -853,7 +853,7 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
         MenuManager.executeButtons(e.getX(), e.getY());
         
         //Allows for Entity objects to be selected only if clicking inside the battlefield display.
-        if(MenuManager.getMenu() instanceof GameMenu && x < getAppletWidth() - 200){
+        if(MenuManager.getMenu() instanceof GameMenu && e.getX() < getAppletWidth() - rightThickness){
 
             long clickedID = GameControlSettings.getClickedEntityID(e.getX(), e.getY());
 

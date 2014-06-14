@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package server.object_wrappers;
+package engine.object_wrappers;
 
 import engine.entities.Entity;
 import java.io.Serializable;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
  *
  * @author Christopher
  */
-public class EntityListWrapper  implements Serializable{
+public class EntityListWrapper implements Serializable{
     private ArrayList<Entity> entities;
     
     public EntityListWrapper(ArrayList<Entity> e){

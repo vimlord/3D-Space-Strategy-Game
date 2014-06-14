@@ -42,7 +42,7 @@ public class Faction {
     }
     
     public void addMember(FactionTag f){
-        ownedEntities.add(f.setFactionID(this.factionID));
+        ownedEntities.add(((Entity) f).getID());
         
         
     }

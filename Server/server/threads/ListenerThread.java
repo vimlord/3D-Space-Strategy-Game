@@ -14,7 +14,7 @@ import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
 import server.main.Server;
-import server.object_wrappers.EntityListWrapper;
+import engine.object_wrappers.EntityListWrapper;
 import server.players.Player;
 import server.players.PlayerList;
 
@@ -65,11 +65,15 @@ public class ListenerThread extends Thread{
             //This next line of code takes an Object as input. The Object will
             //then be tested to see if it matches any of the known Object types.
             while(listening){
+                try{
                 if(inGame != CycleRunner.getGamemode().getStatus()){
                     inGame = !inGame;
                     sendObject("[GAMESTATUS]STARTING");
                 } else if(PlayerList.getPlayerList().size() >= Server.getPlayerLimit() && Server.getPlayerLimit() > 0){
                     break;
+                }
+                } catch(NullPointerException n){
+                    
                 }
                 
                 input = null;
@@ -100,7 +104,6 @@ public class ListenerThread extends Thread{
         } catch(Exception e){
             e.printStackTrace();
         } finally {
-            System.out.println(input);
             try{
                 if(input.equals("[EXIT]") || input == null){
                     Server.addLogEvent("\"" + connectionUser + "\" has disconnected from the server.");
@@ -167,10 +170,9 @@ public class ListenerThread extends Thread{
             if(betaTag.equals("[ENTITY_LIST]")){
                 //Sends the EntityList to the client
                 ArrayList<Entity> entity = EntityList.getEntityList();
-                outputQueue.add((Serializable) new EntityListWrapper(entity));
+                outputQueue.add(new EntityListWrapper(entity));
             }
             if(betaTag.equals("[GAMEMODE]")){
-                System.out.println("FINALLY!!!");
                 outputQueue.add(CycleRunner.getGamemode());
             }
             if(betaTag.equals("[STATUS]")){
@@ -215,7 +217,6 @@ public class ListenerThread extends Thread{
 
                 String idSent = ("[FACTIONID]" + assignedID);
                 
-                System.out.println("REJOINING!");
                 
                 outputQueue.add(idSent);
 
