@@ -138,7 +138,7 @@ public class ConnectionThread extends Thread{
     }
     
     public void processInput(Object obj){
-        System.out.println(obj);
+        
         if(obj instanceof EntityListWrapper){
             
             EntityListWrapper w = (EntityListWrapper) obj;
@@ -156,7 +156,6 @@ public class ConnectionThread extends Thread{
     public void processInput(String input){
         String alphaTag = input.substring(0,input.indexOf("]") + 1);
         
-        System.out.println(alphaTag);
         
         if(alphaTag.equals("[FACTIONID]")){
             //Sets the Faction ID number

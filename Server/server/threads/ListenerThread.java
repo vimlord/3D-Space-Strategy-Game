@@ -49,7 +49,7 @@ public class ListenerThread extends Thread{
                     socket.getInputStream()));
             inStream = new ObjectInputStream(socket.getInputStream());
         } catch(IOException e){
-            e.printStackTrace();
+            
             return;
         }
         
@@ -121,8 +121,10 @@ public class ListenerThread extends Thread{
         }
         
         //If the game isn't running, removes the player from the list.
-        if(!CycleRunner.getGamemode().getStatus())
+        if(!CycleRunner.getGamemode().getStatus()){
+            FactionList.removeFaction(PlayerList.getPlayer(connectionUser).getFactionID());
             PlayerList.getPlayerList().remove(PlayerList.getPlayer(connectionUser));
+        }
         
         Server.getConnections().remove(this);
         
@@ -146,7 +148,6 @@ public class ListenerThread extends Thread{
         }
         String alphaTag = input.substring(0,input.indexOf("]") + 1);
         
-        System.out.println(alphaTag);
         
         if(alphaTag.equals("[ORDER]")){
             String order = input.substring(alphaTag.length());
@@ -161,7 +162,7 @@ public class ListenerThread extends Thread{
             
         } else if(alphaTag.equals("[SEND]")){
             String order = input.substring(alphaTag.length());
-            String betaTag = order.substring(0,order.indexOf("]"));
+            String betaTag = order.substring(0,order.indexOf("]") + 1);
             
             if(betaTag.equals("[ENTITY_LIST]")){
                 //Sends the EntityList to the client
@@ -169,6 +170,7 @@ public class ListenerThread extends Thread{
                 outputQueue.add((Serializable) new EntityListWrapper(entity));
             }
             if(betaTag.equals("[GAMEMODE]")){
+                System.out.println("FINALLY!!!");
                 outputQueue.add(CycleRunner.getGamemode());
             }
             if(betaTag.equals("[STATUS]")){
@@ -192,6 +194,8 @@ public class ListenerThread extends Thread{
             listening = true;
             
             Player foundPlayer = PlayerList.getPlayer(connectionUser);
+            
+            
             if(foundPlayer == null){
                 FactionList.addFaction(tag);
                 
@@ -202,15 +206,16 @@ public class ListenerThread extends Thread{
                 outputQueue.add(idSent);
                 
                 PlayerList.addPlayer(new Player(connectionUser, assignedID));
-                PlayerList.getPlayer(connectionUser).setActive(true);
+                PlayerList.getPlayer(assignedID).setActive(true);
                 
                 Server.addLogEvent("\"" + connectionUser + "\" has connected to the server.");
-                System.out.println(Server.getLatestLogEvent());
                 
             }  else if(!foundPlayer.isActive()) {
                 int assignedID = FactionList.getFaction(tag).getID();
 
                 String idSent = ("[FACTIONID]" + assignedID);
+                
+                System.out.println("REJOINING!");
                 
                 outputQueue.add(idSent);
 

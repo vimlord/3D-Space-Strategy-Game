@@ -87,11 +87,12 @@ public class PregameMenu extends Menu{
             
             int[][] factions = CycleRunner.getGamemode().getFactions();
 
-            numTeams = factions.length;
             
             for(int i = 0; i < factions.length; i++){
                 numPlayers += factions[i].length;
             }
+            
+            numTeams = factions.length;
             
         } catch(NullPointerException npe){
             numTeams = 0;

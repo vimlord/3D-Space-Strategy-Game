@@ -28,9 +28,9 @@ public class CycleThread extends Thread{
         int count = 0;
         while(true){
             
-            if(CycleRunner.getGamemode() == null){
+            
                 resetGame();
-            }
+            
             
             
             

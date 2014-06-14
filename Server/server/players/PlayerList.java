@@ -34,6 +34,18 @@ public class PlayerList {
         return false;
     }
     
+    public static Player getPlayer(int id){
+        
+        for(Player p : players){
+            if(p.getFactionID() == id){
+                return p;
+            }
+        }
+        
+        return null;
+        
+    }
+    
     public static Player getPlayer(String name){
         
         for(Player p : players){

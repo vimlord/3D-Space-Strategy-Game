@@ -71,5 +71,9 @@ public abstract class Menu {
         return name;
     }
 
+    public boolean connects(){
+        return usesConnection;
+    }
+    
     public abstract void drawMenu(Graphics g);
 }

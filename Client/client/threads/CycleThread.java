@@ -6,7 +6,9 @@
 
 package client.threads;
 
+import client.gui.menu.GameMenu;
 import client.gui.menu.MenuManager;
+import client.gui.menu.PregameMenu;
 import client.main.Client;
 
 /**
@@ -21,31 +23,56 @@ public class CycleThread extends Thread{
     @Override
     public void run(){
         
-        int tick = 0;
+        int statusTick = 0, gameTick = 5000;
         
         while(true){
             Client.getGUI().redraw();
             try{
                 MenuManager.getMenu().cycle();
-            } catch(NullPointerException e){
+            } catch(Exception e){
                 
             }
             
-            if(tick >= 1000){
+            if(statusTick >= 10000){
                 
                 try{
+                    
                     if(Client.getConnection().listening()){
                         Client.getConnection().sendObject("[SEND][STATUS]");
                     }
+                    
                 } catch(Exception e){
                     
                 }
                 
-                tick = 0;
+                statusTick = 0;
+                
+            }
+            if(gameTick >= 10000){
+                
+                try {
+                    
+                    /*if(MenuManager.getMenu() instanceof GameMenu){
+                        Client.getConnection().sendObject("[SEND][ENTITY_LIST]");
+                    } else */ if(MenuManager.getMenu() instanceof PregameMenu){
+                        Client.getConnection().sendObject(new String("[SEND][GAMEMODE]"));
+                    }
+                    
+                } catch(Exception e){
+                    
+                }
+                
+                gameTick = 0;
             }
             
-            tick++;
             
+            try{
+                if(MenuManager.getMenu().connects())
+                    gameTick++;
+                    statusTick++;
+            } catch(Exception e){
+                
+            }
         }
         
     }
