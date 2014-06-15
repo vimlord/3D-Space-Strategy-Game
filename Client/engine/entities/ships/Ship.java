@@ -630,6 +630,14 @@ public class Ship extends Entity implements ControlSystem, FactionTag{
         }
     }
     
+    public double getWarpCharge(){
+        return warpCharge;
+    }
+    
+    public double getMaxWarpCharge(){
+        return warpCapacity;
+    }
+    
     
     //---------------------------------------------------------------------------
     //Collision stuff

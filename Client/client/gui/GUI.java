@@ -260,10 +260,10 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
             g2.fillRect(frame.getWidth() - 240,25,240,300);
             
             g2.setColor(Color.WHITE);
-            g2.setFont(new Font("Courier New", Font.PLAIN, 20));
+            g2.setFont(new Font("Courier New", Font.PLAIN, 15));
             
             //Outputs the name of the Entity
-            g2.drawString(selected.getName(), frame.getWidth() - 235, 40);
+            g2.drawString(selected.getName(), getAppletWidth() - rightThickness + 5, 40);
             
             //Finds the type of Entity
             String type = "Entity";
@@ -297,7 +297,7 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
                 type = "Structure";
             
             //The type of Entity selected
-            g2.drawString(type, frame.getWidth() - 235, 60);
+            g2.drawString(type, getAppletWidth() - rightThickness + 5, 60);
             
             //The velocity is described
             double velXZ = Math.sqrt(Math.pow(selected.getSpeedX(),2) + Math.pow(selected.getSpeedZ(),2));
@@ -307,16 +307,31 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
                 XZ *= -1;
             double Y = Math.asin(selected.getSpeedY()/velocity);
             if(velocity != 0){
-                g2.drawString(((int)(100 * velocity))/100.0 + " m/s", frame.getWidth() - 235, 80);
-                g2.drawString(((int)(100 * Math.toDegrees(XZ)))/100.0 + " degrees", frame.getWidth() - 235, 100);
-                g2.drawString(((int)(100 * Math.toDegrees(Y)))/100.0 + " degrees", frame.getWidth() - 235, 120);
+                g2.drawString(((int)(100 * velocity))/100.0 + " m/s", getAppletWidth() - rightThickness + 5, 80);
+                g2.drawString(((int)(100 * Math.toDegrees(XZ)))/100.0 + " degrees", getAppletWidth() - rightThickness + 5, 100);
+                g2.drawString(((int)(100 * Math.toDegrees(Y)))/100.0 + " degrees", getAppletWidth() - rightThickness + 5, 120);
             }else
-                g2.drawString(((int)(100 * velocity))/100.0 + " m/s", frame.getWidth() - 235, 80);
+                g2.drawString(((int)(100 * velocity))/100.0 + " m/s", getAppletWidth() - rightThickness + 5, 80);
             
             if(selected instanceof Ship){
+                //xGUI - 160
+                //yGUI - 400 to 320
                 Ship s = (Ship) selected;
-                g2.drawString("Integrity: " + s.getHealth() + "/" + s.getMaxHealth(), frame.getWidth() - 235, 140);
-                g2.drawString("Shields:   " + s.getShields() + "/" + s.getMaxShields(), frame.getWidth() - 235, 160);
+                //Background bara
+                g2.setColor(Color.BLACK);
+                g2.drawRect(getAppletWidth() - 160, getAppletHeight() - 325, 150, 20);
+                g2.drawRect(getAppletWidth() - 160, getAppletHeight() - 350, 150, 20);
+                g2.drawRect(getAppletWidth() - 160, getAppletHeight() - 375, 150, 20);
+                //Health
+                g2.setColor(Color.RED);
+                g2.drawRect(getAppletWidth() - 160, getAppletHeight() - 325, (int)(150 * (s.getHealth()/s.getMaxHealth())), 20);
+                //Shields
+                g2.setColor(Color.BLUE);
+                g2.drawRect(getAppletWidth() - 160, getAppletHeight() - 350, (int)(150 * (s.getShields()/s.getMaxShields())), 20);
+                //Warp Charge
+                g2.setColor(Color.GREEN);
+                g2.drawRect(getAppletWidth() - 160, getAppletHeight() - 375, (int)(150 * (s.getWarpCharge()/s.getMaxWarpCharge())), 20);
+                
             } else if(selected instanceof CelestialBody){
                 g2.drawString("Mass:   " + selected.getMass(false) + " kg", frame.getWidth() - 235, 140);
                 g2.drawString("Radius: " + selected.getRadius() + " m", frame.getWidth() - 235, 160);

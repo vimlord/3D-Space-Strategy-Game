@@ -130,8 +130,13 @@ public class GameControlSettings {
         
         System.out.println(command);
         
-        String parameter = command.substring(command.indexOf("(") + 1);
-        command = command.substring(0,command.indexOf("("));
+        String parameter;
+        try{
+            parameter = command.substring(command.indexOf("(") + 1);
+            command = command.substring(0,command.indexOf("("));
+        } catch(NullPointerException n){
+            parameter = "";
+        }
         
         Ship commanded;
         try{                commanded = EntityList.getShip(reciprocalIDs.get(0));}
