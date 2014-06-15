@@ -504,9 +504,9 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
         double distCamZ = -Z + camZ;
         double distCam = Math.sqrt(Math.pow(distCamX, 2) + Math.pow(distCamY, 2) + Math.pow(distCamZ, 2));
         
-        if(dist > 250 * pixelMeterRatio && distCam < dist){
+        /*if(dist > 250 * pixelMeterRatio && distCam < dist){
             return null;
-        }
+        }*/
         
         int radius = (int)(250 * R/(distCam));
         

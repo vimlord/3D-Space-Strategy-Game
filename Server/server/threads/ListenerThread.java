@@ -77,7 +77,11 @@ public class ListenerThread extends Thread{
                 }
                 
                 input = null;
-                input = inStream.readObject();
+                try{
+                    input = inStream.readObject();
+                } catch(StreamCorruptedException s){
+                    input = "[UNKNOWN]";
+                }
                 
                 processInput(input);
                 

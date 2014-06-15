@@ -54,7 +54,7 @@ public class Slider extends Button{
                 else
                     value = 0;
             } else if(Y < y + height - 10){
-                int difference = y + height - Y;
+                int difference = Y - (y + 10);
                 if(bottomOrLeft)
                     value = maxValue - difference;
                 else
@@ -72,7 +72,7 @@ public class Slider extends Button{
                 else
                     value = 0;
             } else if(X < x + height - 10){
-                int difference = x + width - X;
+                int difference = X - (x + 10);
                 if(bottomOrLeft)
                     value = maxValue - difference;
                 else

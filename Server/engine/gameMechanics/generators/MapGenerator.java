@@ -126,7 +126,7 @@ public class MapGenerator {
             double magnitude = 5000 * numFactions;
             for(int i = 0; i < numFactions; i++){
                 ArrayList<Ship> newShips = Formation.getFormation(0, fact.get(i));
-                for(Ship s : newShips){System.out.println(s);
+                for(Ship s : newShips){
                     s.setX(s.getX() + magnitude * Math.cos(angle * i));
                     s.setZ(s.getZ() + magnitude * Math.sin(angle * i));
                     ships.add(s);
