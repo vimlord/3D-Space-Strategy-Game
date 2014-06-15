@@ -78,6 +78,14 @@ public class GameMenu extends Menu{
             
             }
         }
+        
+        try{
+            if(!Client.isLookingForConnection() || !Client.getConnection().listening())
+                MenuManager.setMenu("hostORjoin");
+        } catch(NullPointerException n){
+            MenuManager.setMenu("hostORjoin");
+        }
+        
     }
     
     @Override
