@@ -26,6 +26,8 @@ import java.io.Serializable;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -118,17 +120,16 @@ public class ConnectionThread extends Thread{
                 Object input = null;
                 try {
                     input = inStream.readObject();
-                } catch (NullPointerException n){
-                    listening = false;
-                } catch(Exception e){
+                } catch (ClassNotFoundException ex) {
                     
-                }
+                } //catch(IOException e){ }
                 //System.out.println("Current input: " + input);
                 processInput(input);
             }
             
         } catch (IOException e) {
             System.err.println("Couldn't get I/O for the connection to " + hostName);
+            e.printStackTrace();
             
         }
         
@@ -140,6 +141,7 @@ public class ConnectionThread extends Thread{
     }
     
     public void processInput(Object obj){
+        System.out.println(obj);
         
         if(obj instanceof String){
             processInput((String) obj);
@@ -175,11 +177,11 @@ public class ConnectionThread extends Thread{
         
     }
     
-    public void sendObject(Serializable obj) {
+    public void sendObject(Object obj) {
         try{
             outputStream.writeObject(obj);
         } catch (Exception e){
-            
+            outputQueue.add(obj);
         }
     }
     

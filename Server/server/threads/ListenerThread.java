@@ -34,7 +34,7 @@ public class ListenerThread extends Thread{
     
     private ArrayList<Serializable> outputQueue = new ArrayList<>();
     
-    private boolean listening = true, inGame = false;
+    private boolean listening = true, inGame = false, connected = false;
     
     public ListenerThread(Socket socket) {
         this.socket = socket;
@@ -80,10 +80,14 @@ public class ListenerThread extends Thread{
                 try{
                     input = inStream.readObject();
                 } catch(StreamCorruptedException s){
+                    s.printStackTrace();
                     input = "[UNKNOWN]";
                 } catch(OptionalDataException o){
+                    o.printStackTrace();
                     input = "[UNKNOWN]";
                 }
+                
+                System.out.println(connectionUser + "'s Input: " + input);
                 
                 processInput(input);
                 
@@ -173,15 +177,21 @@ public class ListenerThread extends Thread{
             String order = input.substring(alphaTag.length());
             String betaTag = order.substring(0,order.indexOf("]") + 1);
             
-            if(betaTag.equals("[ENTITY_LIST]")){
+            if(betaTag.equals("[ENTITYLIST]")){
                 //Sends the EntityList to the client
                 ArrayList<Entity> entity = EntityList.getEntityList();
-                outputQueue.add(new EntityListWrapper(entity));
-            }
-            if(betaTag.equals("[GAMEMODE]")){
-                outputQueue.add(CycleRunner.getGamemode());
-            }
-            if(betaTag.equals("[STATUS]")){
+                try{
+                    sendObject(new EntityListWrapper(entity));
+                } catch(Exception e){
+                    outputQueue.add(new EntityListWrapper(entity));
+                }
+            } else if(betaTag.equals("[GAMEMODE]")){
+                try{
+                    sendObject(CycleRunner.getGamemode());
+                } catch(Exception e){
+                    outputQueue.add(CycleRunner.getGamemode());
+                }
+            } else if(betaTag.equals("[STATUS]")){
                 
                 if(inGame != CycleRunner.getGamemode().getStatus()){
                     inGame = !inGame;
@@ -190,6 +200,10 @@ public class ListenerThread extends Thread{
                 }
             }
         } else if(alphaTag.equals("[CONNECT]")){
+            
+            if(connected)
+                return;
+            
             connectionUser = input.substring(alphaTag.length());
             int size = 3;
             if(size > connectionUser.length()){
@@ -235,6 +249,8 @@ public class ListenerThread extends Thread{
                 listening = false;
             }
             
+            connected = listening;
+            
             /*
             
             if(FactionList.getFaction(tag) == null){
@@ -262,13 +278,13 @@ public class ListenerThread extends Thread{
             
         } else if(alphaTag.equals("[SERVERMESSAGE]")){
             String message = input.substring(alphaTag.length());
-            if(message.equals("Ready")){
+            if(message.equals("Ready") && !PlayerList.getPlayer(connectionUser).getReadiness()){
                 PlayerList.getPlayer(connectionUser).setReadiness(true);
+                Server.addLogEvent("\"" + connectionUser + "\" is now ready.");
+                System.out.println(Server.getLatestLogEvent());
             }
             
-        }
-        
-        if(alphaTag.equals("[EXIT]")){
+        } else if(alphaTag.equals("[EXIT]")){
             return;
         }
     }

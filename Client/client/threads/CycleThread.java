@@ -10,6 +10,7 @@ import client.gui.menu.GameMenu;
 import client.gui.menu.MenuManager;
 import client.gui.menu.PregameMenu;
 import client.main.Client;
+import engine.main.EntityList;
 
 /**
  *
@@ -27,6 +28,9 @@ public class CycleThread extends Thread{
         
         while(true){
             Client.getGUI().redraw();
+            
+            //System.out.println("EntityList size: " + EntityList.getEntityList().size());
+            
             try{
                 MenuManager.getMenu().cycle();
             } catch(Exception e){
@@ -52,11 +56,20 @@ public class CycleThread extends Thread{
                 
                 try {
                     
+                    String request;
+                    
                     if(MenuManager.getMenu() instanceof GameMenu){
-                        Client.getConnection().sendObject("[SEND][ENTITY_LIST]");
+                        request = "[SEND][ENTITYLIST]";
+                        Client.getConnection().sendObject(request);
                     } else if(MenuManager.getMenu() instanceof PregameMenu){
-                        Client.getConnection().sendObject(new String("[SEND][GAMEMODE]"));
-                    }
+                        request = "[SEND][GAMEMODE]";
+                    } else
+                        request = null;
+                    
+                    
+                    
+                    if(request != null)
+                        Client.getConnection().sendObject(request);
                     
                 } catch(Exception e){
                     
@@ -67,9 +80,10 @@ public class CycleThread extends Thread{
             
             
             try{
-                if(MenuManager.getMenu().connects())
+                if(MenuManager.getMenu().connects()){
                     gameTick++;
                     statusTick++;
+                }
             } catch(Exception e){
                 
             }

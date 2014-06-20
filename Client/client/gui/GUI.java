@@ -256,8 +256,6 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
             
             Entity selected = EntityList.getEntity(ids.get(0));
             
-            g2.setColor(new Color(192,192,255,127));
-            g2.fillRect(frame.getWidth() - 240,25,240,300);
             
             g2.setColor(Color.WHITE);
             g2.setFont(new Font("Courier New", Font.PLAIN, 15));
@@ -319,18 +317,18 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
                 Ship s = (Ship) selected;
                 //Background bara
                 g2.setColor(Color.BLACK);
-                g2.drawRect(getAppletWidth() - 160, getAppletHeight() - 325, 150, 20);
-                g2.drawRect(getAppletWidth() - 160, getAppletHeight() - 350, 150, 20);
-                g2.drawRect(getAppletWidth() - 160, getAppletHeight() - 375, 150, 20);
+                g2.fillRect(getAppletWidth() - 160, getAppletHeight() - 325, 150, 20);
+                g2.fillRect(getAppletWidth() - 160, getAppletHeight() - 350, 150, 20);
+                g2.fillRect(getAppletWidth() - 160, getAppletHeight() - 375, 150, 20);
                 //Health
                 g2.setColor(Color.RED);
-                g2.drawRect(getAppletWidth() - 160, getAppletHeight() - 325, (int)(150 * (s.getHealth()/s.getMaxHealth())), 20);
+                g2.fillRect(getAppletWidth() - 160, getAppletHeight() - 325, (int)(150 * (s.getHealth()/s.getMaxHealth())), 20);
                 //Shields
                 g2.setColor(Color.BLUE);
-                g2.drawRect(getAppletWidth() - 160, getAppletHeight() - 350, (int)(150 * (s.getShields()/s.getMaxShields())), 20);
+                g2.fillRect(getAppletWidth() - 160, getAppletHeight() - 350, (int)(150 * (s.getShields()/s.getMaxShields())), 20);
                 //Warp Charge
                 g2.setColor(Color.GREEN);
-                g2.drawRect(getAppletWidth() - 160, getAppletHeight() - 375, (int)(150 * (s.getWarpCharge()/s.getMaxWarpCharge())), 20);
+                g2.fillRect(getAppletWidth() - 160, getAppletHeight() - 375, (int)(150 * (s.getWarpCharge()/s.getMaxWarpCharge())), 20);
                 
             } else if(selected instanceof CelestialBody){
                 g2.drawString("Mass:   " + selected.getMass(false) + " kg", frame.getWidth() - 235, 140);
@@ -348,11 +346,12 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
             
         }
         
-        //Draws the frame for the displayer for the selected Entity
+        /*Draws the frame for the displayer for the selected Entity
         g2.setColor(new Color(36,36,180,255));
         g2.fillRect(frame.getWidth() - 240, 0, 250, 25);
         g2.setColor(new Color(36,36,180,255));
         g2.fillOval(frame.getWidth() - 60, -50, 120, 120);
+        */
         
         
     }
@@ -491,8 +490,8 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
         values[0] = (int)(frame.getWidth()/2 + (Math.cos(angleXZ + XZ_ROT) * magnitudeXZ / pixelMeterRatio));
         values[1] = (int)((frame.getHeight()/2 - 18) - (Math.sin(angleXZ + XZ_ROT) * magnitudeXZ * Math.sin(Y_ROT) / pixelMeterRatio) - (magnitudeY * Math.cos(Y_ROT) / pixelMeterRatio));
         
-        values[0] += (leftThickness - rightThickness)/2;
-        values[1] += (topThickness - bottomThickness)/2;
+        values[0] -= (rightThickness)/2;
+        values[1] -= (bottomThickness)/2;
         
         return values;
         
@@ -532,8 +531,8 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
         }
         
         //I think these two lines of code were wrong
-        //values[0] += (leftThickness - rightThickness)/2;
-        //values[1] += (topThickness - bottomThickness)/2;
+        values[0] += (leftThickness - rightThickness)/2;
+        values[1] += (topThickness - bottomThickness)/2;
         
         return values;
         
