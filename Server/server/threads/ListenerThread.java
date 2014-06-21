@@ -32,7 +32,7 @@ public class ListenerThread extends Thread{
     
     private String connectionUser = null;
     
-    private ArrayList<Serializable> outputQueue = new ArrayList<>();
+    private ArrayList<Object> outputQueue = new ArrayList<>();
     
     private boolean listening = true, inGame = false, connected = false;
     
@@ -289,7 +289,7 @@ public class ListenerThread extends Thread{
         }
     }
     
-    public void sendObject(Serializable obj) {
+    public void sendObject(Object obj) {
         if(obj.equals("[GAMESTATUS]STARTING"))
             inGame = true;
         

@@ -317,18 +317,18 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
                 Ship s = (Ship) selected;
                 //Background bara
                 g2.setColor(Color.BLACK);
-                g2.fillRect(getAppletWidth() - 160, getAppletHeight() - 325, 150, 20);
-                g2.fillRect(getAppletWidth() - 160, getAppletHeight() - 350, 150, 20);
-                g2.fillRect(getAppletWidth() - 160, getAppletHeight() - 375, 150, 20);
+                g2.fillRect(getAppletWidth() - 160, getAppletHeight() - 355, 150, 20);
+                g2.fillRect(getAppletWidth() - 160, getAppletHeight() - 380, 150, 20);
+                g2.fillRect(getAppletWidth() - 160, getAppletHeight() - 405, 150, 20);
                 //Health
                 g2.setColor(Color.RED);
-                g2.fillRect(getAppletWidth() - 160, getAppletHeight() - 325, (int)(150 * (s.getHealth()/s.getMaxHealth())), 20);
+                g2.fillRect(getAppletWidth() - 160, getAppletHeight() - 355, (int)(150 * (s.getHealth()/s.getMaxHealth())), 20);
                 //Shields
                 g2.setColor(Color.BLUE);
-                g2.fillRect(getAppletWidth() - 160, getAppletHeight() - 350, (int)(150 * (s.getShields()/s.getMaxShields())), 20);
+                g2.fillRect(getAppletWidth() - 160, getAppletHeight() - 380, (int)(150 * (s.getShields()/s.getMaxShields())), 20);
                 //Warp Charge
                 g2.setColor(Color.GREEN);
-                g2.fillRect(getAppletWidth() - 160, getAppletHeight() - 375, (int)(150 * (s.getWarpCharge()/s.getMaxWarpCharge())), 20);
+                g2.fillRect(getAppletWidth() - 160, getAppletHeight() - 405, (int)(150 * (s.getWarpCharge()/s.getMaxWarpCharge())), 20);
                 
             } else if(selected instanceof CelestialBody){
                 g2.drawString("Mass:   " + selected.getMass(false) + " kg", frame.getWidth() - 235, 140);
@@ -490,8 +490,8 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
         values[0] = (int)(frame.getWidth()/2 + (Math.cos(angleXZ + XZ_ROT) * magnitudeXZ / pixelMeterRatio));
         values[1] = (int)((frame.getHeight()/2 - 18) - (Math.sin(angleXZ + XZ_ROT) * magnitudeXZ * Math.sin(Y_ROT) / pixelMeterRatio) - (magnitudeY * Math.cos(Y_ROT) / pixelMeterRatio));
         
-        values[0] -= (rightThickness)/2;
-        values[1] -= (bottomThickness)/2;
+        values[0] += (leftThickness - rightThickness)/2;
+        values[1] += (topThickness - bottomThickness)/2;
         
         return values;
         
@@ -531,8 +531,8 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
         }
         
         //I think these two lines of code were wrong
-        values[0] += (leftThickness - rightThickness)/2;
-        values[1] += (topThickness - bottomThickness)/2;
+        //values[0] += (leftThickness - rightThickness)/2;
+        //values[1] += (topThickness - bottomThickness)/2;
         
         return values;
         

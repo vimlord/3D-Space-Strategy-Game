@@ -11,6 +11,7 @@ import client.gui.menu.MenuManager;
 import client.gui.menu.PregameMenu;
 import client.main.Client;
 import engine.main.EntityList;
+import java.io.Serializable;
 
 /**
  *
@@ -56,7 +57,7 @@ public class CycleThread extends Thread{
                 
                 try {
                     
-                    String request;
+                    Serializable request;
                     
                     if(MenuManager.getMenu() instanceof GameMenu){
                         request = "[SEND][ENTITYLIST]";
@@ -65,8 +66,6 @@ public class CycleThread extends Thread{
                         request = "[SEND][GAMEMODE]";
                     } else
                         request = null;
-                    
-                    
                     
                     if(request != null)
                         Client.getConnection().sendObject(request);

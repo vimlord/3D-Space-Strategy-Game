@@ -6,6 +6,7 @@
 
 package client.main;
 
+import client.game.GameControlSettings;
 import client.gui.GUI;
 import client.gui.menu.GameMenu;
 import client.gui.menu.HostOrJoinMenu;
@@ -15,6 +16,8 @@ import client.gui.menu.PregameMenu;
 import client.settings.Options;
 import client.threads.ConnectionThread;
 import client.threads.CycleThread;
+import engine.entities.ships.Corvette;
+import engine.main.EntityList;
 
 /**
  *
@@ -25,7 +28,7 @@ public class Client {
     private static GUI gui = new GUI(800,600);
     
     private static int factionID = -1;
-    private static String clientName = "Guest2";
+    private static String clientName = "Guest";
     
     private static ConnectionThread connection;
     private static CycleThread cycler;
