@@ -44,7 +44,6 @@ public class Faction {
     public void addMember(FactionTag f){
         ownedEntities.add(((Entity) f).getID());
         
-        
     }
     
     public void removeMember(Entity e){

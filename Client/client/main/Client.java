@@ -28,7 +28,7 @@ public class Client {
     private static GUI gui = new GUI(800,600);
     
     private static int factionID = -1;
-    private static String clientName = "Guest";
+    private static String clientName = "Guest2";
     
     private static ConnectionThread connection;
     private static CycleThread cycler;

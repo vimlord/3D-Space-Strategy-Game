@@ -18,10 +18,12 @@ public class FactionList {
     
     public static void addFaction(String tag){
         factions.add(new Faction(tag, factionsGenerated));
+        factionsGenerated++;
     }
     
     public static void addFaction(String tag, String name){
         factions.add(new Faction(tag, name, factionsGenerated));
+        factionsGenerated++;
     }
     
     public static Faction getFaction(int ID){

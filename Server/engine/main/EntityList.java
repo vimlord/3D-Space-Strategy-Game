@@ -37,7 +37,7 @@ public class EntityList {
     
     /**
      * Adds a Structure object to the game
-     * @param w The Structure object
+     * @param s The Structure object
      */
     public static void addStructure(Structure s){
         s.setID(valueToAssign);
@@ -361,11 +361,11 @@ public class EntityList {
         
         //Adds the CelestialBody objects
         for(CelestialBody c : newBodies){
-            bodies.add(c);
+            addCelestialBody(c);
         }
         //Adds the Ship objects
         for(Ship s : newShips){
-            ships.add(s);
+            addShip(s);
         }
         
     }

@@ -118,14 +118,14 @@ public class MapGenerator {
     }
 
     public static ArrayList<Ship> generateShips(int ID, GameMode gm) {
-        ArrayList<Ship> ships = new ArrayList<Ship>();
-        int numFactions = FactionList.getFactionList().size();
+        ArrayList<Ship> ships = new ArrayList<>();
         ArrayList<Faction> fact = FactionList.getFactionList();
+        int numFactions = fact.size();
         if(ID == 0){
             double angle = 2 * Math.PI / numFactions;
             double magnitude = 5000 * numFactions;
             for(int i = 0; i < numFactions; i++){
-                ArrayList<Ship> newShips = Formation.getFormation(0, fact.get(i));
+                ArrayList<Ship> newShips = Formation.getFormation(0, fact.get(i).getID());
                 for(Ship s : newShips){
                     s.setX(s.getX() + magnitude * Math.cos(angle * i));
                     s.setZ(s.getZ() + magnitude * Math.sin(angle * i));

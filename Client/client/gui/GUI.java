@@ -423,8 +423,8 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
             
             
             Planet p = (Planet) e;
-            drawSphere(g2, e.getX(), e.getY(), e.getZ(), e.getRadius());
-            drawSphere(g2, e.getX(), e.getY(), e.getZ(), 2.0 * p.getAtmosphereHeight());
+            drawSphere(g2, e.getX(), e.getY(), e.getZ(), e.getRadius(), false);
+            drawSphere(g2, e.getX(), e.getY(), e.getZ(), 2.0 * p.getAtmosphereHeight(), false);
             
             
         } else if(e instanceof Structure){
@@ -452,7 +452,16 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
             
             
         } else { */
-            drawSphere(g2, e.getX(), e.getY(), e.getZ(), e.getRadius());
+            
+            boolean selected = false;
+            for(long l : GameControlSettings.getSelectedIDs()){
+                if(e.getID() == l){
+                    selected = true;
+                    break;
+                }
+            }
+            
+            drawSphere(g2, e.getX(), e.getY(), e.getZ(), e.getRadius(), selected);
         }
         
     }
@@ -538,7 +547,7 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
         
     }
     
-    public void drawSphere(Graphics2D g, double X, double Y, double Z, double R){
+    public void drawSphere(Graphics2D g, double X, double Y, double Z, double R, boolean selectionCircle){
         int[] points = buildSphere(X,Y,Z,R);
         
         if(points == null){
@@ -546,6 +555,12 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
         }
         
         g.drawOval(points[0] - points[2], points[1] - points[2], (int)(2 * points[2]), (int)(2 * points[2]));
+        
+        if(selectionCircle){
+            g.setColor(Color.WHITE);
+            g.drawOval(points[0] - points[2] - 2, points[1] - points[2] - 2, (int)(2 * points[2]) + 4, (int)(2 * points[2]) + 4);
+        }
+        
         
     }
     
@@ -913,11 +928,15 @@ public class GUI extends Applet implements KeyListener, MouseListener, MouseMoti
     @Override
     public void mouseDragged(MouseEvent e) {
         if(MenuManager.getMenu() instanceof GameMenu){
-            XZ_ROT = oldXZ + (e.getX() - pressMouseX) * Math.toRadians(mouseSensitivity);
-            Y_ROT = oldY + (e.getY() - pressMouseY) * Math.toRadians(mouseSensitivity);
+            if(e.getX() < getAppletWidth() - rightThickness){
+                
+                XZ_ROT = oldXZ + (e.getX() - pressMouseX) * Math.toRadians(mouseSensitivity);
+                Y_ROT = oldY + (e.getY() - pressMouseY) * Math.toRadians(mouseSensitivity);
+            
+            }
+        } else {
+            MenuManager.executeSliders(e.getX(), e.getY());
         }
-        
-        MenuManager.executeSliders(e.getX(), e.getY());
     }
 
     @Override

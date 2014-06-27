@@ -37,7 +37,7 @@ public class Formation {
         
         //Adds every ship to the Faction
         for(Ship s : ships){
-            FactionList.getFaction(factionID).addMember(s);
+            s.setFactionID(factionID);
         }
         
         return ships;
