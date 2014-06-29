@@ -122,13 +122,16 @@ public class GameControlSettings {
         return -1;
     }
 
+    /**
+     * Processes a request to send a Ship command to the server.
+     * @param cmd
+     */
     public static void processButtonCommand(String cmd) {
-        if(cmd == "" || cmd == null)
+        if(cmd.equals("") || cmd == null)
             return;
         
         String command = cmd;
         
-        System.out.println(command);
         
         String parameter;
         try{
@@ -138,8 +141,14 @@ public class GameControlSettings {
             parameter = "";
         }
         
+        System.out.println(command + " " + parameter);
+        
         Ship commanded;
-        try{                commanded = EntityList.getShip(reciprocalIDs.get(0));}
+        try{
+            commanded = EntityList.getShip(reciprocalIDs.get(0));
+            if(commanded.getFactionID() != Client.getID())
+                return;
+        }
         catch(Exception e){ commanded = null;}
         
         double XZ = Math.atan(commanded.getSpeedZ()/commanded.getSpeedX());
@@ -148,6 +157,8 @@ public class GameControlSettings {
         }
         double velXZ = Math.sqrt(Math.pow(commanded.getSpeedX(),2) + Math.pow(commanded.getSpeedZ(),2));
         double Y = Math.atan(commanded.getSpeedY()/velXZ);
+        
+        String orderPrefix = "[ORDER][(" + Client.getID() + ")(" + commanded.getID() + ")]";
         
         switch(command){
             case "Prograde":
@@ -190,7 +201,9 @@ public class GameControlSettings {
                 if(SELECTED_ID.size() == 1){
                     Entity ship = EntityList.getEntity(SELECTED_ID.get(0));
                     if(ship instanceof Ship){
-                        Client.getConnection().sendObject("[ORDER][(" + Client.getID() + ")(" + ship.getID() + ")]"+ (new Rotate(ROT_Targ_XZ,ROT_Targ_Y)).getOrder());
+                        String order = (orderPrefix + (new Rotate(ROT_Targ_XZ,ROT_Targ_Y)).getOrder());
+                        Client.getConnection().sendObject(order);
+                        
                     }
                 }
                 break;
@@ -198,7 +211,9 @@ public class GameControlSettings {
                 if(SELECTED_ID.size() == 1){
                     Entity ship = EntityList.getEntity(SELECTED_ID.get(0));
                     if(ship instanceof Ship){
-                        Client.getConnection().sendObject("[ORDER][(" + Client.getID() + ")(" + ship.getID() + ")]"+ (new Accelerate(Double.parseDouble(parameter),Double.MAX_VALUE)).getOrder());
+                        String order = orderPrefix + (new Accelerate(100.0 * Double.parseDouble(parameter),Double.MAX_VALUE)).getOrder();
+                        System.out.println(order);
+                        Client.getConnection().sendObject(order);
                     }
                 }
                 break;
@@ -206,7 +221,9 @@ public class GameControlSettings {
                 if(SELECTED_ID.size() == 1){
                     Entity ship = EntityList.getEntity(SELECTED_ID.get(0));
                     if(ship instanceof Ship){
-                        Client.getConnection().sendObject("[ORDER][(" + Client.getID() + ")(" + ship.getID() + ")]"+ (new Warp(Double.parseDouble(parameter),Double.MAX_VALUE)).getOrder());
+                        String order = orderPrefix + (new Warp(Double.parseDouble(parameter),Double.MAX_VALUE)).getOrder();
+                        System.out.println(order);
+                        Client.getConnection().sendObject(order);
                     }
                 }
                 break;

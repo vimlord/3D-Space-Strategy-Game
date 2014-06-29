@@ -141,7 +141,6 @@ public class ConnectionThread extends Thread{
     }
     
     public void processInput(Object obj){
-        System.out.println(obj);
         
         if(obj instanceof String){
             processInput((String) obj);
@@ -180,7 +179,6 @@ public class ConnectionThread extends Thread{
     public void sendObject(Object obj) {
         try{
             outputStream.writeObject(obj);
-            System.out.println("Object sent: " + obj);
         } catch (Exception e){
             outputQueue.add(obj);
         }

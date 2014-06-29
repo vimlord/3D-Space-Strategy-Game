@@ -164,12 +164,13 @@ public class ListenerThread extends Thread{
         
         if(alphaTag.equals("[ORDER]")){
             String order = input.substring(alphaTag.length());
-            String betaTag = order.substring(0,order.indexOf("]"));
+            String betaTag = order.substring(0,order.indexOf("]") + 1);
             order = order.substring(betaTag.length());
             
             int faction = Integer.parseInt(betaTag.substring(betaTag.indexOf("(") + 1, betaTag.indexOf(")")));
             
-            long ship = Long.parseLong(betaTag.substring(betaTag.indexOf("(", betaTag.indexOf(")")) + 1, betaTag.indexOf(")",betaTag.indexOf(")")+1)));
+            betaTag = betaTag.substring(betaTag.indexOf(")") + 1);
+            long ship = Long.parseLong(betaTag.substring(betaTag.indexOf("(") + 1, betaTag.indexOf(")")));
             
             new OrderThread(faction, ship, order).start();
             
