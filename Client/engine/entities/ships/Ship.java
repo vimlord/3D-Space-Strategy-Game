@@ -24,13 +24,14 @@ public class Ship extends Entity implements ControlSystem, FactionTag{
     //Healths stats
     protected double maxHealth;
     protected double health;
-    //The amount of health the Ship object is allowed to heal
-    double healthHealable;
+    //Healing data
+    protected double healthHealable, healRate = 1;
+    protected boolean healingLimit = true;
     
     protected double maxShields;
-    protected double shields;
+    protected double shields, shieldChargeRate = 1;
     protected double cyclesSinceAttacked = 0;
-    protected final int secondsToStartCharge = 10, secondsToRebootShields = 20;
+    protected int secondsToStartCharge = 10, secondsToRebootShields = 20;
     
     protected double XZ_ROT = 0, Y_ROT = 0;
     protected double XZ_RotSpeed = 0, Y_RotSpeed = 0;
@@ -38,13 +39,14 @@ public class Ship extends Entity implements ControlSystem, FactionTag{
     
     protected boolean rotationTarget = false;
      
-    protected double throttle = 0;
+    protected double throttle = 0, engineForce = 30 * 750000000.0;
+    protected double rotationRate = 1;
     
     //Warp Drive Stuff
     protected double warpCharge = 0;
-    protected final double warpCapacity = 600 * CycleRunner.cyclesPerSecond, warpMinimum = 100 * CycleRunner.cyclesPerSecond;
+    protected double warpCapacity = 600 * CycleRunner.cyclesPerSecond, warpMinimum = 100 * CycleRunner.cyclesPerSecond;
     protected boolean warpCharging = false, warping = false;
-    protected double warpMode = 0;
+    protected double warpMode = 0, warpChargeRate;
     
     //The weapons on the Ship
     protected Railgun[] railguns;
@@ -112,20 +114,95 @@ public class Ship extends Entity implements ControlSystem, FactionTag{
         maxShields = shields * Math.sqrt(maxHealth);
         shields = maxShields;
         
-        setModifier(modifier);
+        applyPerk(modifier);
         
         name = "S.S. " + NameGenerator.shipName();
     }
      
+    /**
+     * Accepts and processes a list of modifiers
+     * @param modifiers The list of modifiers
+     */
+    public void applyPerk(int[] modifiers){
+        int[] list = modifiers;
+        //Sorts the list in smallest to largest order
+        for(int i = 0; i < list.length; i++){
+            for(int j = i + 1; j < list.length; j++){
+                if(list[i] > list[j]){
+                    int temp = list[i];
+                    list[i] = list[j];
+                    list[j] = temp;
+                }
+            }
+        }
+        for(int i = 0; i < list.length; i++){
+            if(i != 0 && list[i] != list[i-1]){
+                applyPerk(list[i]);
+            }
+        }
+    }
+    
     /*
-     * Sets a modifier for this Ship object
+     * Sets a modifier for this Ship object (NOTE: THE MODIFIER LIST IS UNDER REVIEW AND MODIFICATION)
      * 0: No modifier
+     *
+     * THE OLD LIST:
      * 1: Offensive Boost
      * 2: Defensive Boost
      * 3: Agility Boost
+     *
+     * THE NEW LIST:
+     * Health/Shield Perks:
+     * 1: Denser Alloys - Health is increased
+     * 2: Regenerative Armor - Healing is unlimited
+     * 3: Elite Engineering Corps - Healing is faster
+     * 11: Shield Matrix Booster - Shields are stronger
+     * 12: Shield Overclock - Shields recharge faster and immediately
+     * 13: Shield Protocol Override - Shields don't wait to start healing
+     * Movement/Warp Perks
+     * 21: Warp Optimization Array - The warp drive has higher capacity
+     * 22: Warp Energizer - The warp drive charges faster
+     * 31: RCS System Overhaul
+     * 32: Hermes Engines
+     * Weapon Perks
+     * 41: Additional Missile Tubes
+     * 42: Velociraptor Missiles
+     * 43: HE Warheads
+     * 51: Magnetic Coil Optimization
+     * 52: Electromagnetic Overclock
+     * 53: MAC-3X Accelerator Cannon
+     * 61: Emergency Ammunition Reserve
+     *
      * @param modifierID The modifier to be used
      */
-    public void setModifier(int modifierID){
+    public void applyPerk(int ID){
+        
+        
+        if(ID == 1){
+            maxHealth *= 1.5;
+            health *= 1.5;
+        } else if(ID == 2){
+            healingLimit = false;
+        } else if(ID == 3){
+            healRate = 2;
+        } else if(ID == 11){
+            maxShields *= 1.5;
+            shields *= 1.5;
+        } else if(ID == 12){
+            shieldChargeRate = 2;
+        } else if(ID == 13){
+            secondsToStartCharge = 0;
+            secondsToRebootShields = 5;
+        } else if(ID == 21){
+            warpCapacity = 1200 * CycleRunner.cyclesPerSecond;
+        } else if(ID == 22){
+            warpChargeRate = 2;
+        } else if(ID == 31){
+            rotationRate = 2;
+        } else if(ID == 32){
+            engineForce = 60 * 750000000.0;
+        }
+        /*
         if(modifierID == 1){
             
             //Increases amount of weapons
@@ -218,6 +295,9 @@ public class Ship extends Entity implements ControlSystem, FactionTag{
         } else {
             return;
         }
+        
+        */
+        
     } 
      
      
@@ -233,8 +313,8 @@ public class Ship extends Entity implements ControlSystem, FactionTag{
     
     public void cycle(){
         weaponCycle();
-        healHealth(CycleRunner.getTimeWarp());
-        healShields(CycleRunner.getTimeWarp());
+        healHealth(CycleRunner.getTimeWarp() * healRate);
+        healShields(CycleRunner.getTimeWarp() * shieldChargeRate);
         chargeWarpDrive();
         if(tubeCount >= missiles.length){
             tubeCount -= missiles.length;
@@ -270,7 +350,8 @@ public class Ship extends Entity implements ControlSystem, FactionTag{
         //Heals the health
         if(healthLost >= healthToHeal){
             health += healthToHeal;
-            healthHealable -= healthToHeal;
+            if(healingLimit)
+                healthHealable -= healthToHeal;
         }
     }
     
@@ -358,8 +439,8 @@ public class Ship extends Entity implements ControlSystem, FactionTag{
     public void rotate(){
         rotationCorrection();
         
-        XZ_ROT += CycleRunner.getTimeWarp() * XZ_RotSpeed/CycleRunner.cyclesPerSecond;
-        Y_ROT += CycleRunner.getTimeWarp() * Y_RotSpeed/CycleRunner.cyclesPerSecond;
+        XZ_ROT += rotationRate * CycleRunner.getTimeWarp() * XZ_RotSpeed/CycleRunner.cyclesPerSecond;
+        Y_ROT += rotationRate * CycleRunner.getTimeWarp() * Y_RotSpeed/CycleRunner.cyclesPerSecond;
     }
     
     public void setRotationTarget(double XZ, double Y){
@@ -549,7 +630,7 @@ public class Ship extends Entity implements ControlSystem, FactionTag{
      * Accelerates the ship in the direction it is pointing
      */
     public void accelerate() {
-        double force = 30 * 750000000.0 * throttle/100;
+        double force = engineForce * throttle/100;
         velX += CycleRunner.getTimeWarp() * Math.cos(XZ_ROT) * Math.cos(Y_ROT) * (force/mass)/CycleRunner.cyclesPerSecond;
         velZ += CycleRunner.getTimeWarp() * Math.sin(XZ_ROT) * Math.cos(Y_ROT) * (force/mass)/CycleRunner.cyclesPerSecond;
         velY += CycleRunner.getTimeWarp() * Math.sin(Y_ROT) * (force/mass)/CycleRunner.cyclesPerSecond;
@@ -585,7 +666,7 @@ public class Ship extends Entity implements ControlSystem, FactionTag{
     public void chargeWarpDrive(){
         if(((warpMode == 0 && warpCharging) || warpCharge < warpMinimum)){
             
-            warpCharge += (10000000/mass) * 200;
+            warpCharge += (10000000/mass) * 200 * warpChargeRate;
             
             if(warpCharge > warpCapacity){
                 warpCharge = warpCapacity;
