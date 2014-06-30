@@ -87,7 +87,7 @@ public class ListenerThread extends Thread{
                     input = "[UNKNOWN]";
                 }
                 
-                System.out.println(connectionUser + "'s Input: " + input);
+                //System.out.println(connectionUser + "'s Input: " + input);
                 
                 processInput(input);
                 

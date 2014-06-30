@@ -8,7 +8,6 @@ import client.game.*;
 import client.gui.menu.*;
 import client.gui.menu.buttons.Button;
 import client.main.Client;
-import client.settings.Option;
 import client.settings.Options;
 import engine.entities.Entity;
 import engine.entities.celestialBodies.*;

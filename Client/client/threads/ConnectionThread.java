@@ -6,9 +6,7 @@
 
 package client.threads;
 
-import client.gui.menu.GameMenu;
 import client.gui.menu.MenuManager;
-import client.gui.menu.PregameMenu;
 import client.main.Client;
 import engine.object_wrappers.EntityListWrapper;
 import engine.entities.Entity;
@@ -22,12 +20,8 @@ import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
-import java.io.Serializable;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *

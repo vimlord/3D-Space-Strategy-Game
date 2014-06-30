@@ -93,7 +93,6 @@ public class OrderThread extends Thread{
             
             add.add(new Attack(fireMissile, fireLaser, fireRailgun, targ));
         }
-        
         EntityList.getShip(ship).giveOrders(add);
         
         

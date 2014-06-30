@@ -211,7 +211,7 @@ public class GameControlSettings {
                 if(SELECTED_ID.size() == 1){
                     Entity ship = EntityList.getEntity(SELECTED_ID.get(0));
                     if(ship instanceof Ship){
-                        String order = orderPrefix + (new Accelerate(100.0 * Double.parseDouble(parameter),Double.MAX_VALUE)).getOrder();
+                        String order = orderPrefix + (new Accelerate(100 * Double.parseDouble(parameter),Double.MAX_VALUE)).getOrder();
                         System.out.println(order);
                         Client.getConnection().sendObject(order);
                     }

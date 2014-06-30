@@ -16,8 +16,6 @@ import client.gui.menu.PregameMenu;
 import client.settings.Options;
 import client.threads.ConnectionThread;
 import client.threads.CycleThread;
-import engine.entities.ships.Corvette;
-import engine.main.EntityList;
 
 /**
  *
