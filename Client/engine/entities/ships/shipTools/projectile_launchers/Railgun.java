@@ -21,6 +21,7 @@ public class Railgun implements ProjectileLauncher, Serializable{
     private double cooldown = 0;
     private int ammo;
     public static final double mass = 5000;
+    private boolean fastProjectile = false, fastReload = false;
     
     /**
      * Creates a railgun with a provided number of shots
@@ -28,14 +29,18 @@ public class Railgun implements ProjectileLauncher, Serializable{
      */
     public Railgun(int shots){
         ammo = shots;
+        fastProjectile = false;
     }
     
     /**
      * Creates a railgun with eight available slugs
      */
     public Railgun(){
-        ammo = 8;
+        this(8);
     }
+    
+    
+    
     
     public void cycle(){
         if(cooldown > 0){
@@ -59,7 +64,7 @@ public class Railgun implements ProjectileLauncher, Serializable{
      */
     public void fire(Ship shooter){
         if(canFire()){
-            EntityList.addProjectile(new Slug(shooter));
+            EntityList.addProjectile(new Slug(shooter, fastProjectile));
             cooldown = cooldownTime;
             ammo--;
         }
@@ -82,10 +87,19 @@ public class Railgun implements ProjectileLauncher, Serializable{
         if(canFire() && ((relX/relCoord == relAngleX) && (relY/relCoord == relAngleY) && (relZ/relCoord == relAngleZ))){
             EntityList.addProjectile(new Slug(shooter));
             cooldown = cooldownTime;
+            if(fastReload)
+                cooldown /= 2.0;
             ammo--;
         }
     }
 
+    public void toggleFastProjectile(boolean b){
+        fastProjectile = b;
+    }
+    public void toggleFastReload(boolean b){
+        fastReload = b;
+    }
+    
     
     public static double getMass() {
         return mass;

@@ -166,11 +166,10 @@ public class Ship extends Entity implements ControlSystem, FactionTag{
      * 32: Hermes Engines
      * Weapon Perks
      * 41: Additional Missile Tubes - Adds more missile tubes to the Ship
-     * 42: Velociraptor Missiles
-     * 43: HE Warheads
-     * 51: Magnetic Coil Optimization
-     * 52: Electromagnetic Overclock
-     * 53: MAC-3X Accelerator Cannon
+     * 42: Velociraptor Missiles - Missiles go faster more quickly and for longer
+     * 43: HE Warheads - Missiles do more damage
+     * 51: Electromagnetic Overclock - Slugs go faster
+     * 52: Priming Optimization
      * 61: Emergency Ammunition Reserve
      *
      * @param modifierID The modifier to be used
@@ -213,6 +212,14 @@ public class Ship extends Entity implements ControlSystem, FactionTag{
         } else if(ID == 43){
             for(int i = 0; i < missiles.length; i++){
                 missiles[i].toggleFastMissiles(true);
+            }
+        } else if(ID == 51){
+            for(int i = 0; i < railguns.length; i++){
+                railguns[i].toggleFastProjectile(true);
+            }
+        } else if(ID == 52){
+            for(int i = 0; i < railguns.length; i++){
+                railguns[i].toggleFastReload(true);
             }
         }
         /*

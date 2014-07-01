@@ -27,13 +27,23 @@ public class Slug extends Projectile{
      * Fires a railgun round based on the data of a shooter
      * @param shooter The Ship object that is shooting the shot
      */
-    public Slug(Ship shooter){
+    public Slug(Ship shooter, boolean fast){
         super(shooter.getX(),shooter.getY(),shooter.getZ(),10000,0,0.5,6500);
+        
+        int launchSpeedFactor = 1;
+        if(fast)
+            launchSpeedFactor = 2;
+        
         x += (shooter.getRadius() + 2) * Math.cos(shooter.getXZ_ROT()) * Math.cos(shooter.getY_ROT());
         y += (shooter.getRadius() + 2) * Math.sin(shooter.getY_ROT());
         z += (shooter.getRadius() + 2) * Math.sin(shooter.getXZ_ROT()) * Math.cos(shooter.getY_ROT());
-        velX += launchSpeed * Math.cos(shooter.getXZ_ROT()) * Math.cos(shooter.getY_ROT());
-        velY += launchSpeed * Math.sin(shooter.getY_ROT());
-        velZ += launchSpeed * Math.sin(shooter.getXZ_ROT()) * Math.cos(shooter.getY_ROT());
+        velX += launchSpeedFactor * launchSpeed * Math.cos(shooter.getXZ_ROT()) * Math.cos(shooter.getY_ROT());
+        velY += launchSpeedFactor * launchSpeed * Math.sin(shooter.getY_ROT());
+        velZ += launchSpeedFactor * launchSpeed * Math.sin(shooter.getXZ_ROT()) * Math.cos(shooter.getY_ROT());
     }
+    
+    public Slug(Ship shooter){
+        this(shooter, false);
+    }
+    
 }
