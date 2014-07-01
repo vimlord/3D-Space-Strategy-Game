@@ -11,9 +11,19 @@ public class Missile extends Projectile implements ControlSystem{
     private double targX, targY, targZ;
     private boolean hasEntityTarget;
     private long targetID;
+    private long engineForce = 37500;
     
     public Missile(double X, double Y, double Z){
         super(X,Y,Z,500,10,0.5,0);
+    }
+    
+    public Missile(Ship shooter, Entity target, boolean engineUpgrade, boolean HE_Payload){
+        this(shooter,target);
+        if(engineUpgrade){
+            engineForce *= 2;
+            fuel *= 2;
+        } if(HE_Payload)
+            damage *= 2;
     }
 
     /**
@@ -77,10 +87,11 @@ public class Missile extends Projectile implements ControlSystem{
         
         fuel--;
         
+        double acceleration = engineForce/mass;
         
-        velX += (getMass(true)/getMass(false)) * (75.0/CycleRunner.cyclesPerSecond) * Math.cos(XZ_ROT) * Math.cos(Y_ROT);
-        velY += (75.0/CycleRunner.cyclesPerSecond) * Math.sin(Y_ROT);
-        velZ += (75.0/CycleRunner.cyclesPerSecond) * Math.sin(XZ_ROT) * Math.cos(Y_ROT);
+        velX += (getMass(true)/getMass(false)) * (acceleration/CycleRunner.cyclesPerSecond) * Math.cos(XZ_ROT) * Math.cos(Y_ROT);
+        velY += (acceleration/CycleRunner.cyclesPerSecond) * Math.sin(Y_ROT);
+        velZ += (acceleration/CycleRunner.cyclesPerSecond) * Math.sin(XZ_ROT) * Math.cos(Y_ROT);
     }
 
     @Override
@@ -112,6 +123,10 @@ public class Missile extends Projectile implements ControlSystem{
         
         Y_ROT = Math.asin(relY/rel);
         
+    }
+    
+    public double getDamage(){
+        return damage;
     }
     
 }
