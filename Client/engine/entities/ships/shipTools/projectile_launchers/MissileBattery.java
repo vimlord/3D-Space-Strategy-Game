@@ -20,7 +20,7 @@ public class MissileBattery implements ProjectileLauncher, Serializable {
     private double wait = 0;
     private int shotsLeft, magazinesLeft;
     public static final double mass = 500;
-    
+    private boolean fastMissiles = false, HE_Missiles = false;
     
     /**
      * Creates a MissileBattery object that hold 25 shots in a magazine, carries
@@ -51,7 +51,8 @@ public class MissileBattery implements ProjectileLauncher, Serializable {
     @Override
     public void fire(Ship shooter, Entity target) {
         if(canFire()){
-            EntityList.addProjectile(new Missile(shooter, target));
+            Missile payload = new Missile(shooter, target, fastMissiles, HE_Missiles);
+            EntityList.addProjectile(payload);
             shotsLeft--;
             if(shotsLeft > 0){
                 wait = (int)(1.5 * CycleRunner.cyclesPerSecond);
@@ -77,6 +78,22 @@ public class MissileBattery implements ProjectileLauncher, Serializable {
     
     public static double getMass() {
         return mass;
+    }
+
+    /**
+     * Toggles the HE Explosives perk for this MissileBattery (Doubles the damage)
+     * @param b
+     */
+    public void toggleHECargo(boolean b) {
+        HE_Missiles = b;
+    }
+    
+    /**
+     * Toggles the Velociraptor Missile perk for this MissileBattery (doubles acceleration and fuel)
+     * @param b
+     */
+    public void toggleFastMissiles(boolean b) {
+        fastMissiles = b;
     }
     
 }

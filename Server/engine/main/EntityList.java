@@ -304,6 +304,21 @@ public class EntityList {
         return null;
     }
 
+    
+    public static void setList(ArrayList<Entity> entities){
+        resetList();
+        for(Entity e : entities){
+            if(e instanceof Ship)
+                ships.add((Ship) e);
+            else if(e instanceof CelestialBody)
+                bodies.add((CelestialBody) e);
+            else if(e instanceof Projectile)
+                projectiles.add((Projectile) e);
+            else if(e instanceof Structure)
+                structures.add((Structure) e);
+        }
+    }
+    
         
     public static ArrayList<Entity> getEntityList(){
         ArrayList<Entity> list = new ArrayList<>();

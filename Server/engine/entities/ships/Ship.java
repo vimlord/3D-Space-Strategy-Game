@@ -165,7 +165,7 @@ public class Ship extends Entity implements ControlSystem, FactionTag{
      * 31: RCS System Overhaul
      * 32: Hermes Engines
      * Weapon Perks
-     * 41: Additional Missile Tubes
+     * 41: Additional Missile Tubes - Adds more missile tubes to the Ship
      * 42: Velociraptor Missiles
      * 43: HE Warheads
      * 51: Magnetic Coil Optimization
@@ -201,6 +201,19 @@ public class Ship extends Entity implements ControlSystem, FactionTag{
             rotationRate = 2;
         } else if(ID == 32){
             engineForce = 60 * 750000000.0;
+        } else if(ID == 41){
+            missiles = new MissileBattery[(int)(1.5 * missiles.length)];
+            for(int i = 0; i < missiles.length; i++){
+                missiles[i] = new MissileBattery();
+            }
+        } else if(ID == 42){
+            for(int i = 0; i < missiles.length; i++){
+                missiles[i].toggleHECargo(true);
+            }
+        } else if(ID == 43){
+            for(int i = 0; i < missiles.length; i++){
+                missiles[i].toggleFastMissiles(true);
+            }
         }
         /*
         if(modifierID == 1){
