@@ -10,6 +10,7 @@ import client.gui.menu.GameMenu;
 import client.gui.menu.MenuManager;
 import client.gui.menu.PregameMenu;
 import client.main.Client;
+import engine.entities.Entity;
 import engine.main.EntityList;
 import java.io.Serializable;
 
@@ -25,10 +26,11 @@ public class CycleThread extends Thread{
     @Override
     public void run(){
         
-        int statusTick = 0, gameTick = 5000;
+        int statusTick = 0, gameTick = 500;
         
         while(true){
-            Client.getGUI().redraw();
+            if(!(MenuManager.getMenu() instanceof GameMenu))
+                Client.getGUI().redraw();
             
             //System.out.println("EntityList size: " + EntityList.getEntityList().size());
             
@@ -38,7 +40,9 @@ public class CycleThread extends Thread{
                 
             }
             
-            if(statusTick >= 10000){
+            
+            
+            if(statusTick >= 1000){
                 
                 try{
                     
@@ -53,15 +57,13 @@ public class CycleThread extends Thread{
                 statusTick = 0;
                 
             }
-            if(gameTick >= 10000){
+            if(gameTick >= 1000){
                 
                 try {
-                    
                     Serializable request;
-                    
+                    Client.getGUI().redraw();
                     if(MenuManager.getMenu() instanceof GameMenu){
                         request = "[SEND][ENTITYLIST]";
-                        Client.getConnection().sendObject(request);
                     } else if(MenuManager.getMenu() instanceof PregameMenu){
                         request = "[SEND][GAMEMODE]";
                     } else

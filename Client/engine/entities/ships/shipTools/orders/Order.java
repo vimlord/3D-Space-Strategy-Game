@@ -4,11 +4,13 @@
 
 package engine.entities.ships.shipTools.orders;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Christopher Hittner
  */
-public abstract class Order {
+public abstract class Order implements Serializable{
     protected String order;
     protected boolean status = true;
     
